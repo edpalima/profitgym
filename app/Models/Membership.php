@@ -12,7 +12,8 @@ class Membership extends Model
     protected $fillable = [
         'name',
         'description',
-        'duration',
+        'duration_unit',
+        'duration_value',
         'price',
     ];
 

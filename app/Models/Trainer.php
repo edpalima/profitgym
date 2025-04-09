@@ -17,6 +17,7 @@ class Trainer extends Model
         'bio',
         'phone',
         'email',
+        'image'
     ];
 
     public function workoutGuides()

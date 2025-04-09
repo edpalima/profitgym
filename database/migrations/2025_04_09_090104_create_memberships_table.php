@@ -10,7 +10,8 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->integer('duration_in_days');
+            $table->integer('duration_value');
+            $table->enum('duration_unit', ['days', 'weeks', 'months', 'years'])->default('days');
             $table->decimal('price', 8, 2);
             $table->boolean('is_active')->default(true);
             $table->timestamps();

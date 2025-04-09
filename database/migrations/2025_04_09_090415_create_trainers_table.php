@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
+            $table->string('image')->nullable(); // Added image column
             $table->timestamps();
         });
     }

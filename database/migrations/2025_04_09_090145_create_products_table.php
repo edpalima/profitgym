@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->integer('stock_quantity');
             $table->boolean('is_active')->default(true);
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

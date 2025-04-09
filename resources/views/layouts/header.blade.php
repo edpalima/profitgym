@@ -50,7 +50,7 @@
             <div class="col-lg-3">
                 <div class="logo">
                     <a href="./index.html">
-                        <img src="img/logo.png" alt="">
+                        <img class="menu-logo" src="{{ asset('logos/profit-gym.png') }}" alt="">
                     </a>
                 </div>
             </div>
