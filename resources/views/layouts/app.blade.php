@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <link rel="stylesheet" href="css/custom.css" type="text/css">
+    
+    @livewireStyles
 </head>
 
 <body>
@@ -55,6 +57,7 @@
 
 
 
+    @livewireScripts
 </body>
 
 </html>
