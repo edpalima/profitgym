@@ -9,7 +9,7 @@ class TrainerSection extends Component
 {
     public function render()
     {
-        $trainers = Trainer::all(); // You can apply filters if needed
+        $trainers = Trainer::where('is_active', true)->get();
 
         // Pass the data to the view
         return view('livewire.trainer-section', compact('trainers'));

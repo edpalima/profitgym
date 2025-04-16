@@ -15,6 +15,7 @@ class Membership extends Model
         'duration_unit',
         'duration_value',
         'price',
+        'is_active',
     ];
 
     public function users()

@@ -7,7 +7,7 @@
                         <span>Our Team</span>
                         <h2>TRAIN WITH EXPERTS</h2>
                     </div>
-                    <a href="#" class="primary-btn btn-normal appoinment-btn">appointment</a>
+                    <a href="{{ route('trainers.index') }}" class="primary-btn btn-normal appoinment-btn">See More</a>
                 </div>
             </div>
         </div>

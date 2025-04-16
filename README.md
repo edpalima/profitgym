@@ -93,7 +93,7 @@ password: password
 
 OR
 
-`php aritsan migrate:refresh --seed`
+`php artisan migrate:refresh --seed`
 
 ## Clear Cache
 `php artisan cache:clear`
@@ -103,3 +103,6 @@ OR
 
 ## Storage
 `php artisan storage:link`
+
+## import files
+`cp -rf public/img/import/* storage/app/public/`

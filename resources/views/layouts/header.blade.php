@@ -1,7 +1,7 @@
 <!-- Page Preloder -->
-<div id="preloder">
+{{-- <div id="preloder">
     <div class="loader"></div>
-</div>
+</div> --}}
 
 <!-- Offcanvas Menu Section Begin -->
 <div class="offcanvas-menu-overlay"></div>
@@ -15,11 +15,11 @@
     <nav class="canvas-menu mobile-menu">
         <ul>
             <li><a href="./index.html">Home</a></li>
-            <li><a href="./about-us.html">About Us</a></li>
-            <li><a href="./classes.html">Classes</a></li>
+            {{-- <li><a href="./about-us.html">About Us</a></li> --}}
+            <li><a href="./classes.html">Workout Guide</a></li>
             <li><a href="./services.html">Services</a></li>
             <li><a href="./team.html">Our Team</a></li>
-            <li><a href="#">Pages</a>
+            {{-- <li><a href="#">Pages</a>
                 <ul class="dropdown">
                     <li><a href="./about-us.html">About us</a></li>
                     <li><a href="./class-timetable.html">Classes timetable</a></li>
@@ -29,7 +29,7 @@
                     <li><a href="./blog.html">Our blog</a></li>
                     <li><a href="./404.html">404</a></li>
                 </ul>
-            </li>
+            </li> --}}
             <li><a href="./contact.html">Contact</a></li>
         </ul>
     </nav>
@@ -57,10 +57,24 @@
             <div class="col-lg-6">
                 <nav class="nav-menu">
                     <ul>
-                        <li class="active"><a href="./index.html">Home</a></li>
-                        <li><a href="./about-us.html">About Us</a></li>
-                        <li><a href="./class-details.html">Classes</a></li>
-                        <li><a href="./services.html">Services</a></li>
+                        <li class="{{ Route::currentRouteName() === 'home' ? 'active' : '' }}">
+                            <a href="/">Home</a>
+                        </li>
+                        {{-- <li><a href="./about-us.html">About Us</a></li> --}}
+                        <li class="{{ request()->routeIs('workout-guide.show') ? 'active' : '' }}">
+                            <a href="{{ route('home') }}#workout-guides">Workout Guide</a>
+                        </li>
+                        <li class="{{ request()->routeIs('trainers.index') ? 'active' : '' }}">
+                            <a href="{{ route('trainers.index') }}">Trainers</a>
+                        </li>
+                        @if (!Auth::check() || Auth::user()->role !== 'member')
+                            <li class="{{ Route::currentRouteName() === 'login' ? 'active' : '' }}">
+                                <a href="{{ route('login') }}">Sign In</a>
+                            </li>
+                        @else
+                            <li><a href="{{ route('logout') }}">Logout</a></li>
+                        @endif
+                        {{-- <li><a href="./services.html">Services</a></li>
                         <li><a href="./team.html">Our Team</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="dropdown">
@@ -72,8 +86,8 @@
                                 <li><a href="./blog.html">Our blog</a></li>
                                 <li><a href="./404.html">404</a></li>
                             </ul>
-                        </li>
-                        <li><a href="./contact.html">Contact</a></li>
+                        </li> --}}
+                        {{-- <li><a href="./contact.html">Contact</a></li> --}}
                     </ul>
                 </nav>
             </div>

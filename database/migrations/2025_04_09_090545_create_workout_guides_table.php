@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('workout_guides', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->nullable();
+            $table->string('featured_photo')->nullable();
             $table->text('description');
-            $table->string('video_url')->nullable();
-            $table->foreignId('trainer_id')->constrained('trainers')->onDelete('cascade');
+            $table->text('video_url')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

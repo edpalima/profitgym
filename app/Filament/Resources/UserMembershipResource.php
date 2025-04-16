@@ -49,9 +49,9 @@ class UserMembershipResource extends Resource
 
             Select::make('status')
                 ->options([
-                    'active' => 'Active',
-                    'expired' => 'Expired',
-                    'cancelled' => 'Cancelled',
+                    'pending' => 'pending',
+                    'approved' => 'approved',
+                    'rejected' => 'rejected',
                 ])
                 ->required(),
 

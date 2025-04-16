@@ -66,6 +66,7 @@ class UserResource extends Resource
                     ->options([
                         'admin' => 'Admin',
                         'member' => 'Member',
+                        'staff' => 'Staff',
                     ])
                     ->default('member')
                     ->required()

@@ -10,15 +10,20 @@ use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class WorkoutGuideResource extends Resource
 {
@@ -31,27 +36,39 @@ class WorkoutGuideResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
+                Section::make('Workout Guide Details')
+                    ->description('Fill out the information below to create or update a workout guide.')
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                TextInput::make('title')
+                                    ->label('Title')
+                                    ->required()
+                                    ->maxLength(255),
 
-                Textarea::make('description')
-                    ->required()
-                    ->rows(3),
+                                FileUpload::make('featured_photo')
+                                    ->label('Featured Photo')
+                                    ->image()
+                                    ->directory('workout-guides')
+                                    ->required(),
+                            ]),
+
+                        RichEditor::make('description')
+                            ->label('Description')
+                            ->required()
+                            ->columnSpanFull(),
+
+                        Toggle::make('is_active')
+                            ->label('Active')
+                            ->helperText('Toggle to activate or deactivate this workout guide.')
+                            ->default(true),
+                    ])
+                    ->columns(1)
+                    ->collapsible(),
 
                 TextInput::make('video_url')
-                    ->nullable()
-                    ->maxLength(255),
-
-                Select::make('trainer_id')
-                    ->label('Trainer')
-                    ->options(function () {
-                        return \App\Models\Trainer::all()->pluck('first_name', 'id');
-                    })
-                    ->required(),
-
-                Toggle::make('is_active')
-                    ->default(true),
+                    ->label('Video URL')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -59,8 +76,14 @@ class WorkoutGuideResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('featured_photo')
+                    ->label('Photo')
+                    ->size(50),
                 TextColumn::make('title')->sortable()->searchable(),
-                TextColumn::make('trainer.first_name')->label('Trainer')->sortable(),
+                TextColumn::make('description')
+                    ->label('Description')
+                    ->formatStateUsing(fn($state) => Str::limit(strip_tags($state), 50))
+                    ->tooltip(fn($record) => strip_tags($record->description)),
                 ToggleColumn::make('is_active')->sortable(),
             ])
             ->filters([

@@ -87,5 +87,6 @@ return [
     'livewire_loading_delay' => 'default',
     
     'logo' => env('FILAMENT_LOGO', 'images/logo.png'),
+    'dark_mode' => true,
 
 ];

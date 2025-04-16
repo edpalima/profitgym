@@ -17,7 +17,8 @@ class Trainer extends Model
         'bio',
         'phone',
         'email',
-        'image'
+        'image',
+        'is_active',
     ];
 
     public function workoutGuides()

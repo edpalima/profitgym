@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('image')->nullable(); // Added image column
+            $table->boolean('is_active')->default(true); // Added image column
             $table->timestamps();
         });
     }

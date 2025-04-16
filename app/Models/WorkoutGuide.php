@@ -12,8 +12,9 @@ class WorkoutGuide extends Model
     protected $fillable = [
         'title',
         'description',
-        'video_url',
+        'featured_photo',
         'trainer_id',
+        'video_url',
         'is_active',
     ];
 

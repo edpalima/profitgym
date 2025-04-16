@@ -8,7 +8,7 @@ use App\Models\Trainer;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\{TextInput, Textarea, FileUpload};
+use Filament\Forms\Components\{TextInput, Textarea, FileUpload, Section, Select, Toggle};
 use Filament\Tables\Columns\{TextColumn, ImageColumn};
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -25,15 +25,85 @@ class TrainerResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('first_name')->required(),
-            TextInput::make('middle_name'),
-            TextInput::make('last_name')->required(),
-            TextInput::make('specialization')->required(),
-            Textarea::make('description'),
-            Textarea::make('bio'),
-            TextInput::make('phone'),
-            TextInput::make('email')->email(),
-            FileUpload::make('image')->image()->directory('trainers'),
+            Section::make('Personal Information')
+                ->description('Basic identity details for the trainer.')
+                ->schema([
+                    TextInput::make('first_name')
+                        ->label('First Name')
+                        ->required()
+                        ->maxLength(100),
+
+                    TextInput::make('middle_name')
+                        ->label('Middle Name')
+                        ->maxLength(100),
+
+                    TextInput::make('last_name')
+                        ->label('Last Name')
+                        ->required()
+                        ->maxLength(100),
+                ])
+                ->columns(3),
+
+            Section::make('Professional Info')
+                ->description('Specialization and image for trainer profile.')
+                ->schema([
+                    Select::make('specialization')
+                        ->label('Specialization')
+                        ->required()
+                        ->options([
+                            'strength_training' => 'Strength Training',
+                            'cardio' => 'Cardio',
+                            'yoga' => 'Yoga',
+                            'pilates' => 'Pilates',
+                            'crossfit' => 'CrossFit',
+                            'weightlifting' => 'Weightlifting',
+                            'bodybuilding' => 'Bodybuilding',
+                            'functional_fitness' => 'Functional Fitness',
+                            'rehab' => 'Rehabilitation',
+                        ])
+                        ->searchable()
+                        ->preload()
+                        ->placeholder('Select specialization'),
+
+                    FileUpload::make('image')
+                        ->label('Profile Image')
+                        ->image()
+                        ->imagePreviewHeight('150')
+                        ->directory('trainers'),
+                ])
+                ->columns(2),
+
+            Section::make('Contact Details')
+                ->description('Phone number and email address.')
+                ->schema([
+                    TextInput::make('phone')
+                        ->label('Phone')
+                        ->tel()
+                        ->maxLength(20),
+
+                    TextInput::make('email')
+                        ->label('Email')
+                        ->email()
+                        ->maxLength(150),
+                ])
+                ->columns(2),
+
+            Section::make('About')
+                ->description('A short description and full bio.')
+                ->schema([
+                    Textarea::make('description')
+                        ->label('Short Description')
+                        ->rows(3)
+                        ->maxLength(500),
+
+                    Textarea::make('bio')
+                        ->label('Biography')
+                        ->rows(6)
+                        ->maxLength(1000),
+                ]),
+
+            Toggle::make('is_active')
+                ->default(true),
         ]);
     }
 
