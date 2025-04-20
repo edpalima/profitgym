@@ -2,17 +2,16 @@
 
 @section('content')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg position-relative full-header"
-        data-setbg="{{ asset('img/breadcrumb-bg.jpg') }}">
+    <section class="breadcrumb-section set-bg position-relative" data-setbg="{{ asset('img/banner-bg.jpg') }}">
         <div class="bg-overlay"></div>
-        <div class="container vh-100 d-flex justify-content-center align-items-center">
+        <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb-text">
+                        <h2>Memberships</h2>
                         <div class="bt-option">
-                            <livewire:auth.register />
-                            {{-- <a href="{{ url('/') }}">Home</a> --}}
-                            {{-- <span>Our trainers</span> --}}
+                            <a href="{{ url('/') }}">Home</a>
+                            <span>Memberships</span>
                         </div>
                     </div>
                 </div>
@@ -22,10 +21,10 @@
     <!-- Breadcrumb Section End -->
 
     <!-- Team Section Begin -->
-    {{-- <section class="team-section team-page spad">
+    <section class="team-section team-page spad">
         <div class="container">
-            <livewire:auth.register />
+            <livewire:memberships />
         </div>
-    </section> --}}
+    </section>
     <!-- Team Section End -->
 @endsection

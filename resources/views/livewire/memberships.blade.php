@@ -21,8 +21,8 @@
                             <li>{{ $membership->description ?? 'No description available' }}</li>
                             <!-- You can add more membership features here if needed -->
                         </ul>
-                        <a href="#" class="primary-btn pricing-btn">Enroll now</a>
-                        <a href="#" class="thumb-icon"><i class="fa fa-picture-o"></i></a>
+                        <a href="{{ route('membership.checkout', $membership->id) }}" class="primary-btn pricing-btn">Enroll now</a>
+                        <a href="{{ route('membership.checkout', $membership->id) }}" class="thumb-icon"><i class="fa fa-picture-o"></i></a>
                     </div>
                 </div>
             @endforeach

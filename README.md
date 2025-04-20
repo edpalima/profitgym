@@ -104,8 +104,5 @@ OR
 ## Storage
 `php artisan storage:link`
 
-## import files
+## import files | Run on bash
 `cp -rf public/img/import/* storage/app/public/`
-
-## Test
-`Test123`

@@ -14,11 +14,18 @@
     </div>
     <nav class="canvas-menu mobile-menu">
         <ul>
-            <li><a href="./index.html">Home</a></li>
+            <li><a href="/">Home</a></li>
             {{-- <li><a href="./about-us.html">About Us</a></li> --}}
-            <li><a href="./classes.html">Workout Guide</a></li>
-            <li><a href="./services.html">Services</a></li>
-            <li><a href="./team.html">Our Team</a></li>
+            <li><a href="{{ route('memberships.index') }}">Memberships</a></li>
+            <li><a href="{{ route('home') }}#workout-guides">Workout Guide</a></li>
+            <li><a href="{{ route('trainers.index') }}">Trainers</a></li>
+            @if (!Auth::check() || Auth::user()->role !== 'member')
+                <li class="{{ Route::currentRouteName() === 'login' ? 'active' : '' }}">
+                    <a href="{{ route('login') }}">Sign In</a>
+                </li>
+            @else
+                <li><a href="{{ route('logout') }}">Logout</a></li>
+            @endif
             {{-- <li><a href="#">Pages</a>
                 <ul class="dropdown">
                     <li><a href="./about-us.html">About us</a></li>
@@ -30,7 +37,7 @@
                     <li><a href="./404.html">404</a></li>
                 </ul>
             </li> --}}
-            <li><a href="./contact.html">Contact</a></li>
+            {{-- <li><a href="./contact.html">Contact</a></li> --}}
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -61,32 +68,30 @@
                             <a href="/">Home</a>
                         </li>
                         {{-- <li><a href="./about-us.html">About Us</a></li> --}}
+                        <li class="{{ request()->routeIs('memberships.index') ? 'active' : '' }}">
+                            <a href="{{ route('memberships.index') }}">Memberships</a>
+                        </li>
                         <li class="{{ request()->routeIs('workout-guide.show') ? 'active' : '' }}">
                             <a href="{{ route('home') }}#workout-guides">Workout Guide</a>
                         </li>
                         <li class="{{ request()->routeIs('trainers.index') ? 'active' : '' }}">
                             <a href="{{ route('trainers.index') }}">Trainers</a>
                         </li>
+                        {{-- <li><a href="./services.html">Services</a></li>
+                        <li><a href="./team.html">Our Team</a></li> --}}
+
                         @if (!Auth::check() || Auth::user()->role !== 'member')
                             <li class="{{ Route::currentRouteName() === 'login' ? 'active' : '' }}">
                                 <a href="{{ route('login') }}">Sign In</a>
                             </li>
                         @else
-                            <li><a href="{{ route('logout') }}">Logout</a></li>
+                            <li><a href="#">My Account</a>
+                                <ul class="dropdown">
+                                    <li><a href="{{ route('logout') }}">Logout</a></li>
+                                </ul>
+                            </li>
                         @endif
-                        {{-- <li><a href="./services.html">Services</a></li>
-                        <li><a href="./team.html">Our Team</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="./about-us.html">About us</a></li>
-                                <li><a href="./class-timetable.html">Classes timetable</a></li>
-                                <li><a href="./bmi-calculator.html">Bmi calculate</a></li>
-                                <li><a href="./team.html">Our team</a></li>
-                                <li><a href="./gallery.html">Gallery</a></li>
-                                <li><a href="./blog.html">Our blog</a></li>
-                                <li><a href="./404.html">404</a></li>
-                            </ul>
-                        </li> --}}
+
                         {{-- <li><a href="./contact.html">Contact</a></li> --}}
                     </ul>
                 </nav>

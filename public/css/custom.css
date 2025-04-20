@@ -29,3 +29,12 @@
 	height: 80px;
 	overflow: hidden;
 }
+
+.full-header {
+	height: 100vh;
+	padding: 40px 0px 0px 0px;
+}
+
+.primary-color {
+	color: #f36100 !important;
+}

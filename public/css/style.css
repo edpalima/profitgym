@@ -1263,7 +1263,7 @@ ol {
 	margin-right: 20px;
 }
 
-.breadcrumb-text .bt-option a:after {
+/* .breadcrumb-text .bt-option a:after {
 	position: absolute;
 	right: -14px;
 	top: 6px;
@@ -1271,10 +1271,10 @@ ol {
 	content: "";
 	font-size: 13px;
 	font-weight: 400;
-}
+} */
 
 .breadcrumb-text .bt-option span {
-	font-size: 18px;
+	font-size: 16px;
 	color: #f36100;
 	font-weight: 700;
 }

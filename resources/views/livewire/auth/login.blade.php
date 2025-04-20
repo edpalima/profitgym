@@ -2,22 +2,26 @@
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card text-white" style="border-radius: 1rem; background-color: rgba(33, 37, 41, 0.658);">
                     <div class="card-body p-5 text-center">
-
                         <div class="mb-md-5 mt-md-4 pb-5">
+                            @if (session()->has('success'))
+                                <div class="alert alert-success text-center mt-3" role="alert">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                             <div class="section-title">
-                                <span style="color: #f36100">LOGIN</span>
+                                <h2>Sign In</h2>
                             </div>
                             <p class="text-white-50 mb-5">Please enter your login and password!</p>
 
                             <!-- Email Input -->
-                            <div data-mdb-input-init class="form-outline form-white mb-4">
+                            <div data-mdb-input-init class="form-outline form-white mb-3">
                                 <input type="email" wire:model.defer="email" id="typeEmailX"
                                     class="form-control form-control-lg" />
                                 <label class="form-label" for="typeEmailX">Email</label>
                                 @error('email')
-                                    | <span class="text-danger"> {{ $message }}</span>
+                                    : <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -27,7 +31,7 @@
                                     class="form-control form-control-lg" />
                                 <label class="form-label" for="typePasswordX">Password</label>
                                 @error('password')
-                                    | <span class="text-danger">{{ $message }}</span>
+                                    : <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -38,7 +42,8 @@
                             </div>
 
                             <!-- Forgot Password Link -->
-                            <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a>
+                            <p class="small mb-5 pb-lg-2"><a class="text-white-50 text-muted" href="#!">Forgot
+                                    password?</a>
                             </p>
 
                             <!-- Login Button -->
@@ -50,8 +55,9 @@
 
                         <!-- Sign Up Link -->
                         <div>
-                            <p class="mb-0">Don't have an account? <a href="/register" class="fw-bold"
-                                    style="color: #f36100">Sign Up</a></p>
+                            <p class="mt-4 mb-0 text-center text-muted">Don't have an account?
+                                <a href="/register" class="" style="color: #f36100">Sign Up</a>
+                            </p>
                         </div>
 
                     </div>
