@@ -17,6 +17,7 @@
             <li><a href="/">Home</a></li>
             {{-- <li><a href="./about-us.html">About Us</a></li> --}}
             <li><a href="{{ route('memberships.index') }}">Memberships</a></li>
+            <li><a href="{{ route('products') }}">Products</a></li>
             <li><a href="{{ route('home') }}#workout-guides">Workout Guide</a></li>
             <li><a href="{{ route('trainers.index') }}">Trainers</a></li>
             @if (!Auth::check() || Auth::user()->role !== 'member')
@@ -70,6 +71,9 @@
                         {{-- <li><a href="./about-us.html">About Us</a></li> --}}
                         <li class="{{ request()->routeIs('memberships.index') ? 'active' : '' }}">
                             <a href="{{ route('memberships.index') }}">Memberships</a>
+                        </li>
+                        <li class="{{ request()->routeIs('products') || request()->routeIs('product.show') ? 'active' : '' }}">
+                            <a href="{{ route('products') }}">Products</a>
                         </li>
                         <li class="{{ request()->routeIs('workout-guide.show') ? 'active' : '' }}">
                             <a href="{{ route('home') }}#workout-guides">Workout Guide</a>

@@ -46,3 +46,18 @@
 	height: 350px;
 	padding-top: 160px;
 }
+
+.page-link {
+	color: #f36100 !important;
+}
+
+.page-item.active .page-link {
+	color: #fff !important;
+	background-color: #f36100 !important;
+	border-color: #f36100 !important;
+}
+
+.add-to-cart-btn:hover {
+		background-color: #f36100;
+		color: white;
+}

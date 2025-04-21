@@ -11,21 +11,23 @@
         </div>
         <div class="row justify-content-center">
             @foreach($products as $product)
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="product-item" style="background-color: #282828; padding: 20px; border-radius: 8px; text-align: center;">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="product-item" style="background-color: #282828; padding: 20px; border-radius: 8px; text-align: center;">
+                    <a href="{{ route('product.show', $product->id) }}">
                         <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" style="max-width: 100%; height: auto; margin-bottom: 15px;">
-                        <h3 style="color: #fff;">{{ $product->name }}</h3>
-                        <div class="pi-rating" style="margin: 10px 0;">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half-o"></i>
-                        </div>
-                    </div>
+                    </a>
+                    <h3 style="color: #fff;">{{ $product->name }}</h3>
+                    {{-- <div class="pi-rating" style="margin: 10px 0;">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                    </div> --}}
                 </div>
-            @endforeach
-        <a href="{{ route('trainers.index') }}" class="primary-btn btn-normal appoinment-btn">See More</a>
+            </div>
+        @endforeach
+        <a href="{{ route('products') }}" class="primary-btn btn-normal appoinment-btn">See More</a>
         </div>
     </div>
 </section>

@@ -22,6 +22,8 @@ Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::get('terms-and-conditions', [PageController::class, 'termsAndConditions'])->name('terms-and-conditions');
+Route::get('products', [PageController::class, 'products'])->name('products');
+Route::get('/product/{id}', [PageController::class, 'product'])->name('product.show');
 
 
 Route::middleware('auth')->group(function () {
