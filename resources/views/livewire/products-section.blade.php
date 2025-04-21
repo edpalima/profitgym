@@ -5,7 +5,7 @@
                 <div class="section-title">
                     <span>OUR PRODUCTS</span>
                     <h2 style="color: #fff;">BUY OUR RECENT PRODUCTS</h2>
-                    <p>With a background of creating some of the most life-changing supplements in the industry, the ProFit Gym team brings you the most advanced nutritional supplements on the market, made with only the purest and highest quality.</p>
+                    <p class="pt-4">With a background of creating some of the most life-changing supplements in the industry, the ProFit Gym team brings you the most advanced nutritional supplements on the market, made with only the purest and highest quality.</p>
                 </div>
             </div>
         </div>
@@ -15,16 +15,17 @@
                     <div class="product-item" style="background-color: #282828; padding: 20px; border-radius: 8px; text-align: center;">
                         <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" style="max-width: 100%; height: auto; margin-bottom: 15px;">
                         <h3 style="color: #fff;">{{ $product->name }}</h3>
-                        {{-- <div class="pi-rating" style="margin: 10px 0;">
+                        <div class="pi-rating" style="margin: 10px 0;">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star-half-o"></i>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
             @endforeach
+        <a href="{{ route('trainers.index') }}" class="primary-btn btn-normal appoinment-btn">See More</a>
         </div>
     </div>
 </section>

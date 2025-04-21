@@ -37,7 +37,7 @@
 
     <livewire:memberships />
 
-    <livewire:products />
+    <livewire:product-section />
 
     <livewire:gallery />
 
