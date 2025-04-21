@@ -16,4 +16,9 @@ class Payment extends Model
         'image',
         'reference_no',
     ];
+
+    public function typeable()
+    {
+        return $this->morphTo('typeable', 'type', 'type_id');
+    }
 }

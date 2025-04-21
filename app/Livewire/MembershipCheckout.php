@@ -31,7 +31,7 @@ class MembershipCheckout extends Component
         $this->amount = $this->membership->price;
 
         $this->userHasMembership = Auth::user()->hasMembership($this->membership->id);
-        $this->userHasPendingMembership = Auth::user()->hasPendingMembershipRequest($this->membership->id);
+        $this->userHasPendingMembership = Auth::user()->hasPendingMembership($this->membership->id);
     }
 
     public function submit()
@@ -58,7 +58,7 @@ class MembershipCheckout extends Component
         // $paymentImage = $this->image ? $this->image->store('payment_receipts', 'public') : null;
 
         Payment::create([
-            'type' => 'user_membership',
+            'type' => 'user_memberships',
             'type_id' => $userMembership->id,
             'amount' => $this->membership->price,
             'payment_method' => $this->paymentMethod,

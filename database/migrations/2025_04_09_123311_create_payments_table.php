@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['user_membership', 'products']);
+            $table->enum('type', ['user_memberships', 'products']);
             $table->unsignedBigInteger('type_id');
             $table->decimal('amount', 10, 2);
             $table->enum('payment_method', ['OVER_THE_COUNTER', 'GCASH'])->default('OVER_THE_COUNTER');

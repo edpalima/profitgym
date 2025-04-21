@@ -28,4 +28,9 @@ class UserMembership extends Model
     {
         return $this->belongsTo(Membership::class);
     }
+
+    public function payments()
+    {
+        return $this->morphMany(\App\Models\Payment::class, 'typeable', 'type', 'type_id');
+    }
 }

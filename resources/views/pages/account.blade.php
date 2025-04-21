@@ -8,7 +8,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="breadcrumb-text text-center text-white">
-                        <h2>My Account</h2>
+                        <h2>Account</h2>
                         <div class="bt-option">
                             <a href="{{ url('/') }}">Home</a>
                             <span>Account</span>
@@ -104,6 +104,8 @@
                                                 <span class="badge bg-success">Active</span>
                                             @elseif ($latestMembership->status === 'APPROVED' && now()->lt($latestMembership->start_date))
                                                 <span class="badge bg-info text-dark">Upcoming</span>
+                                            @elseif ($latestMembership->status === 'PENDING')
+                                                <span class="badge bg-warning text-dark">Pending</span>
                                             @else
                                                 <span class="badge bg-secondary">Inactive</span>
                                             @endif
