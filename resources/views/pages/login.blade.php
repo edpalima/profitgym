@@ -2,7 +2,8 @@
 
 @section('content')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg position-relative full-header" data-setbg="{{ asset('img/breadcrumb-bg.jpg') }}">
+    <section class="breadcrumb-section set-bg position-relative full-header" data-setbg="{{ asset('img/breadcrumb-bg.jpg') }}"
+        style="height: 1200px;">
         <div class="bg-overlay"></div>
         <div class="container vh-100 d-flex justify-content-center align-items-center">
             <div class="row w-100">
