@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\MembershipCheckoutController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\WorkoutGuideController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,8 @@ Route::get('/memberships', [MembershipController::class, 'index'])->name('member
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('register', [RegisterController::class, 'showRegisterForm'])->name('register');
+Route::get('terms-and-conditions', [PageController::class, 'termsAndConditions'])->name('terms-and-conditions');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/memberships/{membership}/checkout', [MembershipController::class, 'checkout'])->name('membership.checkout');

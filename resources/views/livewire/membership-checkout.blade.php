@@ -84,7 +84,8 @@
                                         <input type="checkbox" wire:model="terms" id="terms"
                                             class="form-check-input">
                                         <label for="terms" class="form-check-label">
-                                            I agree to the <a href="#" class="text-decoration-none">Terms and
+                                            I agree to the <a href="{{ route('terms-and-conditions') }}" target="_blank"
+                                                class="text-decoration-none">Terms and
                                                 Conditions</a>
                                         </label>
                                     </div>
