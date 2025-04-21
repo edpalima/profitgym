@@ -59,4 +59,25 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Membership::class, 'user_memberships');
     }
+
+    /**
+     * Check if the user has an active membership.
+     *
+     * @param int $membershipId
+     * @return bool
+     */
+    public function hasMembership($membershipId)
+    {
+        return $this->memberships()
+            ->where('membership_id', $membershipId)
+            ->exists();
+    }
+
+    public function hasPendingMembershipRequest($membershipId)
+    {
+        return $this->memberships()
+            ->where('membership_id', $membershipId)
+            ->whereIn('status', ['PENDING']) // include any status indicating a request
+            ->exists();
+    }
 }

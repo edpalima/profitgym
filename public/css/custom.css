@@ -31,8 +31,11 @@
 }
 
 .full-header {
-	height: 100vh;
-	padding: 40px 0px 0px 0px;
+	min-height: 100vh; /* Ensures full viewport height */
+	padding: 40px 0 40px 0; /* Adjusted padding for consistent spacing */
+	display: flex; /* Ensure that the section takes up available space */
+	flex-direction: column; /* Stack content vertically */
+	justify-content: flex-start; /* Align the content to the top */
 }
 
 .primary-color {

@@ -14,6 +14,6 @@ class Payment extends Model
         'status',
         'payment_date',
         'image',
-        'description'
+        'reference_no',
     ];
 }

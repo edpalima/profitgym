@@ -17,11 +17,11 @@ return new class extends Migration
             $table->enum('type', ['user_membership', 'products']);
             $table->unsignedBigInteger('type_id');
             $table->decimal('amount', 10, 2);
-            $table->enum('payment_method', ['over_the_counter', 'gcash'])->default('over_the_counter');
-            $table->string('status')->default('pending');
-            $table->dateTime('payment_date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->enum('payment_method', ['OVER_THE_COUNTER', 'GCASH'])->default('OVER_THE_COUNTER');
             $table->string('image')->nullable();
-            $table->string('description')->nullable();
+            $table->string('reference_no')->nullable();
+            $table->string('status')->default('PENDING');
+            $table->dateTime('payment_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
     }

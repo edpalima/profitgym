@@ -8,47 +8,63 @@ use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Carbon\Carbon;
 
 class MembershipCheckout extends Component
 {
     use WithFileUploads;
 
     public $membership;
-    public $payment_method = 'over_the_counter';
+    public $amount;
+    public $paymentMethod = 'OVER_THE_COUNTER';
     public $image;
-    public $description;
+    public $referenceNo;
+    public $startDate;
+    public $terms = false;
+    
+    public $userHasMembership = false;
+    public $userHasPendingMembership = false;
 
     public function mount($membershipId)
     {
         $this->membership = Membership::findOrFail($membershipId);
+        $this->amount = $this->membership->price;
+
+        $this->userHasMembership = Auth::user()->hasMembership($this->membership->id);
+        $this->userHasPendingMembership = Auth::user()->hasPendingMembershipRequest($this->membership->id);
     }
 
     public function submit()
     {
         $this->validate([
-            'payment_method' => 'required|in:over_the_counter,gcash',
-            'image' => 'nullable|image|max:2048',
-            'description' => 'nullable|string|max:255',
+            'paymentMethod' => 'required|in:OVER_THE_COUNTER,GCASH',
+            // 'image' => $this->paymentMethod === 'GCASH' ? 'required|image|max:2048' : 'nullable|image|max:2048',
+            'referenceNo' => $this->paymentMethod === 'GCASH' ? 'required|string|max:100' : 'nullable|string|max:100',
+            'startDate' => 'required|date|after_or_equal:today',
+            'terms' => 'accepted',
         ]);
+
+        $start = Carbon::parse($this->startDate);
+        $end = $start->copy()->add($this->membership->duration_unit, $this->membership->duration_value);
 
         $userMembership = UserMembership::create([
             'user_id' => Auth::id(),
             'membership_id' => $this->membership->id,
-            'start_date' => now(),
-            'end_date' => now()->add($this->membership->duration_unit, $this->membership->duration_value),
-            'status' => 'pending',
+            'start_date' => $start,
+            'end_date' => $end,
+            'status' => 'PENDING',
         ]);
 
-        $paymentImage = $this->image ? $this->image->store('payment_receipts', 'public') : null;
+        // $paymentImage = $this->image ? $this->image->store('payment_receipts', 'public') : null;
 
         Payment::create([
             'type' => 'user_membership',
             'type_id' => $userMembership->id,
             'amount' => $this->membership->price,
-            'payment_method' => $this->payment_method,
-            'status' => 'pending',
-            'image' => $paymentImage,
-            'description' => $this->description,
+            'payment_method' => $this->paymentMethod,
+            'reference_no' => $this->referenceNo,
+            'status' => 'PENDING',
+            // 'image' => $paymentImage,
         ]);
 
         session()->flash('success', 'Membership checkout submitted! Awaiting approval.');

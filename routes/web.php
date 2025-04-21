@@ -22,6 +22,5 @@ Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('register', [RegisterController::class, 'showRegisterForm'])->name('register');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/memberships/{membership}/checkout', [MembershipCheckoutController::class, 'show'])->name('membership.checkout');
-    Route::post('/memberships/{membership}/checkout', [MembershipCheckoutController::class, 'store'])->name('membership.checkout.store');
+    Route::get('/memberships/{membership}/checkout', [MembershipController::class, 'checkout'])->name('membership.checkout');
 });

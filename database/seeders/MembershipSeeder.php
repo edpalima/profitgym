@@ -16,7 +16,7 @@ class MembershipSeeder extends Seeder
     {
         \App\Models\Membership::create([
             'name' => 'Basic Membership',
-            'description' => 'Basic membership with limited access.',
+            'description' => 'Basic membership with limited access to gym facilities, including access to the gym floor and basic equipment. This membership is ideal for individuals who are just starting their fitness journey and require minimal resources.',
             'duration_value' => 1,
             'duration_unit' => 'months',
             'price' => 500.00,
@@ -25,7 +25,7 @@ class MembershipSeeder extends Seeder
 
         \App\Models\Membership::create([
             'name' => 'Premium Membership',
-            'description' => 'Premium membership with full access.',
+            'description' => 'Premium membership with full access to all gym facilities, including advanced equipment, group classes, and personal training sessions. This membership is perfect for fitness enthusiasts who want a comprehensive workout experience.',
             'duration_value' => 1,
             'duration_unit' => 'months',
             'price' => 1000.00,
@@ -34,7 +34,7 @@ class MembershipSeeder extends Seeder
 
         \App\Models\Membership::create([
             'name' => 'VIP Membership',
-            'description' => 'VIP membership with exclusive benefits.',
+            'description' => 'VIP membership with exclusive benefits, including priority access to gym facilities, personalized training programs, nutrition consultations, and access to VIP-only areas. This membership is tailored for individuals seeking a premium and luxurious fitness experience.',
             'duration_value' => 1,
             'duration_unit' => 'months',
             'price' => 1500.00,
