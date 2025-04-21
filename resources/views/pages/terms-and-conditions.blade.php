@@ -27,7 +27,7 @@
                 <div class="col-lg-12">
                     <div class="team-title">
                         <div class="section-title">
-                            <span>Terms</span>
+                            <span>Terms and Conditions</span>
                         </div>
                         {{-- <a href="#" class="primary-btn btn-normal appoinment-btn">appointment</a> --}}
                     </div>

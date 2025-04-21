@@ -41,3 +41,8 @@
 .primary-color {
 	color: #f36100 !important;
 }
+
+.breadcrumb-section {
+	height: 350px;
+	padding-top: 160px;
+}

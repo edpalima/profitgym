@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable
 {
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'address',
         'phone_number',
         'email',
+        'birth_date',
         'password',
         'role',
     ];
@@ -57,7 +59,7 @@ class User extends Authenticatable
 
     public function memberships()
     {
-        return $this->belongsToMany(Membership::class, 'user_memberships');
+        return $this->hasMany(UserMembership::class);
     }
 
     /**
@@ -73,11 +75,47 @@ class User extends Authenticatable
             ->exists();
     }
 
-    public function hasPendingMembershipRequest($membershipId)
+    public function hasActiveMembership()
+    {
+        $today = Carbon::today();
+
+        return $this->memberships()
+            ->where('is_active', true)
+            ->where('status', 'APPROVED')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->exists();
+    }
+
+    public function hasPendingMembership()
     {
         return $this->memberships()
-            ->where('membership_id', $membershipId)
-            ->whereIn('status', ['PENDING']) // include any status indicating a request
+            ->where('status', 'PENDING')
             ->exists();
+    }
+
+    public function hasUpcomingApprovedMembership()
+    {
+        $today = now()->toDateString();
+
+        return $this->memberships()
+            ->where('status', 'APPROVED')
+            ->where('is_active', true)
+            ->whereDate('start_date', '>', $today)
+            ->exists();
+    }
+
+    public function latestMembership()
+    {
+        return $this->memberships()
+            ->with('membership')
+            ->whereIn('status', ['APPROVED', 'PENDING'])
+            ->orderByDesc('start_date')
+            ->first();
+    }
+
+    public function getFullNameAttribute()
+    {
+        return trim("{$this->first_name} {$this->middle_name} {$this->last_name}");
     }
 }

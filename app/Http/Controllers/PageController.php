@@ -10,4 +10,11 @@ class PageController extends Controller
     {
         return view('pages.terms-and-conditions');
     }
+
+    public function account()
+    {
+        $user = auth()->user();
+        // dd($user);
+        return view('pages.account', compact('user'));
+    }
 }

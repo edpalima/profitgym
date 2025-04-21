@@ -87,6 +87,7 @@
                         @else
                             <li><a href="#">My Account</a>
                                 <ul class="dropdown">
+                                    <li><a href="{{ route('account') }}">Profile</a></li>
                                     <li><a href="{{ route('logout') }}">Logout</a></li>
                                 </ul>
                             </li>

@@ -25,5 +25,6 @@ Route::get('terms-and-conditions', [PageController::class, 'termsAndConditions']
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/memberships/{membership}/checkout', [MembershipController::class, 'checkout'])->name('membership.checkout');
+    Route::get('memberships/{membership}/checkout', [MembershipController::class, 'checkout'])->name('membership.checkout');
+    Route::get('account', [App\Http\Controllers\PageController::class, 'account'])->name('account');
 });
