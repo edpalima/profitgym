@@ -4,9 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Components\{TextInput, Textarea, Toggle, FileUpload};
+use Filament\Forms\Components\{TextInput, Textarea, Toggle, FileUpload, Select};
 use Filament\Forms\Form;
 use Filament\Tables\Columns\{TextColumn, BooleanColumn};
 use Filament\Resources\Resource;
@@ -21,6 +22,7 @@ class ProductResource extends Resource
     protected static ?string $navigationGroup = 'Products';
     protected static ?string $navigationLabel = 'Products';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -29,12 +31,25 @@ class ProductResource extends Resource
                 ->required()
                 ->maxLength(255),
 
+            Select::make('category_id')
+                ->relationship('category')
+                ->getOptionLabelFromRecordUsing(fn(Category $record) => "{$record->name}")
+                ->required(),
+
             Textarea::make('description')
                 ->rows(3),
 
             TextInput::make('price')
                 ->numeric()
                 ->required(),
+
+            FileUpload::make('image')
+                ->label('Product Image')
+                ->image()
+                ->directory('products')
+                ->imagePreviewHeight('150')
+                ->maxSize(2048)
+                ->nullable(),
 
             TextInput::make('stock_quantity')
                 ->numeric()
@@ -43,13 +58,6 @@ class ProductResource extends Resource
             Toggle::make('is_active')
                 ->label('Active')
                 ->default(true),
-            FileUpload::make('image')
-                ->label('Product Image')
-                ->image()
-                ->directory('products')
-                ->imagePreviewHeight('150')
-                ->maxSize(2048)
-                ->nullable(),
         ]);
     }
 
@@ -57,8 +65,12 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('price')->money(),
+                TextColumn::make('name')->sortable()->searchable()
+                    ->searchable(),
+                TextColumn::make('category.name')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('price'),
                 TextColumn::make('stock_quantity')->sortable(),
                 BooleanColumn::make('is_active'),
                 TextColumn::make('created_at')->dateTime('M d, Y'),
