@@ -28,5 +28,6 @@ Route::get('/product/{id}', [PageController::class, 'product'])->name('product.s
 
 Route::middleware('auth')->group(function () {
     Route::get('memberships/{membership}/checkout', [MembershipController::class, 'checkout'])->name('membership.checkout');
+    Route::get('feedback', [PageController::class, 'feedback'])->name('feedbacks');
     Route::get('account', [App\Http\Controllers\PageController::class, 'account'])->name('account');
 });

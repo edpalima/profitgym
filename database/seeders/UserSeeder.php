@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin',
-            'first_name' => '123',
+            'first_name' => 'Admin',
             'middle_name' => '',
             'last_name' => 'Admin',
             'address' => 'Blk 123 Lot 45 Phase 6',
@@ -33,11 +33,27 @@ class UserSeeder extends Seeder
             'first_name' => 'John',
             'middle_name' => 'Doe',
             'last_name' => 'Smith',
+            'photo' => 'user-photos/user-1.jpg',
             'address' => '123 Real Street',
             'phone_number' => '9876543210',
             'birth_date' => '2000-01-01',
             'email' => 'member@gmail.com',
             'password' => Hash::make('password'),
+            'role' => 'member',
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => 'Jane Doe',
+            'first_name' => 'Jane',
+            'middle_name' => 'Marie',
+            'last_name' => 'Doe',
+            'photo' => 'user-photos/user-2.jpg',
+            'address' => '456 Imaginary Lane',
+            'phone_number' => '09112233445',
+            'birth_date' => '1995-05-15',
+            'email' => 'member2@gmail.com',
+            'password' => Hash::make('securepassword'),
             'role' => 'member',
             'email_verified_at' => now(),
         ]);

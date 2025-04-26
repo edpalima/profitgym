@@ -43,5 +43,7 @@
 
     <livewire:trainer-section />
 
+    <livewire:feedback-section />
+
     <!-- Get In Touch Section End -->
 @endsection

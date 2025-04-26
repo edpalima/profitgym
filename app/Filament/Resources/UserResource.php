@@ -4,14 +4,19 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\Pages\CreateUser;
+use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Components\Section;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -26,43 +31,44 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('first_name')
-                ->required()
-                ->maxLength(255)
-                ->label('First Name'),
-            TextInput::make('last_name')
+            Section::make('User Details')->schema([
+                FileUpload::make('photo')
+                    ->image()
+                    ->directory('user-photos')
+                    ->maxSize(1024)
+                    ->label('Photo')
+                    ->nullable()
+                    ->columnSpanFull(),
+                TextInput::make('first_name')
+                    ->required()
+                    ->maxLength(255)
+                    ->label('First Name'),
+                TextInput::make('last_name')
                     ->required()
                     ->maxLength(255)
                     ->label('Last Name'),
-            TextInput::make('middle_name')
+                TextInput::make('middle_name')
                     ->nullable()
                     ->maxLength(255)
                     ->label('Middle Name'),
 
-            TextInput::make('address')
+                TextInput::make('address')
                     ->nullable()
                     ->maxLength(255)
                     ->label('Address'),
-            TextInput::make('phone_number')
+                TextInput::make('phone_number')
                     ->nullable()
                     ->maxLength(255)
                     ->label('Phone Number'),
 
-            TextInput::make('email')
+                TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255)
                     ->label('Email'),
-            TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->minLength(8)
-                    ->maxLength(255)
-                    ->label('Password')
-                    ->default(fn () => \Str::random(16)),
 
                 // Role
-            Select::make('role')
+                Select::make('role')
                     ->options([
                         'admin' => 'Admin',
                         'member' => 'Member',
@@ -71,7 +77,29 @@ class UserResource extends Resource
                     ->default('member')
                     ->required()
                     ->label('Role'),
-            ]);
+
+                TextInput::make('password')
+                    ->password()
+                    ->dehydrateStateUsing(fn($state) => !empty($state) ? Hash::make($state) : null) // Only hash if there's a value
+                    ->dehydrated(fn($state) => !empty($state)) // Ignore the field if it's empty
+                    ->visible(fn($livewire) => $livewire instanceof CreateUser) // Show only on create
+                    ->rule(Password::default())
+                    ->maxLength(255),
+            ]),
+
+            Section::make('User New Password')->schema([
+                Forms\Components\TextInput::make('new_password')
+                    ->nullable()
+                    ->password()
+                    ->dehydrateStateUsing(fn($state) => !empty($state) ? Hash::make($state) : null) // Only hash if there's a value
+                    ->dehydrated(fn($state) => !empty($state)), // Ignore the field if it's empty
+
+                Forms\Components\TextInput::make('new_password_confirmation')
+                    ->password()
+                    ->same('new_password')
+                    ->requiredWith('new_password'),
+            ])->visible(fn($livewire) => $livewire instanceof EditUser),
+        ]);
     }
 
     public static function table(Table $table): Table

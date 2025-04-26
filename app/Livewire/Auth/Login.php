@@ -31,7 +31,7 @@ class Login extends Component
                 return redirect()->route('filament.admin.pages.dashboard');  // Update the route name to your actual admin panel route
             }
 
-            return redirect()->route('home');
+            return redirect()->route('account');
         }
 
         $this->addError('email', 'The provided credentials are incorrect.');

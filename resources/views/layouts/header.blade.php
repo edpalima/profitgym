@@ -72,7 +72,8 @@
                         <li class="{{ request()->routeIs('memberships.index') ? 'active' : '' }}">
                             <a href="{{ route('memberships.index') }}">Memberships</a>
                         </li>
-                        <li class="{{ request()->routeIs('products') || request()->routeIs('product.show') ? 'active' : '' }}">
+                        <li
+                            class="{{ request()->routeIs('products') || request()->routeIs('product.show') ? 'active' : '' }}">
                             <a href="{{ route('products') }}">Products</a>
                         </li>
                         <li class="{{ request()->routeIs('workout-guide.show') ? 'active' : '' }}">
@@ -89,7 +90,8 @@
                                 <a href="{{ route('login') }}">Sign In</a>
                             </li>
                         @else
-                            <li><a href="#">My Account</a>
+                            <li class="{{ Route::currentRouteName() === 'account' ? 'active' : '' }}">
+                                <a href="#">My Account</a>
                                 <ul class="dropdown">
                                     <li><a href="{{ route('account') }}">Profile</a></li>
                                     <li><a href="{{ route('logout') }}">Logout</a></li>
