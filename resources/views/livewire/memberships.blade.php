@@ -28,4 +28,5 @@
             @endforeach
         </div>
     </div>
+    <livewire:feedback-form />
 </section>

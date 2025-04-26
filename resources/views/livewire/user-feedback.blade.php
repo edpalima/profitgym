@@ -30,7 +30,7 @@
                         @forelse ($feedbacks as $feedback)
                             <tr>
                                 <td>{{ $feedback->membership?->name ?? 'No Membership' }}</td>
-                                <td>{{ \Illuminate\Support\Str::limit($feedback->message, 100) }}</td>
+                                <td>{{ $feedback->message }}</td>
                                 <td>
                                     @for ($i = 0; $i < $feedback->rating; $i++)
                                         <i class="fa fa-star text-warning"></i>
@@ -56,7 +56,7 @@
                 </table>
                 <div class="row mb-4">
                     <div class="col-md-12 text-end">
-                        <a href="{{ route('memberships.index') }}" class="primary-btn btn-normal appoinment-btn" >
+                        <a href="{{ route('memberships.index') . '#feedback' }}" class="primary-btn btn-normal appoinment-btn" >
                             + Create Feedback
                         </a>
                     </div>
