@@ -5,23 +5,26 @@
                 <div class="card text-white" style="border-radius: 1rem; background-color: rgba(33, 37, 41, 0.658);">
                     <div class="card-body p-5 text-center">
                         <div class="mb-md-5 mt-md-4 pb-5">
+                            <!-- Success Message -->
                             @if (session()->has('success'))
                                 <div class="alert alert-success text-center mt-3" role="alert">
                                     {{ session('success') }}
                                 </div>
                             @endif
+                            <!-- Error Message -->
                             @if (session()->has('error'))
                                 <div class="alert alert-danger text-center mt-3" role="alert">
                                     {{ session('error') }}
                                 </div>
                             @endif
+
                             <div class="section-title">
                                 <h2>Sign In</h2>
                             </div>
                             <p class="text-white-50 mb-5">Please enter your login and password!</p>
 
                             <!-- Email Input -->
-                            <div data-mdb-input-init class="form-outline form-white mb-3">
+                            <div class="form-outline form-white mb-3">
                                 <input type="email" wire:model.defer="email" id="typeEmailX"
                                     class="form-control form-control-lg" />
                                 <label class="form-label" for="typeEmailX">Email</label>
@@ -31,12 +34,25 @@
                             </div>
 
                             <!-- Password Input -->
-                            <div data-mdb-input-init class="form-outline form-white mb-4">
-                                <input type="password" wire:model.defer="password" id="typePasswordX"
-                                    class="form-control form-control-lg" />
+                            <div x-data="{ show: false }" class="form-outline form-white mb-4">
+                                <div class="d-flex align-items-center position-relative">
+                                    <!-- Password Field -->
+                                    <input :type="show ? 'text' : 'password'" wire:model.defer="password"
+                                        id="typePasswordX" class="form-control form-control-lg pr-5" />
+
+                                    <!-- Eye Icon Button -->
+                                    <button style="border-width:0; border-radius:0;" type="button"
+                                        class="btn btn-dark ms-2 " @click="show = !show">
+                                        <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Password Label -->
                                 <label class="form-label" for="typePasswordX">Password</label>
+
+                                <!-- Error Message -->
                                 @error('password')
-                                    : <span class="text-danger">{{ $message }}</span>
+                                    <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -48,8 +64,7 @@
 
                             <!-- Forgot Password Link -->
                             <p class="small mb-5 pb-lg-2"><a class="text-white-50 text-muted" href="#!">Forgot
-                                    password?</a>
-                            </p>
+                                    password?</a></p>
 
                             <!-- Login Button -->
                             <button wire:click="login" class="btn btn-outline-light btn-lg px-5" type="button"
@@ -64,7 +79,6 @@
                                 <a href="/register" class="" style="color: #f36100">Sign Up</a>
                             </p>
                         </div>
-
                     </div>
                 </div>
             </div>
