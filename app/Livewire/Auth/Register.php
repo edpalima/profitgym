@@ -18,7 +18,7 @@ class Register extends Component
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
-    public string $role = 'member';
+    public string $role = 'MEMBER';
 
     protected function rules()
     {
@@ -31,7 +31,7 @@ class Register extends Component
             'birth_date' => 'required|date',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6',
-            'role' => ['required', Rule::in(['admin', 'member', 'staff'])],
+            'role' => ['required', Rule::in(['ADMIN', 'MEMBER', 'STAFF'])],
         ];
     }
 

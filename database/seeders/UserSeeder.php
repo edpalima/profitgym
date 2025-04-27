@@ -24,7 +24,21 @@ class UserSeeder extends Seeder
             'birth_date' => '2000-01-01',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
-            'role' => 'admin',
+            'role' => User::ROLE_ADMIN,
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => 'Staff',
+            'first_name' => 'Staff',
+            'middle_name' => '',
+            'last_name' => 'Member',
+            'address' => '789 Work Avenue',
+            'phone_number' => '09112233456',
+            'birth_date' => '1990-06-10',
+            'email' => 'staff@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => User::ROLE_STAFF,
             'email_verified_at' => now(),
         ]);
 
@@ -39,7 +53,7 @@ class UserSeeder extends Seeder
             'birth_date' => '2000-01-01',
             'email' => 'member@gmail.com',
             'password' => Hash::make('password'),
-            'role' => 'member',
+            'role' => User::ROLE_MEMBER,
             'email_verified_at' => now(),
         ]);
 
@@ -54,7 +68,7 @@ class UserSeeder extends Seeder
             'birth_date' => '1995-05-15',
             'email' => 'member2@gmail.com',
             'password' => Hash::make('securepassword'),
-            'role' => 'member',
+            'role' => User::ROLE_MEMBER,
             'email_verified_at' => now(),
         ]);
     }

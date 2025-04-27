@@ -2,20 +2,23 @@
 
 namespace App\Models;
 
+use Filament\Panel;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 
-class User extends Authenticatable implements HasAvatar
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    const ROLE_ADMIN = 'admin';
-    const ROLE_MEMBER = 'member';
+    const ROLE_ADMIN = 'ADMIN';
+    const ROLE_STAFF= 'STAFF';
+    const ROLE_MEMBER = 'MEMBER';
 
     /**
      * The attributes that are mass assignable.
@@ -46,6 +49,10 @@ class User extends Authenticatable implements HasAvatar
         'remember_token',
     ];
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->role === self::ROLE_ADMIN || $this->role === self::ROLE_STAFF;
+    }
     /**
      * Get the attributes that should be cast.
      *

@@ -25,7 +25,7 @@ class Login extends Component
             session()->regenerate();
             $user = Auth::user();
             if (
-                in_array($user->role, [User::ROLE_ADMIN])
+                in_array($user->role, [User::ROLE_ADMIN, User::ROLE_STAFF])
             ) {
                 // Redirect to the admin panel if the user is an admin
                 return redirect()->route('filament.admin.pages.dashboard');  // Update the route name to your actual admin panel route

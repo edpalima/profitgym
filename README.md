@@ -83,6 +83,10 @@ ROLE: admin
 username: admin@gmail.com
 password: password
 
+ROLE: staff
+username: staff@gmail.com
+password: password
+
 Role: member
 username: member@gmail.com
 password: password

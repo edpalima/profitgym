@@ -15,7 +15,7 @@ class UserMembershipSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::where('id', '!=', 1)->get();
+        $users = User::where('role', User::ROLE_MEMBER)->get();
         $memberships = Membership::all();
 
         if ($users->isEmpty() || $memberships->isEmpty()) {

@@ -70,9 +70,9 @@ class UserResource extends Resource
                 // Role
                 Select::make('role')
                     ->options([
-                        'admin' => 'Admin',
-                        'member' => 'Member',
-                        'staff' => 'Staff',
+                        'ADMIN' => 'Admin',
+                        'STAFF' => 'Staff',
+                        'MEMBER' => 'Member',
                     ])
                     ->default('member')
                     ->required()
