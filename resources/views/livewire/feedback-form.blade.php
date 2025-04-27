@@ -14,18 +14,18 @@
                 <div class="contact-widget">
                     <div class="cw-text">
                         <i class="fa fa-map-marker"></i>
-                        <p>333 Middle Winchendon Rd, Rindge,<br /> NH 03461</p>
+                        <p>Zone 5, AFP Housing </br>
+                            Bulihan, Silang, Cavite/p>
                     </div>
                     <div class="cw-text">
                         <i class="fa fa-mobile"></i>
                         <ul>
-                            <li>125-711-811</li>
-                            <li>125-668-886</li>
+                            <li>0912 123 6182</li>
                         </ul>
                     </div>
                     <div class="cw-text email">
                         <i class="fa fa-envelope"></i>
-                        <p>Support.gymcenter@gmail.com</p>
+                        <p>jeremiahpanganibanr@gmail.com</p>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     <form wire:submit.prevent="submit">
                         <!-- Membership Selection Dropdown -->
                         <div class="form-group">
-                            <label for="membership" class="form-label">Select Membership</label>
+                            <label for="membership" class="form-label color-white">Select Membership</label>
                             <select wire:model.defer="membershipId" id="membership" class="form-control">
                                 <option value="">Select a membership</option>
                                 @foreach ($memberships as $membership)
@@ -50,7 +50,7 @@
 
                         <!-- Message Input -->
                         <div class="form-group">
-                            <label for="message" class="form-label">Message</label>
+                            <label for="message" class="form-label color-white">Message</label>
                             <textarea wire:model.defer="message" id="message" class="form-control" rows="4"
                                 placeholder="Write your feedback..."></textarea>
                             @error('message')
@@ -60,7 +60,7 @@
 
                         <!-- Rating Input -->
                         <div class="form-group">
-                            <label for="rating" class="form-label">Rating</label>
+                            <label for="rating" class="form-label color-white">Rating</label>
                             <select wire:model.defer="rating" id="rating" class="form-control">
                                 @for ($i = 5; $i >= 1; $i--)
                                     <option value="{{ $i }}">{{ $i }} Star{{ $i > 1 ? 's' : '' }}

@@ -61,3 +61,11 @@
 		background-color: #f36100;
 		color: white;
 }
+
+.color-white {
+	color: #fff !important;
+}
+
+.color-primary {
+	color: #f36100 !important;
+}

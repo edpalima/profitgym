@@ -28,5 +28,9 @@
             @endforeach
         </div>
     </div>
-    <livewire:feedback-form />
+    @auth
+        <livewire:feedback-form />
+    @else
+        <p class="text-center mt-4">Please <a href="{{ route('login') }}" class="color-primary">log in</a> to provide feedback.</p>
+    @endauth
 </section>
