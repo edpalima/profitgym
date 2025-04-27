@@ -12,9 +12,9 @@
                     {{ $product->stock_quantity > 0 ? $product->stock_quantity : 'Out of stock' }}</p> --}}
 
                 <a href="{{ route('products')}}" class="btn btn-outline-light mt-3">← Back to Products</a>
-                <a href="{{ url()->previous() }}" class="btn btn-outline-light mt-3 add-to-cart-btn">
+                {{-- <a href="{{ url()->previous() }}" class="btn btn-outline-light mt-3 add-to-cart-btn">
                     <i class="fa fa-shopping-cart"></i> Add to Cart
-                </a>
+                </a> --}}
 
                 @if (session()->has('message'))
                     <div class="alert alert-success mt-3">

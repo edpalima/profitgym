@@ -85,7 +85,7 @@
                         {{-- <li><a href="./services.html">Services</a></li>
                         <li><a href="./team.html">Our Team</a></li> --}}
 
-                        @if (!Auth::check() || Auth::user()->role !== 'member')
+                        @if (!Auth::check() || Auth::user()->role !== \App\Models\User::ROLE_MEMBER)
                             <li class="{{ Route::currentRouteName() === 'login' ? 'active' : '' }}">
                                 <a href="{{ route('login') }}">Sign In</a>
                             </li>

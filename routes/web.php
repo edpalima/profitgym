@@ -17,6 +17,7 @@ Route::get('/', function () {
 Route::get('/workout-guide/{id}', action: [WorkoutGuideController::class, 'show'])->name('workout-guide.show');
 Route::get('/trainers', [TrainerController::class, 'index'])->name('trainers.index');
 Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
+Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');

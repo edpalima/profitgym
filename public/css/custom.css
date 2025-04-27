@@ -69,3 +69,8 @@
 .color-primary {
 	color: #f36100 !important;
 }
+
+.bg-color-primary {
+	background-color: #f36100 !important;
+	border-color: #f36100 !important;
+}

@@ -10,4 +10,7 @@
             </div>
         @endforeach
     </div>
+    <div class="see-more text-center">
+        <a href="{{ route('gallery') }}" class="btn btn-primary bg-color-primary">See More Galleries</a>
+    </div>
 </div>

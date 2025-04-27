@@ -8,7 +8,10 @@ class Gallery extends Component
 {
     public function render()
     {
-        $galleries = \App\Models\Gallery::where('is_active', true)->get(); // Fetch active galleries
+        $galleries = \App\Models\Gallery::where('is_active', true)
+            ->inRandomOrder()
+            ->take(8)
+            ->get(); // Fetch 8 random active galleries
 
         // Pass the galleries data to the view
         return view('livewire.gallery', compact('galleries'));

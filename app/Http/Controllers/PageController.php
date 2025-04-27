@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feedback;
+use App\Models\Gallery;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,14 @@ class PageController extends Controller
 
         return view('pages.product-details', compact('product'));
     }
+    public function gallery()
+    {
+        $galleries = Gallery::where('is_active', true)
+            ->inRandomOrder()
+            ->get(); // Fetch 8 random active galleries
+
+        return view('pages.gallery', compact('galleries'));
+    }
 
     public function feedback()
     {
@@ -43,7 +52,7 @@ class PageController extends Controller
             ->where('user_id', auth()->id())
             ->latest()
             ->get();
-        
+
         return view('pages.feedbacks', compact('feedbacks'));
     }
 }

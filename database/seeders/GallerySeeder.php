@@ -50,6 +50,16 @@ class GallerySeeder extends Seeder
                 'title' => 'Personal Training Sessions',
                 'description' => '1-on-1 coaching moments that bring real results.',
             ],
+            [
+                'image' => 'gallery/gallery-9.jpg',
+                'title' => 'Group Fitness Fun',
+                'description' => 'Energetic group classes that keep everyone motivated.',
+            ],
+            [
+                'image' => 'gallery/gallery-10.jpg',
+                'title' => 'Outdoor Bootcamps',
+                'description' => 'Fitness sessions in the great outdoors for a refreshing change.',
+            ],
         ];
 
         foreach ($galleries as $gallery) {

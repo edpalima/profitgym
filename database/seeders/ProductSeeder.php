@@ -45,5 +45,36 @@ class ProductSeeder extends Seeder
             'image' => 'products/product-3.png',
             'category_id' => $supplementsId,
         ]);
+
+        // Add 3 more products
+        Product::create([
+            'name' => 'Anabol',
+            'description' => 'Anabol is a high-calorie protein powder designed for individuals looking to gain weight and build muscle mass effectively.',
+            'price' => 2999.99,
+            'stock_quantity' => 100,
+            'is_active' => true,
+            'image' => 'products/product-4.png',
+            'category_id' => $supplementsId,
+        ]);
+
+        Product::create([
+            'name' => 'Active Whey Protein',
+            'description' => 'Active Whey Protein is a premium protein supplement designed to support muscle recovery and growth, with a delicious taste and easy mixability.',
+            'price' => 1599.99,
+            'stock_quantity' => 200,
+            'is_active' => true,
+            'image' => 'products/product-5.png',
+            'category_id' => $supplementsId,
+        ]);
+
+        Product::create([
+            'name' => 'PROTHN WHEY RIPPED',
+            'description' => 'PROTHN WHEY RIPPED is a unique protein blend that combines whey protein with fat-burning ingredients to support weight loss and muscle definition.',
+            'price' => 999.99,
+            'stock_quantity' => 250,
+            'is_active' => true,
+            'image' => 'products/product-6.png',
+            'category_id' => $supplementsId,
+        ]);
     }
 }
