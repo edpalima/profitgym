@@ -116,10 +116,10 @@
                                     <div x-data="{ show: false }" class="d-flex align-items-center position-relative">
                                         <input :type="show ? 'text' : 'password'" wire:model.defer="password"
                                             class="form-control form-control-sm pr-5" />
-                                        <button style="border-width:0; border-radius:0;" type="button"
+                                        {{-- <button style="border-width:0; border-radius:0;" type="button"
                                             class="btn btn-dark ms-2" @click="show = !show">
                                             <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-                                        </button>
+                                        </button> --}}
                                     </div>
                                     @error('password')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
@@ -132,10 +132,10 @@
                                         <input :type="show ? 'text' : 'password'"
                                             wire:model.defer="password_confirmation"
                                             class="form-control form-control-sm pr-5" />
-                                        <button style="" type="button"
+                                        {{-- <button style="" type="button"
                                             class="btn btn-dark top-0 end-0 translate-middle-y" @click="show = !show">
                                             <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 </div>
                             </div>

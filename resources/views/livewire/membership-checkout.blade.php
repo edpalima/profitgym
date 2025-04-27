@@ -19,7 +19,7 @@
                         </div>
                         @if ($userHasPendingMembership)
                             <div class="alert alert-warning">
-                                You already submitted Membership Request
+                                You already submitted Membership Request! Wait for a while for admin to approved your membership or payment
                             </div>
                         @else
                             <form wire:submit.prevent="submit" enctype="multipart/form-data">

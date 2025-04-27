@@ -34,12 +34,32 @@ class Register extends Component
             'phone_number' => 'required|string|max:15',
             'birth_date' => 'required|date',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|min:6',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/[a-z]/', // at least one lowercase letter
+                'regex:/[A-Z]/', // at least one uppercase letter
+                'regex:/[0-9]/', // at least one digit
+                'regex:/[@$!%*?&#]/', // at least one special character
+            ],
             'role' => ['required', Rule::in(['ADMIN', 'MEMBER', 'STAFF'])],
             
             // Validation rules for height and weight
             'height' => 'required|numeric|min:0',
             'weight' => 'required|numeric|min:0',
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'password.regex' => 'Password must include an uppercase letter, lowercase letter, number, and special character.',
+            'password.regex:/[a-z]/' => 'Password must contain at least one lowercase letter.',
+            'password.regex:/[A-Z]/' => 'Password must contain at least one uppercase letter.',
+            'password.regex:/[0-9]/' => 'Password must contain at least one digit.',
+            'password.regex:/[@$!%*?&#]/' => 'Password must contain at least one special character (e.g. @$!%*?&#).',
         ];
     }
 
