@@ -17,7 +17,7 @@
 	height: 100%;
 	background: rgba(0, 0, 0, 0.5);
 	/* Dark overlay */
-	z-index: 1;
+	z-index: .9;
 }
 
 .breadcrumb-section .container {
@@ -71,6 +71,12 @@
 }
 
 .bg-color-primary {
+	background-color: #f36100 !important;
+	border-color: #f36100 !important;
+}
+
+.btn-primary:hover {
+	color: #fff !important;
 	background-color: #f36100 !important;
 	border-color: #f36100 !important;
 }

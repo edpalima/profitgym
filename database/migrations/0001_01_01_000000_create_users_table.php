@@ -21,6 +21,10 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('phone_number', 15)->nullable();
             $table->date('birth_date')->nullable();
+            $table->float('weight')->nullable();
+            $table->enum('weight_unit', ['kg', 'lbs'])->default('kg');
+            $table->float('height')->nullable();
+            $table->enum('height_unit', ['cm', 'in'])->default('cm');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

@@ -19,6 +19,10 @@ class Register extends Component
     public string $password = '';
     public string $password_confirmation = '';
     public string $role = 'MEMBER';
+    
+    // New properties for height and weight
+    public ?float $height = null;
+    public ?float $weight = null;
 
     protected function rules()
     {
@@ -32,6 +36,10 @@ class Register extends Component
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6',
             'role' => ['required', Rule::in(['ADMIN', 'MEMBER', 'STAFF'])],
+            
+            // Validation rules for height and weight
+            'height' => 'required|numeric|min:0',
+            'weight' => 'required|numeric|min:0',
         ];
     }
 
@@ -42,6 +50,7 @@ class Register extends Component
         // Optionally construct a full name
         $fullName = $this->first_name . ' ' . ($this->middle_name ? $this->middle_name . ' ' : '') . $this->last_name;
 
+        // Create the user
         User::create([
             'name' => $fullName,
             'first_name' => $this->first_name,
@@ -53,6 +62,10 @@ class Register extends Component
             'email' => $this->email,
             'password' => Hash::make($this->password),
             'role' => User::ROLE_MEMBER,
+            
+            // Save height and weight to the database
+            'height' => $this->height,
+            'weight' => $this->weight,
         ]);
 
         session()->flash('success', 'Account registered successfully!');

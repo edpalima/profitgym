@@ -50,6 +50,14 @@
                                 <td>{{ auth()->user()->birth_date }}</td>
                             </tr>
                             <tr>
+                                <td>Weight</td>
+                                <td>{{ auth()->user()->weight }}{{ auth()->user()->weight_unit }}</td>
+                            </tr>
+                            <tr>
+                                <td>Height</td>
+                                <td>{{ auth()->user()->height }}{{ auth()->user()->height_unit }}</td>
+                            </tr>
+                            <tr>
                                 <td>Role</td>
                                 <td>{{ ucfirst(auth()->user()->role ?? 'Member') }}</td>
                             </tr>

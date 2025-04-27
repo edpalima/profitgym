@@ -55,6 +55,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => User::ROLE_MEMBER,
             'email_verified_at' => now(),
+            'weight' => 70, // weight in kilograms
+            'height' => 175, // height in centimeters
         ]);
 
         User::create([
@@ -70,6 +72,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('securepassword'),
             'role' => User::ROLE_MEMBER,
             'email_verified_at' => now(),
+            'weight' => 60, // weight in kilograms
+            'height' => 165, // height in centimeters
         ]);
     }
 }
