@@ -31,13 +31,13 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#f36100',
             ])
-            ->profile()
+            ->profile(isSimple: false)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 // Pages\Dashboard::class,
             ])
-            ->sidebarFullyCollapsibleOnDesktop()
+            ->sidebarCollapsibleOnDesktop()
             ->brandLogo(asset('logos/profit-gym.png'))
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([

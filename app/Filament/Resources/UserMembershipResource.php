@@ -133,7 +133,10 @@ class UserMembershipResource extends Resource
             ->columns([
                 TextColumn::make('user.id')->label('Id')
                     ->sortable(),
-                TextColumn::make('user.name')->label('User'),
+                TextColumn::make('user.name')
+                    ->label('User')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('membership.name')->label('Membership'),
                 TextColumn::make('start_date')->date(),
                 TextColumn::make('end_date')->date(),
