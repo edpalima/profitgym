@@ -39,12 +39,6 @@
                                     <!-- Password Field -->
                                     <input :type="show ? 'text' : 'password'" wire:model.defer="password"
                                         id="typePasswordX" class="form-control form-control-lg pr-5" />
-
-                                    <!-- Eye Icon Button -->
-                                    <button style="border-width:0; border-radius:0;" type="button"
-                                        class="btn btn-dark ms-2 " @click="show = !show">
-                                        <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-                                    </button>
                                 </div>
 
                                 <!-- Password Label -->
