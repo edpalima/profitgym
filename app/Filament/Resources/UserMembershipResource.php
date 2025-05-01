@@ -131,6 +131,8 @@ class UserMembershipResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('user.id')->label('Id')
+                    ->sortable(),
                 TextColumn::make('user.name')->label('User'),
                 TextColumn::make('membership.name')->label('Membership'),
                 TextColumn::make('start_date')->date(),
