@@ -37,7 +37,7 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore dolore magna aliqua endisse ultrices gravida lorem.</p>
                     <div class="fa-social">
-                        <a href="https://www.facebook.com/ProfitTonesFlexes" target="_blank" rel="noopener"><i class="fa fa-facebook"></i></a>
+                        <a href="https://www.facebook.com/ProfitTonesFlexes" target="_blank"><i class="fa fa-facebook"></i></a>
                         <a href="#"><i class="fa fa-twitter"></i></a>
                         <a href="#"><i class="fa fa-youtube-play"></i></a>
                         <a href="#"><i class="fa fa-instagram"></i></a>
