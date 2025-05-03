@@ -42,7 +42,7 @@
                                 </div>
 
                                 <!-- Password Label -->
-                                <label class="form-label" for="typePasswordX">Password</label>
+                                <label class="form-label" for="typePasswordX" type="password">Password</label>
 
                                 <!-- Error Message -->
                                 @error('password')
