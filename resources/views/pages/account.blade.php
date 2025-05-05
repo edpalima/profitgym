@@ -74,6 +74,8 @@
                                         <span class="badge bg-info text-dark">Upcoming</span>
                                     @elseif (auth()->user()->hasPendingMembership())
                                         <span class="badge bg-warning text-dark">Pending</span>
+                                    @elseif (auth()->user()->hasExpiredMembership())
+                                        <span class="badge bg-secondary">Expired</span>
                                     @else
                                         <span class="badge bg-secondary">None</span>
                                     @endif
@@ -115,7 +117,7 @@
                                             @elseif ($latestMembership->status === 'PENDING')
                                                 <span class="badge bg-warning text-dark">Pending</span>
                                             @else
-                                                <span class="badge bg-secondary">Inactive</span>
+                                                <span class="badge bg-secondary">Expired</span>
                                             @endif
                                         </td>
                                     </tr>

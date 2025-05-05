@@ -19,6 +19,7 @@ use Filament\Tables\Table;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -33,6 +34,7 @@ class UserResource extends Resource
         return $form->schema([
             Section::make('User Details')->schema([
                 FileUpload::make('photo')
+                    ->required()
                     ->image()
                     ->directory('user-photos')
                     ->maxSize(1024)
@@ -80,6 +82,7 @@ class UserResource extends Resource
 
                 TextInput::make('password')
                     ->password()
+                    ->required(fn($livewire) => $livewire instanceof CreateUser)
                     ->dehydrateStateUsing(fn($state) => !empty($state) ? Hash::make($state) : null) // Only hash if there's a value
                     ->dehydrated(fn($state) => !empty($state)) // Ignore the field if it's empty
                     ->visible(fn($livewire) => $livewire instanceof CreateUser) // Show only on create
