@@ -34,18 +34,19 @@
                             </div>
 
                             <!-- Password Input -->
-                            <div x-data="{ show: false }" class="form-outline form-white mb-4">
-                                <div class="d-flex align-items-center position-relative">
-                                    <!-- Password Field -->
-                                    <input :type="show ? 'text' : 'password'" wire:model.defer="password"
-                                        id="typePasswordX" class="form-control form-control-lg pr-5" />
+                            <div x-data="{ show: false }" class="form-outline form-white mb-4 position-relative">
+                                <!-- Password Field -->
+                                <input :type="show ? 'text' : 'password'" wire:model.defer="password"
+                                    id="typePasswordX" class="form-control form-control-lg pe-5" />
 
-                                    <!-- Eye Icon Button -->
-                                    <button style="border-width:0; border-radius:0;" type="button"
-                                        class="btn btn-dark ms-2 " @click="show = !show">
-                                        <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-                                    </button>
-                                </div>
+                                <!-- Eye Icon Button Positioned Properly -->
+                                <button type="button"
+                                    class="position-absolute"
+                                    style="top: 30%; right: 1rem; transform: translateY(-50%); border: none; background:transparent; z-index: 10;"
+                                    @click="show = !show">
+                                    <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"
+                                    style="font-size: 1.5rem; color: #6c757d;"></i>
+                                </button>
 
                                 <!-- Password Label -->
                                 <label class="form-label" for="typePasswordX">Password</label>
