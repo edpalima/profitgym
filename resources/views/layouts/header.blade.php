@@ -43,7 +43,7 @@
     </nav>
     <div id="mobile-menu-wrap"></div>
     <div class="canvas-social">
-        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="https://www.facebook.com/ProfitTonesFlexes" target="_blank"><i class="fa fa-facebook"></i></a>
         <a href="#"><i class="fa fa-twitter"></i></a>
         <a href="#"><i class="fa fa-youtube-play"></i></a>
         <a href="#"><i class="fa fa-instagram"></i></a>
@@ -57,7 +57,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="logo">
-                    <a href="./index.html">
+                    <a href="/">
                         <img class="menu-logo" src="{{ asset('logos/profit-gym.png') }}" alt="">
                     </a>
                 </div>
@@ -110,7 +110,7 @@
                         <i class="fa fa-search"></i>
                     </div>
                     <div class="to-social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="https://www.facebook.com/ProfitTonesFlexes" target="_blank" ><i class="fa fa-facebook"></i></a>
                         <a href="#"><i class="fa fa-twitter"></i></a>
                         <a href="#"><i class="fa fa-youtube-play"></i></a>
                         <a href="#"><i class="fa fa-instagram"></i></a>

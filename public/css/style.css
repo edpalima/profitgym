@@ -337,6 +337,10 @@ ol {
 	display: inline-block;
 }
 
+    .logo-small {
+        height: 100px;
+    }
+
 .nav-menu {
 	text-align: center;
 }

@@ -39,8 +39,11 @@
                                     <div class="d-flex align-items-center position-relative">
                                         <input :type="show ? 'text' : 'password'" wire:model.defer="password"
                                             id="typePasswordX" class="form-control form-control-lg pr-5" />
-                                        <button type="button" class="btn btn-dark ms-2" @click="show = !show">
-                                            <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                                        <button type="button" class="position-absolute"
+                                            style="top: 50%; right: 1rem; transform: translateY(-50%); border: none; background:transparent; z-index: 10;"
+                                            @click="show = !show">
+                                            <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"
+                                                style="font-size: 1.5rem; color: #6c757d;"></i>
                                         </button>
                                     </div>
                                     <label class="form-label" for="typePasswordX">Password</label>
