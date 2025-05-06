@@ -71,17 +71,17 @@
                 <div class="fs-widget">
                     <h4>Tips & Guides</h4>
                     <div class="fw-recent">
-                        <h6><a href="#">Physical fitness may help prevent depression, anxiety</a></h6>
+                        <h6><a href="workout-guide/1">Full Body Strength Blast</a></h6>
                         <ul>
-                            <li>3 min read</li>
-                            <li>20 Comment</li>
+                            <li>2 min read</li>
+                            <li>Blog</li>
                         </ul>
                     </div>
                     <div class="fw-recent">
-                        <h6><a href="#">Fitness: The best exercise to lose belly fat and tone up...</a></h6>
+                        <h6><a href="workout-guide/2">Fitness: Leg Day Shred</a></h6>
                         <ul>
-                            <li>3 min read</li>
-                            <li>20 Comment</li>
+                            <li>2 min read</li>
+                            <li>Blog</li>
                         </ul>
                     </div>
                 </div>
