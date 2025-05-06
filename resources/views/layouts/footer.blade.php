@@ -32,10 +32,9 @@
             <div class="col-lg-4">
                 <div class="fs-about">
                     <div class="fa-logo">
-                        <a href="#"><img src="img/logo.png" alt=""></a>
+                        <a href="/"><img src="{{ asset('logos/profit-gym.png') }}" alt="" class="logo-small"></a>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore dolore magna aliqua endisse ultrices gravida lorem.</p>
+                    <p>Profit Gym Tone and Flexes is a fitness center dedicated to helping members achieve their health and wellness goals.</p>
                     <div class="fa-social">
                         <a href="https://www.facebook.com/ProfitTonesFlexes" target="_blank"><i class="fa fa-facebook"></i></a>
                         <a href="#"><i class="fa fa-twitter"></i></a>
@@ -49,21 +48,23 @@
                 <div class="fs-widget">
                     <h4>Useful links</h4>
                     <ul>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Classes</a></li>
+                        <li><a href="{{ route('products') }}">Products</a></li>
+                        <li><a href="{{ route('home') }}#workout-guides">Workout Guide</a></li>
+                        <li><a href="{{ route('trainers.index') }}">Trainers</a></li>
+                        <li><a href="{{ route('memberships.index') }}">Memberships</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-2 col-md-3 col-sm-6">
                 <div class="fs-widget">
-                    <h4>Support</h4>
+                    <h4>Profit Gym's Schedule</h4>
                     <ul>
-                        <li><a href="#">Login</a></li>
-                        <li><a href="#">My account</a></li>
-                        <li><a href="#">Subscribe</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <p>
+                        Gym Schedule:
+                        Monday - Friday: 8:00am to 10:30pm
+                        Saturday - Sunday: 8:00am to 9:00pm
+                        </p>
                     </ul>
                 </div>
             </div>
@@ -90,13 +91,8 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="copyright-text">
-                    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script> All rights reserved | This template is made with <i class="fa fa-heart"
-                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <p>
+                    Copyright © 2025 | DESIGNED BY : MANUEL O. ALCANSE | RAZTIN L. ALFARO | MAYK RAFAEL B. PANGANIBAN
                     </p>
                 </div>
             </div>
