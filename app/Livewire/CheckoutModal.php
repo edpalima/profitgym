@@ -9,7 +9,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class ProductDetails extends Component
+class CheckoutModal extends Component
 {
     public $product;
     public $quantity = 1;
@@ -17,25 +17,15 @@ class ProductDetails extends Component
     public $referenceNo;
     public $showModal = false;
 
-    public function mount($id)
-    {
-        $this->product = Product::findOrFail($id);
-    }
+    protected $listeners = ['openCheckoutModal' => 'openModal'];
 
-    public function showCheckoutModal()
+    public function openModal($productId)
     {
+        $this->product = Product::findOrFail($productId);
         $this->showModal = true;
     }
 
-    public function addToCart()
-    {
-        $cart = session()->get('cart', []);
-        $cart[$this->product->id] = ($cart[$this->product->id] ?? 0) + 1;
-        session()->put('cart', $cart);
-
-        session()->flash('message', 'Product added to cart!');
-    }
-    public function submitCheckout()
+    public function submit()
     {
         $total = $this->product->price * $this->quantity;
 
@@ -61,11 +51,13 @@ class ProductDetails extends Component
             'status' => 'PENDING',
         ]);
 
-        $this->reset(['quantity', 'paymentMethod', 'referenceNo', 'showModal']);
+        $this->reset(['showModal', 'quantity', 'paymentMethod', 'referenceNo']);
         session()->flash('message', 'Order placed successfully!');
+        $this->dispatch('closeModal');
     }
+
     public function render()
     {
-        return view('livewire.product-details');
+        return view('livewire.checkout-modal');
     }
 }

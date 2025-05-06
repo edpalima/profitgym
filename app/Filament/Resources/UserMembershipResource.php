@@ -138,15 +138,16 @@ class UserMembershipResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('membership.name')->label('Membership')
-                ->sortable(),
+                    ->sortable(),
                 TextColumn::make('start_date')->date()
-                ->sortable(),
+                    ->sortable(),
                 TextColumn::make('end_date')->date()
-                ->sortable(),
+                    ->sortable(),
                 TextColumn::make('status')
-                ->sortable(),
+                    ->sortable(),
                 TextColumn::make('is_active')
-                ->sortable(),
+                    ->formatStateUsing(fn($state) => $state ? 'Yes' : 'No')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime('F j, Y g:i A') // Format in words with AM/PM
                     ->label('Date Submitted')
