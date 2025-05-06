@@ -1,10 +1,10 @@
-<div>
-    <div class="container">
+<div class="pt-5">
+    <div class="container"> <!-- Added 'pt-4' for padding top -->
         @if (session()->has('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <div class="row" id="feedback">
+        <div class="row pt-5" id="feedback">
             <!-- Left side for contact info or any other details -->
             <div class="col-lg-6">
                 <div class="section-title contact-title">

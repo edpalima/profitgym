@@ -13,31 +13,30 @@
                         </div>
 
                         <form wire:submit.prevent="register">
-
                             {{-- Section: Personal Information --}}
                             <h5 class="text-uppercase mb-3">Personal Information</h5>
                             <hr class="mb-3" style="border-top: 1px solid #6c757d;">
 
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">First Name</label>
-                                    <input wire:model.defer="first_name" type="text"
+                                    <label class="form-label" for="first_name">First Name</label>
+                                    <input id="first_name" wire:model.defer="first_name" type="text"
                                         class="form-control form-control-sm">
                                     @error('first_name')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Middle Name</label>
-                                    <input wire:model.defer="middle_name" type="text"
+                                    <label class="form-label" for="middle_name">Middle Name</label>
+                                    <input id="middle_name" wire:model.defer="middle_name" type="text"
                                         class="form-control form-control-sm">
                                     @error('middle_name')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Last Name</label>
-                                    <input wire:model.defer="last_name" type="text"
+                                    <label class="form-label" for="last_name">Last Name</label>
+                                    <input id="last_name" wire:model.defer="last_name" type="text"
                                         class="form-control form-control-sm">
                                     @error('last_name')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
@@ -51,24 +50,24 @@
 
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Phone Number</label>
-                                    <input wire:model.defer="phone_number" type="text"
+                                    <label class="form-label" for="phone_number">Phone Number</label>
+                                    <input id="phone_number" wire:model.defer="phone_number" type="text"
                                         class="form-control form-control-sm">
                                     @error('phone_number')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Birth Date</label>
-                                    <input wire:model.defer="birth_date" type="date"
+                                    <label class="form-label" for="birth_date">Birth Date</label>
+                                    <input id="birth_date" wire:model.defer="birth_date" type="date"
                                         class="form-control form-control-sm">
                                     @error('birth_date')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Address</label>
-                                    <textarea wire:model.defer="address" class="form-control form-control-sm" rows="2"></textarea>
+                                    <label class="form-label" for="address">Address</label>
+                                    <textarea id="address" wire:model.defer="address" class="form-control form-control-sm" rows="2"></textarea>
                                     @error('address')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
@@ -81,16 +80,16 @@
 
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Weight (kg)</label>
-                                    <input wire:model.defer="weight" type="number" step="0.1"
+                                    <label class="form-label" for="weight">Weight (kg)</label>
+                                    <input id="weight" wire:model.defer="weight" type="number" step="0.1"
                                         class="form-control form-control-sm">
                                     @error('weight')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Height (cm)</label>
-                                    <input wire:model.defer="height" type="number" step="0.1"
+                                    <label class="form-label" for="height">Height (cm)</label>
+                                    <input id="height" wire:model.defer="height" type="number" step="0.1"
                                         class="form-control form-control-sm">
                                     @error('height')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
@@ -104,18 +103,19 @@
 
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Email</label>
-                                    <input wire:model.defer="email" type="email" class="form-control form-control-sm">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input id="email" wire:model.defer="email" type="email"
+                                        class="form-control form-control-sm">
                                     @error('email')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Password</label>
+                                    <label class="form-label" for="password">Password</label>
                                     <div x-data="{ show: false }" class="d-flex align-items-center position-relative">
-                                        <input :type="show ? 'text' : 'password'" wire:model.defer="password"
-                                            class="form-control form-control-sm pr-5" />
+                                        <input id="password" :type="show ? 'text' : 'password'"
+                                            wire:model.defer="password" class="form-control form-control-sm pr-5" />
                                         {{-- <button style="border-width:0; border-radius:0;" type="button"
                                             class="btn btn-dark ms-2" @click="show = !show">
                                             <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
@@ -127,9 +127,9 @@
                                 </div>
 
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Confirm Password</label>
+                                    <label class="form-label" for="password_confirmation">Confirm Password</label>
                                     <div x-data="{ show: false }" class="d-flex align-items-center position-relative">
-                                        <input :type="show ? 'text' : 'password'"
+                                        <input id="password_confirmation" :type="show ? 'text' : 'password'"
                                             wire:model.defer="password_confirmation"
                                             class="form-control form-control-sm pr-5" />
                                         {{-- <button style="" type="button"

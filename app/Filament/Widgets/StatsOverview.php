@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\UserMembership;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -11,6 +12,8 @@ class StatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
+        $totalRevenue = Payment::where('status', 'CONFIRMED')->sum('amount');
+
         return [
             Stat::make('Total Members', UserMembership::distinct('user_id')->count('user_id'))
                 ->description('All registered members')
@@ -39,11 +42,13 @@ class StatsOverview extends BaseWidget
                 ->color('warning')
                 ->url(route('filament.admin.resources.products.index')),
 
-            Stat::make('Revenue', 1000)
-                ->description('Total revenue generated')
-                ->descriptionIcon('heroicon-m-cube')
-                ->color('warning')
-                ->url(route('filament.admin.resources.products.index')),
+            Stat::make('Total Revenue', '₱' . number_format($totalRevenue, 2))
+                ->description('Total confirmed revenue')
+                ->descriptionIcon('heroicon-o-currency-dollar')
+                ->color($totalRevenue > 10000 ? 'success' : 'warning')
+                ->extraAttributes(['class' => 'text-lg'])
+            // ->url(route('filament.resources.payments.index'))
+            ,
         ];
     }
 }

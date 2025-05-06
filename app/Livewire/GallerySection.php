@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
-class Gallery extends Component
+class GallerySection extends Component
 {
     public function render()
     {
@@ -14,6 +14,6 @@ class Gallery extends Component
             ->get(); // Fetch 8 random active galleries
 
         // Pass the galleries data to the view
-        return view('livewire.gallery', compact('galleries'));
+        return view('livewire.gallery-section', compact('galleries'));
     }
 }

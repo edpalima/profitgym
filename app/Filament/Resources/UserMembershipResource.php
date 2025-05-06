@@ -137,12 +137,22 @@ class UserMembershipResource extends Resource
                     ->label('User')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('membership.name')->label('Membership'),
-                TextColumn::make('start_date')->date(),
-                TextColumn::make('end_date')->date(),
-                TextColumn::make('status'),
-                TextColumn::make('is_active'),
+                TextColumn::make('membership.name')->label('Membership')
+                ->sortable(),
+                TextColumn::make('start_date')->date()
+                ->sortable(),
+                TextColumn::make('end_date')->date()
+                ->sortable(),
+                TextColumn::make('status')
+                ->sortable(),
+                TextColumn::make('is_active')
+                ->sortable(),
+                TextColumn::make('created_at')
+                    ->dateTime('F j, Y g:i A') // Format in words with AM/PM
+                    ->label('Date Submitted')
+                    ->sortable(),
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

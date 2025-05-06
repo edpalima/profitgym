@@ -21,67 +21,57 @@
                             <div class="section-title">
                                 <h2>Sign In</h2>
                             </div>
-                            <p class="text-white-50 mb-5">Please enter your login and password!</p>
+                            <p class="text-white-50 mb-5">Please enter your email and password!</p>
 
-                            <!-- Email Input -->
-                            <div class="form-outline form-white mb-3">
-                                <input type="email" wire:model.defer="email" id="typeEmailX"
-                                    class="form-control form-control-lg" />
-                                <label class="form-label" for="typeEmailX">Email</label>
-                                @error('email')
-                                    : <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <!-- Password Input -->
-                            <div x-data="{ show: false }" class="form-outline form-white mb-4">
-                                <div class="d-flex align-items-center position-relative">
-                                    <!-- Password Field -->
-                                    <input :type="show ? 'text' : 'password'" wire:model.defer="password"
-                                        id="typePasswordX" class="form-control form-control-lg pr-5" />
-
-                                    <!-- Eye Icon Button -->
-                                    <button style="border-width:0; border-radius:0;" type="button"
-                                        class="btn btn-dark ms-2 " @click="show = !show">
-                                        <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-                                    </button>
+                            <form wire:submit.prevent="login">
+                                <!-- Email Input -->
+                                <div class="form-outline form-white mb-3">
+                                    <input type="email" wire:model.defer="email" id="typeEmailX"
+                                        class="form-control form-control-lg" />
+                                    <label class="form-label" for="typeEmailX">Email</label>
+                                    @error('email')
+                                        : <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
-                                <!-- Password Label -->
-                                <label class="form-label" for="typePasswordX">Password</label>
+                                <!-- Password Input -->
+                                <div x-data="{ show: false }" class="form-outline form-white mb-4">
+                                    <div class="d-flex align-items-center position-relative">
+                                        <input :type="show ? 'text' : 'password'" wire:model.defer="password"
+                                            id="typePasswordX" class="form-control form-control-lg pr-5" />
+                                        <button type="button" class="btn btn-dark ms-2" @click="show = !show">
+                                            <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                                        </button>
+                                    </div>
+                                    <label class="form-label" for="typePasswordX">Password</label>
+                                    @error('password')
+                                        : <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
-                                <!-- Error Message -->
-                                @error('password')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <!-- Remember Me -->
+                                <div class="form-check mb-4">
+                                    <input type="checkbox" wire:model="remember" class="form-check-input"
+                                        id="rememberMe" />
+                                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                                </div>
+
+                                <!-- Login Button -->
+                                <button class="btn btn-outline-light btn-lg px-5" type="submit"
+                                    style="border-color: #f36100; color: #f36100;">
+                                    Login
+                                </button>
+                            </form>
+
+                            <!-- Sign Up Link -->
+                            <div>
+                                <p class="mt-4 mb-0 text-center text-muted">Don't have an account?
+                                    <a href="/register" class="" style="color: #f36100">Sign Up</a>
+                                </p>
                             </div>
-
-                            <!-- Remember Me Checkbox -->
-                            <div class="form-check mb-4">
-                                <input type="checkbox" wire:model="remember" class="form-check-input" id="rememberMe" />
-                                <label class="form-check-label" for="rememberMe">Remember me</label>
-                            </div>
-
-                            <!-- Forgot Password Link -->
-                            <p class="small mb-5 pb-lg-2"><a class="text-white-50 text-muted" href="#!">Forgot
-                                    password?</a></p>
-
-                            <!-- Login Button -->
-                            <button wire:click="login" class="btn btn-outline-light btn-lg px-5" type="button"
-                                style="border-color: #f36100; color: #f36100;">
-                                Login
-                            </button>
-                        </div>
-
-                        <!-- Sign Up Link -->
-                        <div>
-                            <p class="mt-4 mb-0 text-center text-muted">Don't have an account?
-                                <a href="/register" class="" style="color: #f36100">Sign Up</a>
-                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </section>

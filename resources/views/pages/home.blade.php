@@ -9,7 +9,7 @@
 
     <livewire:product-section />
 
-    <livewire:gallery />
+    <livewire:gallery-section />
 
     <livewire:trainer-section />
 
