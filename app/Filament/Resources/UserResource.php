@@ -51,15 +51,18 @@ class UserResource extends Resource
                     ->label('Last Name'),
                 TextInput::make('middle_name')
                     ->nullable()
+                    ->required()
                     ->maxLength(255)
                     ->label('Middle Name'),
 
                 TextInput::make('address')
                     ->nullable()
+                    ->required()
                     ->maxLength(255)
                     ->label('Address'),
                 TextInput::make('phone_number')
                     ->nullable()
+                    ->required()
                     ->maxLength(255)
                     ->label('Phone Number'),
 

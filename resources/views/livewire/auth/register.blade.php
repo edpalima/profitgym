@@ -52,7 +52,10 @@
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label" for="phone_number">Phone Number</label>
                                     <input id="phone_number" wire:model.defer="phone_number" type="text"
-                                        class="form-control form-control-sm">
+                                        class="form-control form-control-sm"
+                                        pattern="^\+63\d{10}$"
+                                        placeholder="+639123456789"
+                                        value="+63">
                                     @error('phone_number')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
