@@ -17,6 +17,12 @@
                                     {{ session('error') }}
                                 </div>
                             @endif
+                            
+                            @if (session()->has('info'))
+                                <div class="alert alert-info text-center mt-3" role="alert">
+                                    {{ session('info') }}
+                                </div>
+                            @endif
 
                             <div class="section-title">
                                 <h2>Sign In</h2>

@@ -1,5 +1,5 @@
-<section class="gradient-custom py-5">
-    <div class="container">
+<section class="gradient-custom pt-5">
+    <div class="container  pt-2">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-lg-7">
                 <div class="card text-white shadow"
@@ -19,7 +19,8 @@
                         </div>
                         @if ($userHasPendingMembership)
                             <div class="alert alert-warning">
-                                You already submitted Membership Request! Wait for a while for admin to approved your membership or payment
+                                You already submitted Membership Request! Wait for a while for admin to approved your
+                                membership or payment
                             </div>
                         @else
                             <form wire:submit.prevent="submit" enctype="multipart/form-data">
@@ -60,12 +61,12 @@
                                     </div>
 
                                     {{-- <div class="mb-3">
-                                    <label class="form-label">Upload Receipt</label>
-                                    <input type="file" wire:model="image" class="form-control">
-                                    @error('image')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div> --}}
+                                        <label class="form-label">Upload Receipt</label>
+                                        <input type="file" wire:model="image" class="form-control">
+                                        @error('image')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror --}}
+                                    </div>
                                 @endif
 
                                 {{-- Start Date --}}
@@ -84,8 +85,8 @@
                                         <input type="checkbox" wire:model="terms" id="terms"
                                             class="form-check-input">
                                         <label for="terms" class="form-check-label">
-                                            I agree to the <a href="{{ route('terms-and-conditions') }}" target="_blank"
-                                                class="text-decoration-none">Terms and
+                                            I agree to the <a href="{{ route('terms-and-conditions') }}"
+                                                target="_blank" class="text-decoration-none">Terms and
                                                 Conditions</a>
                                         </label>
                                     </div>

@@ -63,6 +63,10 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->numeric()
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('type')->sortable()->searchable(),
                 TextColumn::make('type_id'),
                 TextColumn::make('amount')->money(),
@@ -78,6 +82,7 @@ class PaymentResource extends Resource
                 TextColumn::make('payment_date')->date(),
                 ImageColumn::make('image')->disk('public')->circular(),
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

@@ -24,6 +24,7 @@ class ProductSeeder extends Seeder
             'is_active' => true,
             'image' => 'products/product-1.png',
             'category_id' => $supplementsId,
+            'allows_preorder' => true,
         ]);
 
         Product::create([
@@ -34,6 +35,7 @@ class ProductSeeder extends Seeder
             'is_active' => true,
             'image' => 'products/product-2.png',
             'category_id' => $supplementsId,
+            'allows_preorder' => true,
         ]);
 
         Product::create([
@@ -44,6 +46,7 @@ class ProductSeeder extends Seeder
             'is_active' => true,
             'image' => 'products/product-3.png',
             'category_id' => $supplementsId,
+            'allows_preorder' => true,
         ]);
 
         // Add 3 more products
@@ -55,6 +58,7 @@ class ProductSeeder extends Seeder
             'is_active' => true,
             'image' => 'products/product-4.png',
             'category_id' => $supplementsId,
+            'allows_preorder' => true,
         ]);
 
         Product::create([
@@ -65,6 +69,7 @@ class ProductSeeder extends Seeder
             'is_active' => true,
             'image' => 'products/product-5.png',
             'category_id' => $supplementsId,
+            'allows_preorder' => true,
         ]);
 
         Product::create([
@@ -75,6 +80,7 @@ class ProductSeeder extends Seeder
             'is_active' => true,
             'image' => 'products/product-6.png',
             'category_id' => $supplementsId,
+            'allows_preorder' => true,
         ]);
     }
 }
