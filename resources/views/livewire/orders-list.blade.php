@@ -1,0 +1,67 @@
+<section class="team-section team-page spad">
+    <div class="container">
+        @if (session()->has('message'))
+            <div class="alert alert-success">{{ session('message') }}</div>
+        @endif
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="team-title">
+                    <div class="section-title">
+                        <span>My Orders</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="chart-table">
+                <table class="table table-bordered table-striped align-middle w-100">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($orders as $order)
+                            <tr>
+                                <td>{{ $order->id }}</td>
+                                <td>{{ $order->created_at->format('M d, Y') }}</td>
+                                <td>
+                                    <!-- Display Order Items -->
+                                    <ul>
+                                        @foreach ($order->orderItems as $orderItem)
+                                            <li>
+                                                {{ $orderItem->product->name }} ({{ $orderItem->quantity }} x
+                                                ₱{{ number_format($orderItem->price, 2) }})
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td>₱{{ number_format($order->total_amount, 2) }}</td>
+                                <td>
+                                    <span
+                                        class="badge bg-{{ $order->status === 'PENDING' ? 'warning' : 'success' }} text-dark">
+                                        {{ $order->status }}
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    No orders found.
+                                    <a href="{{ route('products') }}" class="primary-color" >Browse Products</a>
+                                    to place an order.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

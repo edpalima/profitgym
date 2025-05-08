@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use App\Models\Gallery;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
@@ -54,5 +56,13 @@ class PageController extends Controller
             ->get();
 
         return view('pages.feedbacks', compact('feedbacks'));
+    }
+    public function orders()
+    {
+        if (!auth()->check()) {
+            return redirect('/');
+        }
+
+        return view('pages.orders');
     }
 }

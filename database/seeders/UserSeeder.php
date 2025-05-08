@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
             'phone_number' => '09112233445',
             'birth_date' => '1995-05-15',
             'email' => 'member2@gmail.com',
-            'password' => Hash::make('securepassword'),
+            'password' => Hash::make('password'),
             'role' => User::ROLE_MEMBER,
             'email_verified_at' => now(),
             'weight' => 60, // weight in kilograms
