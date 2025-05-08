@@ -45,7 +45,14 @@
                                 <td>₱{{ number_format($order->total_amount, 2) }}</td>
                                 <td>
                                     <span
-                                        class="badge bg-{{ $order->status === 'PENDING' ? 'warning' : 'success' }} text-dark">
+                                        class="badge 
+                                        bg-{{ $order->status === 'PENDING'
+                                            ? 'warning'
+                                            : ($order->status === 'CONFIRMED'
+                                                ? 'success'
+                                                : ($order->status === 'REJECTED'
+                                                    ? 'danger'
+                                                    : 'secondary')) }} text-dark">
                                         {{ $order->status }}
                                     </span>
                                 </td>
@@ -54,7 +61,7 @@
                             <tr>
                                 <td colspan="5" class="text-center">
                                     No orders found.
-                                    <a href="{{ route('products') }}" class="primary-color" >Browse Products</a>
+                                    <a href="{{ route('products') }}" class="primary-color">Browse Products</a>
                                     to place an order.
                                 </td>
                             </tr>
