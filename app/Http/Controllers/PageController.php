@@ -20,9 +20,9 @@ class PageController extends Controller
     {
         $user = auth()->user();
         // dd($user);
-        // return view('pages.account', compact('user'));
+        return view('pages.account', compact('user'));
         
-        return view('pages.profile', compact('user'));
+        // return view('pages.profile', compact('user'));
     }
 
     public function products()
