@@ -37,9 +37,10 @@ class OrderResource extends Resource
 
             Select::make('status')
                 ->options([
-                    'pending' => 'Pending',
-                    'completed' => 'Completed',
-                    'cancelled' => 'Cancelled',
+                    'PENDING' => 'Pending',
+                    'FOR PICKUP' => 'For Pickup',
+                    'COMPLETED' => 'Completed',
+                    'REJECTED' => 'Rejected',
                 ])
                 ->required(),
         ]);
@@ -65,6 +66,7 @@ class OrderResource extends Resource
                     ]),
                 TextColumn::make('created_at')->dateTime('M d, Y H:i'),
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

@@ -76,11 +76,6 @@
                                         @endif
                                     </div>
 
-                                    <!-- Display the updated total -->
-                                    <div class="mt-3 p-3 rounded" style="background-color: #f36100; color: #fff;">
-                                        <strong>Total:</strong>
-                                        ₱{{ number_format($amount, 2) }}
-                                    </div>
                                 </div>
 
                                 {{-- Right Column --}}
@@ -125,12 +120,17 @@
                                             @enderror
                                         </div>
                                     @endif
+                                    <!-- Display the updated total -->
+                                    <div class="mt-3 p-3 rounded" style="background-color: #f36100; color: #fff;">
+                                        <strong>Total:</strong>
+                                        ₱{{ number_format($amount, 2) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="modal-footer border-0">
-                            <button type="submit" class="btn btn-primary">Submit Order</button>
+                            <button type="submit" class="btn btn-primary bg-color-primary ">Submit Order</button>
                             <button type="button" class="btn btn-secondary"
                                 wire:click="$set('showModal', false)">Close</button>
                         </div>

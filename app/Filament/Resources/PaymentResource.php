@@ -43,13 +43,20 @@ class PaymentResource extends Resource
 
                 Select::make('payment_method')
                     ->options([
-                        'over_the_counter' => 'Over the Counter',
-                        'gcash' => 'GCash',
+                        'OVER_THE_COUNTER' => 'Over the Counter',
+                        'GCASH' => 'GCash',
                     ])
                     ->required(),
 
-                TextInput::make('status')
-                    ->default('pending'),
+                Select::make('status')
+                    ->options([
+                        'PENDING' => 'PENDING',
+                        'CONFIRMED' => 'CONFIRMED',
+                        'REJECTED' => 'REJECTED',
+                    ])
+                    ->default('PENDING')
+                    ->label('Payment Status')
+                    ->required(),
 
                 DatePicker::make('payment_date'),
 
@@ -72,8 +79,8 @@ class PaymentResource extends Resource
                 TextColumn::make('amount')->money(),
                 TextColumn::make('payment_method'),
                 TextColumn::make('status')
-                    ->formatStateUsing(fn (string $state): string => ucfirst($state))
-                    ->color(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => ucfirst($state))
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'completed' => 'success',
                         'failed' => 'danger',

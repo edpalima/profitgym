@@ -58,6 +58,10 @@ class ProductResource extends Resource
             Toggle::make('is_active')
                 ->label('Active')
                 ->default(true),
+
+            Toggle::make('allows_preorder')
+                ->label('Allow Preorders')
+                ->default(true),
         ]);
     }
 

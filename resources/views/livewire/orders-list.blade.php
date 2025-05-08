@@ -36,8 +36,7 @@
                                     <ul>
                                         @foreach ($order->orderItems as $orderItem)
                                             <li>
-                                                {{ $orderItem->product->name }} ({{ $orderItem->quantity }} x
-                                                ₱{{ number_format($orderItem->price, 2) }})
+                                                {{ $orderItem->product->name }} ({{ $orderItem->quantity }})
                                             </li>
                                         @endforeach
                                     </ul>
@@ -48,9 +47,9 @@
                                         class="badge 
                                         bg-{{ $order->status === 'PENDING'
                                             ? 'warning'
-                                            : ($order->status === 'CONFIRMED'
+                                            : ($order->status === 'COMPLETED'
                                                 ? 'success'
-                                                : ($order->status === 'REJECTED'
+                                                : ($order->status === 'REJECTED' || $order->status === 'CANCELLED'
                                                     ? 'danger'
                                                     : 'secondary')) }} text-dark">
                                         {{ $order->status }}
