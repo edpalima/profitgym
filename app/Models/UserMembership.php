@@ -33,4 +33,12 @@ class UserMembership extends Model
     {
         return $this->morphMany(\App\Models\Payment::class, 'typeable', 'type', 'type_id');
     }
+
+    public function scopeActiveForDate($query, $date)
+    {
+        return $query->where('is_active', true)
+            ->where('status', 'APPROVED')
+            ->whereDate('start_date', '<=', $date)
+            ->whereDate('end_date', '>=', $date);
+    }
 }
