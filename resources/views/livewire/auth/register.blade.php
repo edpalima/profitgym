@@ -53,9 +53,9 @@
                                     <label class="form-label" for="phone_number">Phone Number</label>
                                     <input id="phone_number" wire:model.defer="phone_number" type="text"
                                         class="form-control form-control-sm"
-                                        pattern="^\+63\d{10}$"
-                                        placeholder="+639123456789"
-                                        value="+63">
+                                        pattern="^\d{11}$"
+                                        placeholder="09123456789"
+                                        value="09">
                                     @error('phone_number')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
                                     @enderror
@@ -119,10 +119,11 @@
                                     <div x-data="{ show: false }" class="d-flex align-items-center position-relative">
                                         <input id="password" :type="show ? 'text' : 'password'"
                                             wire:model.defer="password" class="form-control form-control-sm pr-5" />
-                                        {{-- <button style="border-width:0; border-radius:0;" type="button"
-                                            class="btn btn-dark ms-2" @click="show = !show">
-                                            <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-                                        </button> --}}
+                                        <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"
+                                        @click="show = !show"
+                                        class="position-absolute"
+                                        style="top: 25px; right: 10px; transform: translateY(-50%); cursor: pointer; color: #aaa;">
+                                        </i>
                                     </div>
                                     @error('password')
                                         <span class="text-danger fst-italic">{{ $message }}</span>
@@ -135,10 +136,10 @@
                                         <input id="password_confirmation" :type="show ? 'text' : 'password'"
                                             wire:model.defer="password_confirmation"
                                             class="form-control form-control-sm pr-5" />
-                                        {{-- <button style="" type="button"
-                                            class="btn btn-dark top-0 end-0 translate-middle-y" @click="show = !show">
-                                            <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-                                        </button> --}}
+                                        <i :class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"
+                                        @click="show = !show"
+                                        class="position-absolute translate-middle-y"
+                                        style="top: 25px; right: 10px; transform: translateY(-50%); cursor: pointer; color: #aaa;"></i>
                                     </div>
                                 </div>
                             </div>
