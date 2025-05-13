@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AttendanceComponent extends Component
 {
@@ -17,6 +19,12 @@ class AttendanceComponent extends Component
 
     public function mount()
     {
+        $user = Auth::user();
+
+        if (!$user || !in_array($user->role, ['ADMIN', 'STAFF'])) {
+            return redirect()->route('account');
+        }
+
         $this->currentDate = Carbon::today()->toDateString(); // default to today
     }
 

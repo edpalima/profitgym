@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::get('feedback', [PageController::class, 'feedback'])->name('feedbacks');
     Route::get('orders', [PageController::class, 'orders'])->name('orders');
     Route::get('account', [App\Http\Controllers\PageController::class, 'account'])->name('account');
+
+
     Route::get('attendance', AttendanceComponent::class)->name('attendance');
 });
 
