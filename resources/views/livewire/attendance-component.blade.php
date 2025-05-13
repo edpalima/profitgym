@@ -27,9 +27,10 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-light">
                     <tr>
-                        <th class="px-4 py-2">Member ID</th>
+                        <th class="px-4 py-2" style="width: 30px;">Member ID</th>
                         <th class="px-4 py-2">Member Name</th>
                         <th class="px-4 py-2">Membership</th>
+                        <th class="px-4 py-2">Orders</th>
                         <th class="px-4 py-2">Time In</th>
                         <th class="px-4 py-2">Time Out</th>
                         <th class="px-4 py-2">Actions</th>
@@ -48,7 +49,7 @@
                                 ->first();
                         @endphp
                         <tr>
-                            <td class="px-4 py-2">{{ $user->id }}</td>
+                            <td class="px-4 py-2 text-truncate" style="max-width: 100px;">{{ $user->id }}</td>
                             <td class="px-4 py-2">{{ $user->fullName }}</td>
                             <td class="px-4 py-2">
                                 @if ($membership)
@@ -60,6 +61,27 @@
                                     </small>
                                 @else
                                     <span class="text-danger">No Active</span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-2">
+                                @if (isset($orders[$user->id]) && $orders[$user->id]->count() > 0)
+                                    <ul>
+                                        @foreach ($orders[$user->id] as $order)
+                                            <li>
+                                                <strong>Order #{{ $order->id }}</strong> -
+                                                ₱{{ number_format($order->total_amount, 2) }}
+                                                <ul>
+                                                    @foreach ($order->orderItems as $orderItem)
+                                                        <li>
+                                                            {{ $orderItem->product->name }} (Qty:
+                                                            {{ $orderItem->quantity }}) -
+                                                            ₱{{ number_format($orderItem->total_price, 2) }}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 @endif
                             </td>
                             <td class="px-4 py-2">

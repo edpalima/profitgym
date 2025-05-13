@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Attendance;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
@@ -67,6 +68,7 @@ class AttendanceComponent extends Component
 
     public function render()
     {
+        // Fetch the users with active memberships for the current date
         $users = User::where('role', 'MEMBER')
             ->with(['memberships' => function ($query) {
                 // Use the activeForDate scope to filter memberships for the current date
@@ -77,8 +79,15 @@ class AttendanceComponent extends Component
             })
             ->get();
 
+        // Get attendances for the current date
         $attendances = Attendance::where('date', $this->currentDate)->get()->keyBy('user_id');
 
+        // Fetch orders for the current date
+        $orders = Order::with('orderItems')
+            ->whereIn('user_id', $users->pluck('id'))->get()->groupBy('user_id');
+
+
+        // Calculate total amount based on selected products
         $this->totalAmount = 0;
 
         foreach ($this->selectedProducts as $productId) {
@@ -93,7 +102,8 @@ class AttendanceComponent extends Component
             'users' => $users,
             'attendances' => $attendances,
             'currentDate' => $this->currentDate,
-        ])->layout('layouts.attendance'); // Make sure this layout file exists
+            'orders' => $orders, // Pass orders to the view
+        ])->layout('layouts.attendance');
     }
 
     public function updatedSelectedProducts()
