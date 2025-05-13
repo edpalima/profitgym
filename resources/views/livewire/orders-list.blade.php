@@ -33,7 +33,7 @@
                                 <td>{{ $order->created_at->format('M d, Y') }}</td>
                                 <td>
                                     <!-- Display Order Items -->
-                                    <ul>
+                                    <ul style="padding-left: 20px;">
                                         @foreach ($order->orderItems as $orderItem)
                                             <li>
                                                 {{ $orderItem->product->name }} ({{ $orderItem->quantity }})

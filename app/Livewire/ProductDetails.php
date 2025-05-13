@@ -71,6 +71,7 @@ class ProductDetails extends Component
         $rules = [
             'quantity' => ['required', 'integer', 'min:1'],
             'paymentMethod' => 'required',
+            'terms' => 'accepted',
         ];
 
         if (!$isPreorder) {
@@ -119,7 +120,9 @@ class ProductDetails extends Component
             $this->product->save();
         }
 
-        $this->reset(['quantity', 'amount', 'paymentMethod', 'referenceNo', 'showModal']);
+        $this->reset(['quantity', 'paymentMethod', 'referenceNo', 'showModal']);
+
+        $this->amount = $this->product->price * $this->quantity;
         session()->flash('message', 'Order placed successfully!');
     }
 

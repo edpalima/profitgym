@@ -120,8 +120,23 @@
                                             @enderror
                                         </div>
                                     @endif
+
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input type="checkbox" wire:model="terms" id="terms"
+                                                class="form-check-input">
+                                            <label for="terms" class="form-check-label">
+                                                I agree to the <a href="{{ route('terms-and-conditions') }}"
+                                                    target="_blank" class="text-decoration-none">Terms and
+                                                    Conditions</a>
+                                            </label>
+                                        </div>
+                                        @error('terms')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                     <!-- Display the updated total -->
-                                    <div class="mt-3 p-3 rounded" style="background-color: #f36100; color: #fff;">
+                                    <div class="mt-3 p-3 rounded" style="border: 1px solid #e9a27349;">
                                         <strong>Total:</strong>
                                         ₱{{ number_format($amount, 2) }}
                                     </div>
