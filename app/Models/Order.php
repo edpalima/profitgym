@@ -9,6 +9,7 @@ class Order extends Model
 {
     protected $fillable = [
         'user_id',
+        'payment_id',
         'total_amount',
         'status',
     ];
@@ -21,5 +22,10 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function payments()
+    {
+        return $this->morphMany(\App\Models\Payment::class, 'typeable', 'type', 'type_id');
     }
 }

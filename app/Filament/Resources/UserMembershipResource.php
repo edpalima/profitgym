@@ -94,8 +94,7 @@ class UserMembershipResource extends Resource
                                     ->required(),
 
                                 TextInput::make('reference_no')
-                                    ->label('Reference No.')
-                                    ->required(),
+                                    ->label('Reference No.'),
 
                                 TextInput::make('amount')
                                     ->numeric()

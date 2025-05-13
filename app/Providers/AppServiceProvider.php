@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Order;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationGroup;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use App\Models\UserMembership;
-use App\Models\Product;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
 
         Relation::morphMap([
             'user_memberships' => UserMembership::class,
-            'products' => Product::class,
+            'orders' => Order::class,
         ]);
     }
 }

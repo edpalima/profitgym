@@ -3,46 +3,134 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
-use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\DatePicker;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\{Select, TextInput};
-use Filament\Tables\Columns\{TextColumn, IconColumn};
 
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
-
     protected static ?string $navigationGroup = 'Orders';
-    protected static ?string $navigationLabel = 'Orders';
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+    protected static ?string $navigationLabel = 'Orders';
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Select::make('user_id')
-                ->relationship('user', 'first_name')
-                ->searchable()
-                ->required(),
+            Section::make('Order Information')
+                ->schema([
+                    Grid::make(3)
+                        ->schema([
+                            Placeholder::make('id')
+                                ->label('Order ID')
+                                ->content(fn($record) => $record->id ?? '-'),
 
-            TextInput::make('total_amount')
-                ->numeric()
-                ->required(),
+                            Select::make('user_id')
+                                ->label('User')
+                                ->relationship('user', 'name')
+                                ->searchable()
+                                ->required(),
 
-            Select::make('status')
-                ->options([
-                    'PENDING' => 'Pending',
-                    'FOR PICKUP' => 'For Pickup',
-                    'COMPLETED' => 'Completed',
-                    'REJECTED' => 'Rejected',
-                ])
-                ->required(),
+                            TextInput::make('total_amount')
+                                ->label('Total Amount')
+                                ->numeric()
+                                ->required(),
+                        ]),
+
+                    Grid::make(3)
+                        ->schema([
+                            Select::make('status')
+                                ->label('Status')
+                                ->options([
+                                    'PENDING' => 'PENDING',
+                                    'FOR PICKUP' => 'FOR PICKUP',
+                                    'COMPLETED' => 'COMPLETED',
+                                    'REJECTED' => 'REJECTED',
+                                ])
+                                ->required(),
+
+                            Placeholder::make('created_at')
+                                ->label('Created At')
+                                ->content(fn($record) => $record->created_at?->format('Y-m-d H:i:s') ?? '-'),
+                        ]),
+                ]),
+
+            Section::make('Order Items')
+                // ->collapsible()
+                ->schema([
+                    Repeater::make('orderItems')
+                        ->label('Order Items')
+                        ->relationship('orderItems') // hasMany relationship
+                        ->schema([
+                            Grid::make(3)->schema([
+                                Select::make('product_id')
+                                    ->relationship('product', 'name')
+                                    ->label('Product')
+                                    ->required(),
+                                TextInput::make('quantity')
+                                    ->numeric()
+                                    ->label('Quantity')
+                                    ->required(),
+                                TextInput::make('price')
+                                    ->numeric()
+                                    ->label('Price')
+                                    ->required(),
+                            ]),
+                        ])
+                        ->defaultItems(1)
+                        ->maxItems(1),
+                ]),
+
+            Section::make('Payments')
+                ->collapsible()
+                ->schema([
+                    Repeater::make('payments')
+                        ->label('Payment Records')
+                        ->relationship('payments')
+                        ->schema([
+                            Grid::make(4)->schema([
+                                Select::make('payment_method')
+                                    ->label('Payment Method')
+                                    ->options([
+                                        'GCASH' => 'GCash',
+                                        'OVER_THE_COUNTER' => 'Over the Counter',
+                                    ])
+                                    ->required(),
+
+                                TextInput::make('reference_no')
+                                    ->label('Reference No.'),
+
+                                TextInput::make('amount')
+                                    ->label('Amount')
+                                    ->numeric()
+                                    ->required(),
+
+                                Select::make('status')
+                                    ->label('Payment Status')
+                                    ->options([
+                                        'PENDING' => 'PENDING',
+                                        'CONFIRMED' => 'CONFIRMED',
+                                        'REJECTED' => 'REJECTED',
+                                    ])
+                                    ->default('PENDING')
+                                    ->required(),
+                            ]),
+                        ])
+                        ->maxItems(1)
+                        ->defaultItems(1),
+                ]),
         ]);
     }
 
@@ -50,40 +138,25 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable(),
+                TextColumn::make('id')->label('Order ID')->sortable(),
                 TextColumn::make('user.name')->label('User')->sortable()->searchable(),
-                TextColumn::make('total_amount')->money('PHP'),
-                IconColumn::make('status')
-                    ->options([
-                        'pending' => 'heroicon-o-clock',
-                        'completed' => 'heroicon-o-check-circle',
-                        'cancelled' => 'heroicon-o-x-circle',
-                    ])
-                    ->colors([
-                        'secondary' => 'pending',
-                        'success' => 'completed',
-                        'danger' => 'cancelled',
-                    ]),
-                TextColumn::make('created_at')->dateTime('M d, Y H:i'),
+                TextColumn::make('total_amount')->label('Total')->money('PHP')->sortable(),
+                TextColumn::make('status')->sortable(),
+                TextColumn::make('created_at')->label('Date')->dateTime('M d, Y h:i A')->sortable(),
             ])
             ->defaultSort('id', 'desc')
-            ->filters([
-                //
-            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            // If you want to add relation managers for payments, etc., do that here
         ];
     }
 

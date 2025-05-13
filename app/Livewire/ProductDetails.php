@@ -105,7 +105,7 @@ class ProductDetails extends Component
         }
 
         Payment::create([
-            'type' => 'products',
+            'type' => 'orders',
             'type_id' => $order->id,
             'amount' => $this->amount,
             'payment_method' => $this->paymentMethod,
