@@ -107,3 +107,26 @@
 .chart-table {
 	width: 100% !important;
 }
+
+.border-gray {
+	border-color: #444 !important;
+}
+
+.profile-img {
+	width: 150px;
+	height: 150px;
+	border-radius: 5%;
+	object-fit: cover;
+}
+
+.modal-content {
+	color: white;
+}
+
+.eye-icon {
+	top: 25px;
+	right: 10px;
+	transform: translateY(-100%);
+	cursor: pointer;
+	color: #aaa;
+}

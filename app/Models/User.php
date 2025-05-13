@@ -17,7 +17,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     use HasFactory, Notifiable;
 
     const ROLE_ADMIN = 'ADMIN';
-    const ROLE_STAFF= 'STAFF';
+    const ROLE_STAFF = 'STAFF';
     const ROLE_MEMBER = 'MEMBER';
 
     /**
@@ -145,6 +145,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->photo ? asset('storage/' . $this->photo) : null;
+        return $this->photo ? asset('storage/' . $this->photo) : asset('img/profile.jpg');
     }
+    
 }
