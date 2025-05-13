@@ -10,7 +10,7 @@ class MembersChart extends ChartWidget
 {
     protected static ?string $heading = 'New Members Per Month';
     protected static ?int $sort = 1; // Order on dashboard
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 'half';
 
     protected function getData(): array
     {
