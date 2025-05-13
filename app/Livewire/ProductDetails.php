@@ -120,7 +120,7 @@ class ProductDetails extends Component
             $this->product->save();
         }
 
-        $this->reset(['quantity', 'paymentMethod', 'referenceNo', 'showModal']);
+        $this->reset(['quantity', 'paymentMethod', 'referenceNo', 'showModal', 'terms']);
 
         $this->amount = $this->product->price * $this->quantity;
         session()->flash('message', 'Order placed successfully!');

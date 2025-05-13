@@ -7,6 +7,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\WorkoutGuideController;
+use App\Livewire\AttendanceComponent;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('feedback', [PageController::class, 'feedback'])->name('feedbacks');
     Route::get('orders', [PageController::class, 'orders'])->name('orders');
     Route::get('account', [App\Http\Controllers\PageController::class, 'account'])->name('account');
+    Route::get('attendance', AttendanceComponent::class)->name('attendance');
 });
 
 // Route::get('/admin/login', function () {

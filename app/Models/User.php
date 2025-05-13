@@ -147,5 +147,28 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         return $this->photo ? asset('storage/' . $this->photo) : asset('img/profile.jpg');
     }
-    
+
+    public function getActiveMembership()
+    {
+        $today = Carbon::today();
+
+        return $this->memberships()
+            ->where('is_active', true)
+            ->where('status', 'APPROVED')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->first();
+    }
+
+    public function activeMembership()
+    {
+        $today = now();
+
+        return $this->memberships()
+            ->where('is_active', true)
+            ->where('status', 'APPROVED')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->first();
+    }
 }
