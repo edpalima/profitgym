@@ -1,6 +1,8 @@
 .menu-logo {
 	max-width: 90px;
 	height: auto;
+	position: relative;
+	top: -30px;
 }
 
 .set-bg {
