@@ -68,6 +68,12 @@ class MembershipResource extends Resource
                     ->columnSpan('full'),
 
                 // Is Active
+                Toggle::make('walk_in_only')
+                    ->default(true)
+                    ->required()
+                    ->label('Walk In Only'),
+
+                // Is Active
                 Toggle::make('is_active')
                     ->onColor('success')
                     ->offColor('danger')
@@ -82,10 +88,11 @@ class MembershipResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('description')->limit(50),
                 Tables\Columns\TextColumn::make('duration_unit')->sortable(),
                 Tables\Columns\TextColumn::make('duration_value')->sortable(),
                 Tables\Columns\TextColumn::make('price')->money('PHP')->sortable(),
+                Tables\Columns\TextColumn::make('is_active')->label('Is Active')->sortable()->formatStateUsing(fn($state) => $state ? 'Yes' : 'No'),
+                Tables\Columns\TextColumn::make('walk_in_only')->label('Walk In Only')->sortable()->formatStateUsing(fn($state) => $state ? 'Yes' : 'No'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('Y-m-d H:i'),
             ])
             ->filters([

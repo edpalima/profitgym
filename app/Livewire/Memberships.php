@@ -9,10 +9,10 @@ class Memberships extends Component
 {
     public function render()
     {
-        // Fetch active memberships from the database
-        $memberships = Membership::where('is_active', true)->get();
+        $memberships = Membership::where('is_active', true)
+            ->where('walk_in_only', false)
+            ->get();
 
-        // Pass memberships data to the view
         return view('livewire.memberships', compact('memberships'));
     }
 }

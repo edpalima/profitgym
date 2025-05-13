@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->integer('duration_value');
             $table->enum('duration_unit', ['days', 'weeks', 'months', 'years'])->default('days');
             $table->decimal('price', 8, 2);
+            $table->boolean('walk_in_only')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
