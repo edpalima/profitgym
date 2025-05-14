@@ -70,15 +70,10 @@
                                             <li>
                                                 <strong>Order #{{ $order->id }}</strong> -
                                                 ₱{{ number_format($order->total_amount, 2) }}
-                                                <ul>
-                                                    @foreach ($order->orderItems as $orderItem)
-                                                        <li>
-                                                            {{ $orderItem->product->name }} (Qty:
-                                                            {{ $orderItem->quantity }}) -
-                                                            ₱{{ number_format($orderItem->total_price, 2) }}
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
+                                                <br>
+                                                @foreach ($order->orderItems as $orderItem)
+                                                    {{ $orderItem->quantity }} qty - {{ $orderItem->product->name }}<br>
+                                                @endforeach
                                             </li>
                                         @endforeach
                                     </ul>
@@ -117,7 +112,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content bg-white text-dark">
                     <div class="modal-header">
-                        <h5 class="modal-title text-dark">Create Order for Member #{{ $selectedUserId }}</h5>
+                        <h5 class="modal-title text-dark">Create Order for {{ $selectedUserFullName }}</h5>
                         <button type="button" class="close" wire:click="$set('showOrderModal', false)">
                             <span>&times;</span>
                         </button>

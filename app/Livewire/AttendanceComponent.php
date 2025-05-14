@@ -16,6 +16,7 @@ class AttendanceComponent extends Component
     public $currentDate;
     public $showOrderModal = false;
     public $selectedUserId;
+    public $selectedUserFullName;
     public $selectedProducts = [];
     public $quantities = [];
     public $totalAmount = 0.00;
@@ -84,8 +85,11 @@ class AttendanceComponent extends Component
 
         // Fetch orders for the current date
         $orders = Order::with('orderItems')
-            ->whereIn('user_id', $users->pluck('id'))->get()->groupBy('user_id');
-
+            ->whereIn('user_id', $users->pluck('id'))
+            ->where('created_at', '>=', "{$this->currentDate} 00:00:00")
+            ->where('created_at', '<=', "{$this->currentDate} 23:59:59")
+            ->get()
+            ->groupBy('user_id');
 
         // Calculate total amount based on selected products
         $this->totalAmount = 0;
@@ -135,6 +139,8 @@ class AttendanceComponent extends Component
     public function createOrder($userId)
     {
         $this->selectedUserId = $userId;
+        $user = User::find($userId);
+        $this->selectedUserFullName = $user ? $user->fullName : null;
         $this->selectedProducts = [];
         $this->quantities = [];
         $this->showOrderModal = true;
@@ -147,7 +153,7 @@ class AttendanceComponent extends Component
             'paymentAmount' => 'required|numeric|min:' . $this->totalAmount,
         ]);
 
-        $order = \App\Models\Order::create([
+        $order = Order::create([
             'user_id' => $this->selectedUserId,
             'total_amount' => 0,
             'status' => 'COMPLETED',
