@@ -3,10 +3,12 @@
 namespace App\Livewire;
 
 use App\Models\Attendance;
+use App\Models\Membership;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\UserMembership;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +24,18 @@ class AttendanceComponent extends Component
     public $totalAmount = 0.00;
     public $paymentAmount = 0.00;
     public $changeAmount = 0.00;
+    public $userModal = false;
+    public $first_name;
+    public $last_name;
+    public $email;
+    public $membership_id;
+    public $start_date;
+    public $end_date;
+    public $total_amount = 0;
+    public $payment_amount = 0;
+    public $change_amount = 0;
+
+    public $memberships;
 
     public function mount()
     {
@@ -32,11 +46,25 @@ class AttendanceComponent extends Component
         }
 
         $this->currentDate = Carbon::today()->toDateString();
+
+        $this->memberships = Membership::where('is_active', true)->get();
     }
 
     public function previousDate()
     {
         $this->currentDate = Carbon::parse($this->currentDate)->subDay()->toDateString();
+    }
+
+    public function getMemberships()
+    {
+        return Membership::all(); // Adjust to your database query for memberships
+    }
+
+    public function updatedMembershipId()
+    {
+        $membership = Membership::find($this->membership_id);
+        $this->total_amount = $membership ? $membership->price : 0;
+        $this->calculateChange();
     }
 
     public function nextDate()
@@ -134,6 +162,10 @@ class AttendanceComponent extends Component
     public function calculateChange()
     {
         $this->changeAmount = max(0, (float) $this->paymentAmount - (float) $this->totalAmount);
+
+        if ($this->total_amount) {
+            $this->change_amount = max(0, (float) $this->payment_amount - (float) $this->total_amount);
+        }
     }
 
     public function createOrder($userId)
@@ -198,5 +230,69 @@ class AttendanceComponent extends Component
         $this->quantities = [];
 
         session()->flash('message', 'Order created successfully.');
+    }
+
+    public function showCreateUserModal()
+    {
+        $this->resetValidation();
+        $this->userModal = true;
+    }
+
+    public function createNewUser()
+    {
+        $email = $this->first_name . '_' . $this->last_name . '@gmail.com';
+
+        $this->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            // 'email' => 'required|email|unique:users,email',
+            'start_date' => 'required|date',
+            'membership_id' => 'required|exists:memberships,id',
+            'payment_amount' => 'required|numeric|min:' . $this->totalAmount,
+        ]);
+
+        $user = User::create([
+            'name' => $this->first_name . ' ' . $this->last_name,
+            'password' => bcrypt('password'),
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $email,
+            'role' => 'MEMBER',
+        ]);
+
+        $membership = Membership::find($this->membership_id);
+        $start = Carbon::parse($this->start_date);
+
+        if ($membership->duration_unit === 'days' && $membership->duration_value == 1) {
+            $end = $start->copy();
+        } else {
+            $end = $start->copy()->add($membership->duration_unit, $membership->duration_value);
+        }
+
+        $this->total_amount = $membership->price;
+
+        $userMembership = UserMembership::create([
+            'user_id' => $user->id,
+            'membership_id' => $this->membership_id,
+            'start_date' => $start,
+            'end_date' => $end,
+            'status' => 'APPROVED',
+        ]);
+
+        Payment::create([
+            'type' => 'user_memberships',
+            'type_id' => $userMembership->id,
+            'amount' => $this->total_amount,
+            'payment_method' => 'OVER_THE_COUNTER',
+            'status' => 'CONFIRMED',
+        ]);
+
+        $this->userModal = false;
+        $this->membership_id = null;
+        $this->first_name = '';
+        $this->last_name = '';
+        $this->email = '';
+
+        session()->flash('message', 'User created successfully.');
     }
 }

@@ -28,7 +28,7 @@ class PaymentResource extends Resource
             ->schema([
                 Select::make('type')
                     ->options([
-                        'user_membership' => 'User Membership',
+                        'user_memberships' => 'User Membership',
                         'orders' => 'Orders',
                     ])
                     ->required(),

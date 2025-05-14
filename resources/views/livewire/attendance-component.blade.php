@@ -1,8 +1,20 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <button wire:click="previousDate" class="btn btn-secondary px-4 py-2">Previous</button>
-        <h2 class="h4 text-center">Attendance - {{ \Carbon\Carbon::parse($currentDate)->format('F d, Y') }}</h2>
-        <button wire:click="nextDate" class="btn btn-secondary px-4 py-2">Next</button>
+        <button wire:click="previousDate" class="btn btn-secondary px-4 py-2">
+            <i class="fa fa-arrow-left me-2"></i> Previous
+        </button>
+
+        <h2 class="h4 text-center mb-0">Attendance - {{ \Carbon\Carbon::parse($currentDate)->format('F d, Y') }}</h2>
+
+        <button wire:click="nextDate" class="btn btn-secondary px-4 py-2">
+            Next <i class="fa fa-arrow-right ms-2"></i>
+        </button>
+    </div>
+
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-success" wire:click="showCreateUserModal">
+            + Create New User
+        </button>
     </div>
 
     <!-- Mobile-responsive table wrapper -->
@@ -11,15 +23,14 @@
             <div class="alert alert-success" id="flashMessage">
                 {{ session('message') }}
             </div>
-
             <script>
                 setTimeout(function() {
                     document.getElementById('flashMessage').style.display = 'none';
                 }, 5000);
             </script>
         @endif
+
         @if ($users->isEmpty())
-            <!-- Display message if no users are found -->
             <div class="alert alert-info text-center" role="alert">
                 No active members for the selected date.
             </div>
@@ -72,7 +83,8 @@
                                                 ₱{{ number_format($order->total_amount, 2) }}
                                                 <br>
                                                 @foreach ($order->orderItems as $orderItem)
-                                                    {{ $orderItem->quantity }} qty - {{ $orderItem->product->name }}<br>
+                                                    <span class="text-muted">{{ $orderItem->quantity }} pcs </span>-
+                                                    {{ $orderItem->product->name }}<br>
                                                 @endforeach
                                             </li>
                                         @endforeach
@@ -89,8 +101,7 @@
                                 @if (\Carbon\Carbon::parse($currentDate)->isToday())
                                     @if (!$attendance || !$attendance->time_in)
                                         <button wire:click="timeIn({{ $user->id }})"
-                                            class="btn btn-success btn-sm">Time
-                                            In</button>
+                                            class="btn btn-success btn-sm">Time In</button>
                                     @elseif ($attendance && $attendance->time_in && !$attendance->time_out)
                                         <button wire:click="timeOut({{ $user->id }})"
                                             class="btn btn-primary btn-sm">Time Out</button>
@@ -108,16 +119,18 @@
 
     <!-- Modal for order creation -->
     @if ($showOrderModal)
-        <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5);">
+        <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5);"
+            aria-labelledby="orderModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content bg-white text-dark">
                     <div class="modal-header">
-                        <h5 class="modal-title text-dark">Create Order for {{ $selectedUserFullName }}</h5>
-                        <button type="button" class="close" wire:click="$set('showOrderModal', false)">
-                            <span>&times;</span>
+                        <h5 class="modal-title" id="orderModalLabel">Create Order for {{ $selectedUserFullName }}</h5>
+                        <button type="button" class="close" wire:click="$set('showOrderModal', false)"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body text-dark">
+                    <div class="modal-body text-dark" style="max-height: 400px; overflow-y: auto;">
                         <label class="form-label">Select Products:</label>
                         <div class="form-group">
                             @php
@@ -135,10 +148,9 @@
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model.live="selectedProducts" value="{{ $product->id }}"
                                                 id="prod{{ $product->id }}">
-                                            <label class="form-check-label text-dark" for="prod{{ $product->id }}">
+                                            <label class="form-check-label" for="prod{{ $product->id }}">
                                                 {{ $product->name }} - ₱{{ number_format($product->price, 2) }} <span
-                                                    class="text-muted">(Stock:
-                                                    {{ $product->stock_quantity }}) </span>
+                                                    class="text-muted">(Stock: {{ $product->stock_quantity }})</span>
                                             </label>
                                         </div>
                                         <div>
@@ -177,8 +189,95 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
                             wire:click="$set('showOrderModal', false)">Cancel</button>
-                        <button type="button" class="btn btn-primary bg-color-primary" wire:click="submitOrder">Confirm
-                            Payment and Submit Order</button>
+                        <button type="button" class="btn btn-primary" wire:click="submitOrder">Confirm Payment and
+                            Submit Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    <!-- Modal for new user creation -->
+    @if ($userModal)
+        <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5);"
+            aria-labelledby="userModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content bg-white text-dark">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userModalLabel">Create New Member</h5>
+                        <button type="button" class="close" wire:click="$set('userModal', false)"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-dark" style="max-height: 400px; overflow-y: auto;">
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" id="first_name" wire:model.defer="first_name"
+                                class="form-control">
+                            @error('first_name')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text" id="last_name" wire:model.defer="last_name" class="form-control">
+                            @error('last_name')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" wire:model.defer="email" class="form-control">
+                            @error('email')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div> --}}
+
+                        <div class="mb-3">
+                            <label for="membership_id" class="form-label">Select Membership</label>
+                            <select id="membership_id" wire:model.live="membership_id" class="form-control">
+                                <option value="">-- Select Membership --</option>
+                                @foreach ($memberships as $membership)
+                                    <option value="{{ $membership->id }}">{{ $membership->name }} -
+                                        ₱{{ number_format($membership->price, 2) }}</option>
+                                @endforeach
+                            </select>
+                            @error('membership_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="start_date" class="form-label">Select Start Date</label>
+                            <input type="date" id="start_date" wire:model="start_date" class="form-control">
+                            @error('start_date')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="total_amount" class="form-label">Total Amount</label>
+                            <input type="text" id="total_amount" wire:model.live="total_amount"
+                                class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Payment Amount:</label>
+                            <input type="number" min="0" step="0.01" class="form-control"
+                                wire:model.live="payment_amount" placeholder="Enter payment (₱)">
+                        </div>
+
+                        <div class="mb-3">
+                            <strong>Change: ₱{{ number_format($change_amount, 2) }}</strong>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            wire:click="$set('userModal', false)">Cancel</button>
+                        <button type="button" class="btn btn-primary" wire:click="createNewUser">Create
+                            Member</button>
                     </div>
                 </div>
             </div>

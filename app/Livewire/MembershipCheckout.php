@@ -21,7 +21,7 @@ class MembershipCheckout extends Component
     public $referenceNo;
     public $startDate;
     public $terms = false;
-    
+
     public $userHasMembership = false;
     public $userHasPendingMembership = false;
 
@@ -38,7 +38,7 @@ class MembershipCheckout extends Component
     {
         $this->validate([
             'paymentMethod' => 'required|in:OVER_THE_COUNTER,GCASH',
-            // 'image' => $this->paymentMethod === 'GCASH' ? 'required|image|max:2048' : 'nullable|image|max:2048',
+            'image' => $this->paymentMethod === 'GCASH' ? 'required|image|max:2048' : 'nullable|image|max:2048',
             'referenceNo' => $this->paymentMethod === 'GCASH' ? 'required|string|max:100' : 'nullable|string|max:100',
             'startDate' => 'required|date|after_or_equal:today',
             'terms' => 'accepted',
@@ -55,7 +55,7 @@ class MembershipCheckout extends Component
             'status' => 'PENDING',
         ]);
 
-        // $paymentImage = $this->image ? $this->image->store('payment_receipts', 'public') : null;
+        $paymentImage = $this->image ? $this->image->store('payment_receipts', 'public') : null;
 
         Payment::create([
             'type' => 'user_memberships',
@@ -64,7 +64,7 @@ class MembershipCheckout extends Component
             'payment_method' => $this->paymentMethod,
             'reference_no' => $this->referenceNo,
             'status' => 'PENDING',
-            // 'image' => $paymentImage,
+            'image' => $paymentImage,
         ]);
 
         session()->flash('success', 'Membership checkout submitted! Awaiting approval.');

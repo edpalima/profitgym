@@ -60,12 +60,12 @@
                                         @enderror
                                     </div>
 
-                                    {{-- <div class="mb-3">
+                                    <div class="mb-3">
                                         <label class="form-label">Upload Receipt</label>
                                         <input type="file" wire:model="image" class="form-control">
                                         @error('image')
                                             <span class="text-danger">{{ $message }}</span>
-                                        @enderror --}}
+                                        @enderror
                                     </div>
                                 @endif
 

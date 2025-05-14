@@ -42,7 +42,7 @@ class MembershipSeeder extends Seeder
         ]);
 
         \App\Models\Membership::create([
-            'name' => '1 day Access Membership',
+            'name' => '1 day - Walk In',
             'description' => 'A one-day access membership for walk-in customers only. Ideal for occasional visitors or trial users.',
             'duration_value' => 1,
             'duration_unit' => 'days',
