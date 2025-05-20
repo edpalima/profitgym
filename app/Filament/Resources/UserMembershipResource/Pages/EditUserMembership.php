@@ -16,5 +16,19 @@ class EditUserMembership extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-    
+    protected function getRedirectUrl(): string
+    {
+        $status = strtolower($this->record->status);
+
+        $tab = match ($status) {
+            'pending' => 'pending',
+            'approved' => 'approved',
+            'rejected' => 'rejected',
+            default => null,
+        };
+
+        $url = $this->getResource()::getUrl('index');
+
+        return $tab ? "{$url}?activeTab={$tab}" : $url;
+    }
 }
