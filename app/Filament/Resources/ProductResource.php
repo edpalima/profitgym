@@ -13,9 +13,10 @@ use Filament\Tables\Columns\{TextColumn, BooleanColumn};
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Tables\Filters\SelectFilter;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
@@ -78,11 +79,25 @@ class ProductResource extends Resource
                 TextColumn::make('stock_quantity')->sortable(),
                 BooleanColumn::make('is_active'),
                 TextColumn::make('created_at')->dateTime('M d, Y'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->since()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->label('Category')
+                    ->options(
+                        \App\Models\Category::all()->pluck('name', 'id')->toArray()
+                    ),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

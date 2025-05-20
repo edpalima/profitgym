@@ -146,6 +146,7 @@ class OrderResource extends Resource
             ])
             ->defaultSort('id', 'desc')
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

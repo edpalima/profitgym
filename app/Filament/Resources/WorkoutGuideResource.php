@@ -85,11 +85,21 @@ class WorkoutGuideResource extends Resource
                     ->formatStateUsing(fn($state) => Str::limit(strip_tags($state), 50))
                     ->tooltip(fn($record) => strip_tags($record->description)),
                 ToggleColumn::make('is_active')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->since()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

@@ -80,20 +80,37 @@ class PaymentResource extends Resource
                 TextColumn::make('payment_method'),
                 TextColumn::make('status')
                     ->formatStateUsing(fn(string $state): string => ucfirst($state))
+                    ->badge()
                     ->color(fn(string $state): string => match ($state) {
-                        'pending' => 'warning',
-                        'completed' => 'success',
-                        'failed' => 'danger',
+                        'PENDING' => 'warning',
+                        'CONFIRMED' => 'success',
+                        'REJECTED' => 'danger',
                         default => 'secondary',
                     }),
                 TextColumn::make('payment_date')->date(),
                 ImageColumn::make('image')->disk('public')->circular(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->since()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Payment Status')
+                    ->options([
+                        'PENDING' => 'PENDING',
+                        'CONFIRMED' => 'CONFIRMED',
+                        'REJECTED' => 'REJECTED',
+                    ]),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

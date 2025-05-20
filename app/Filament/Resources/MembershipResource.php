@@ -94,11 +94,17 @@ class MembershipResource extends Resource
                 Tables\Columns\TextColumn::make('is_active')->label('Is Active')->sortable()->formatStateUsing(fn($state) => $state ? 'Yes' : 'No'),
                 Tables\Columns\TextColumn::make('walk_in_only')->label('Walk In Only')->sortable()->formatStateUsing(fn($state) => $state ? 'Yes' : 'No'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime('Y-m-d H:i'),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->since()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
