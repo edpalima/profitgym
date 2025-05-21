@@ -212,6 +212,14 @@ class UserMembershipResource extends Resource
             //
         ];
     }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count() ?: null;
+    }
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'primary';
+    }
     
     public static function getPages(): array
     {
