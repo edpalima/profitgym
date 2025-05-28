@@ -49,13 +49,10 @@
                     @foreach ($users as $user)
                         @php
                             $attendance = $attendances->get($user->id);
-                            $membership = $user
-                                ->memberships()
-                                ->where('is_active', true)
-                                ->where('status', 'APPROVED')
-                                ->whereDate('start_date', '<=', now())
-                                ->whereDate('end_date', '>=', now())
-                                ->first();
+                            $startOfDay = \Carbon\Carbon::parse($currentDate)->startOfDay(); // 00:00:00
+                            $endOfDay = \Carbon\Carbon::parse($currentDate)->endOfDay(); // 23:59:59
+
+                            $membership = $user->memberships->first();
                         @endphp
                         <tr>
                             <td>{{ $user->id }}</td>
