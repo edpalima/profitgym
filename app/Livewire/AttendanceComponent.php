@@ -63,7 +63,7 @@ class AttendanceComponent extends Component
         'start_date.required' => 'Please select a start date.',
         'start_date.date' => 'The start date must be a valid date.',
         'payment_amount.required' => 'Please enter a payment amount.',
-        'payment_amount.min' => 'Payment amount must be at least the total amount (₱:value).',
+        'payment_amount.min' => 'Payment amount must be at least the total amount.',
     ];
 
     public function mount()
