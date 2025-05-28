@@ -55,7 +55,7 @@ class AttendanceComponent extends Component
     protected $messages = [
         'userOption.required' => 'Please select whether to use an existing user or create a new one.',
         'selectedUserId.required_if' => 'Please select an existing user.',
-        'selectedUserId.exists' => 'The selected user does not exist.',
+        'selectedUserId.exists' => 'The user is already registered.',
         'first_name.required_if' => 'First name is required for a new user.',
         'last_name.required_if' => 'Last name is required for a new user.',
         'membership_id.required' => 'Please select a membership.',
