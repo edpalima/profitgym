@@ -18,15 +18,23 @@ class PageController extends Controller
 
     public function account()
     {
+        if (!Auth::check() || Auth::user()->role !== 'MEMBER') {
+            return redirect()->route('login');
+        }
+
         $user = auth()->user();
         // dd($user);
         // return view('pages.account', compact('user'));
-        
+
         return view('pages.profile', compact('user'));
     }
 
     public function products()
     {
+        if (!Auth::check() || Auth::user()->role !== 'MEMBER') {
+            return redirect()->route('login');
+        }
+
         return view('pages.products');
     }
 
@@ -61,8 +69,8 @@ class PageController extends Controller
     }
     public function orders()
     {
-        if (!auth()->check()) {
-            return redirect('/');
+        if (!Auth::check() || Auth::user()->role !== 'MEMBER') {
+            return redirect()->route('login');
         }
 
         return view('pages.orders');
