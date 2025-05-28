@@ -1,14 +1,6 @@
 <div>
     <section class="contact-section spad" id="contact-section">
         <div class="container">
-            @if (session()->has('success-message'))
-                <div x-data="{ show: true }" x-init="$watch('show', value => {
-                    if (!value) $el.remove(); // Remove element when hidden
-                });
-                setTimeout(() => show = false, 3000);" x-show="show" class="alert alert-success">
-                    {{ session('success-message') }}
-                </div>
-            @endif
             <div class="row">
                 <div class="col-lg-6">
                     <div class="section-title contact-title">
@@ -63,6 +55,15 @@
                                 </span>
                             </button>
                         </form>
+                        @if (session()->has('success-message'))
+                            <div x-data="{ show: true }" x-init="$watch('show', value => {
+                                if (!value) $el.remove(); // Remove element when hidden
+                            });
+                            setTimeout(() => show = false, 3000);" x-show="show"
+                                class="alert alert-success">
+                                {{ session('success-message') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
