@@ -15,6 +15,7 @@ class Trainer extends Model
         'middle_name',
         'specialization',
         'bio',
+        'description',
         'phone',
         'email',
         'image',
@@ -24,5 +25,21 @@ class Trainer extends Model
     public function workoutGuides()
     {
         return $this->hasMany(WorkoutGuide::class);
+    }
+
+    public function getFormattedDescriptionAttribute()
+    {
+        $text = $this->description;
+
+        $sentences = preg_split('/([.!?]+\s*)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $formatted = '';
+
+        foreach ($sentences as $index => $sentence) {
+            $formatted .= ($index % 2 === 0)
+                ? ucfirst(trim($sentence))
+                : $sentence;
+        }
+
+        return $formatted;
     }
 }
