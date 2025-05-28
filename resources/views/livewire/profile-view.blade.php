@@ -172,7 +172,7 @@
                             <div class="mb-2">
                                 <p class="mb-1 fw-bold">{{ $latestMembership->membership->name }}
                                     <span class="text-muted">
-                                        @if ($latestMembership->is_active && now()->between($latestMembership->start_date, $latestMembership->end_date))
+                                        @if ($latestMembership->is_active && now()->between($latestMembership->start_date, $latestMembership->end_date) && $latestMembership->status === 'APPROVED')
                                             <span class="badge bg-success text-dark">Active</span>
                                         @elseif ($latestMembership->status === 'APPROVED' && now()->lt($latestMembership->start_date))
                                             <span class="badge bg-info text-dark">Upcoming</span>

@@ -157,9 +157,9 @@ class UserMembershipResource extends Resource
                         'REJECTED' => 'danger',
                         default => 'gray',
                     }),
-                TextColumn::make('is_active')
-                    ->formatStateUsing(fn($state) => $state ? 'Yes' : 'No')
-                    ->sortable(),
+                // TextColumn::make('is_active')
+                //     ->formatStateUsing(fn($state) => $state ? 'Yes' : 'No')
+                //     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime('F j, Y g:i A') // Format in words with AM/PM
                     ->label('Date Submitted')

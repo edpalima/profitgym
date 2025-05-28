@@ -3,13 +3,16 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
+                    @if (session()->has('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
                     <span>Our Plan</span>
                     <h2>Choose your pricing plan</h2>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
-            @foreach($memberships as $membership)
+            @foreach ($memberships as $membership)
                 <div class="col-lg-4 col-md-8">
                     <div class="ps-item">
                         <h3>{{ $membership->name }}</h3>
@@ -21,8 +24,10 @@
                             <li>{{ $membership->description ?? 'No description available' }}</li>
                             <!-- You can add more membership features here if needed -->
                         </ul>
-                        <a href="{{ route('membership.checkout', $membership->id) }}" class="primary-btn pricing-btn">Enroll now</a>
-                        <a href="{{ route('membership.checkout', $membership->id) }}" class="thumb-icon"><i class="fa fa-picture-o"></i></a>
+                        <a href="{{ route('membership.checkout', $membership->id) }}"
+                            class="primary-btn pricing-btn">Enroll now</a>
+                        <a href="{{ route('membership.checkout', $membership->id) }}" class="thumb-icon"><i
+                                class="fa fa-picture-o"></i></a>
                     </div>
                 </div>
             @endforeach
@@ -31,6 +36,7 @@
     @auth
         <livewire:feedback-form />
     @else
-        <p class="text-center mt-4">You want to submit feedback? Please <a href="{{ route('login') }}" class="color-primary">log in</a> to provide feedback.</p>
+        <p class="text-center mt-4">You want to submit feedback? Please <a href="{{ route('login') }}"
+                class="color-primary">log in</a> to provide feedback.</p>
     @endauth
 </section>
