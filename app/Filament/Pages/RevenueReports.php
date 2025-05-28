@@ -7,6 +7,9 @@ use Filament\Pages\Page;
 use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Collection;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RevenueReports extends Page
 {
@@ -61,6 +64,35 @@ class RevenueReports extends Page
         })->toArray();
 
         $this->totalRevenue = array_sum(array_column($this->revenues, 'revenue_raw'));
+    }
+
+    public function exportExcel(): BinaryFileResponse
+    {
+        $data = collect($this->revenues)->map(function ($item) {
+            return [
+                'Date' => $item['date'],
+                'Revenue' => $item['revenue_raw'],
+            ];
+        });
+
+        return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromCollection, \Maatwebsite\Excel\Concerns\WithHeadings {
+            protected $data;
+
+            public function __construct(Collection $data)
+            {
+                $this->data = $data;
+            }
+
+            public function collection()
+            {
+                return $this->data;
+            }
+
+            public function headings(): array
+            {
+                return ['Date', 'Revenue'];
+            }
+        }, 'revenue-report.xlsx');
     }
 
     // public function generateSummaryReport(): void
