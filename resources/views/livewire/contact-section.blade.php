@@ -55,6 +55,7 @@
                                 </span>
                             </button>
                         </form>
+                        <br>
                         @if (session()->has('success-message'))
                             <div x-data="{ show: true }" x-init="$watch('show', value => {
                                 if (!value) $el.remove(); // Remove element when hidden
