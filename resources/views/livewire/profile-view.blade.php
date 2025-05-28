@@ -84,7 +84,7 @@
                                 <div class="modal fade show d-block" id="membershipModal" tabindex="-1"
                                     aria-labelledby="membershipModalLabel" aria-modal="true"
                                     style="background-color: rgba(0, 0, 0, 0.8);">
-                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                                         <div class="modal-content bg-dark text-white border-light">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="membershipModalLabel">Membership History
@@ -105,6 +105,7 @@
                                                                 <th>Description</th>
                                                                 <th>Start</th>
                                                                 <th>End</th>
+                                                                <th>Date Submitted</th>
                                                                 <th>Price</th>
                                                                 <th>Status</th>
                                                             </tr>
@@ -121,10 +122,12 @@
                                                                     </td>
                                                                     <td>{{ \Carbon\Carbon::parse($membership->end_date)->format('F d, Y') }}
                                                                     </td>
+                                                                    <td>{{ \Carbon\Carbon::parse($membership->created_date)->format('F d, Y h:i A') }}
+                                                                    </td>
                                                                     <td>₱{{ number_format($membership->membership->price, 2) }}
                                                                     </td>
                                                                     <td>
-                                                                        @if ($membership->is_active && now()->between($membership->start_date, $membership->end_date))
+                                                                        @if ($membership->is_active && now()->between($membership->start_date, $membership->end_date) && $membership->status === 'APPROVED')
                                                                             <span
                                                                                 class="badge bg-success text-dark">Active</span>
                                                                         @elseif ($membership->status === 'APPROVED' && now()->lt($membership->start_date))
@@ -133,6 +136,9 @@
                                                                         @elseif ($membership->status === 'PENDING')
                                                                             <span
                                                                                 class="badge bg-warning text-dark">Pending</span>
+                                                                        @elseif ($membership->status === 'REJECTED')
+                                                                            <span
+                                                                                class="badge bg-secondary text-dark">Rejected</span>
                                                                         @else
                                                                             <span
                                                                                 class="badge bg-secondary">Expired</span>
@@ -178,6 +184,8 @@
                                             <span class="badge bg-info text-dark">Upcoming</span>
                                         @elseif ($latestMembership->status === 'PENDING')
                                             <span class="badge bg-warning text-dark">Pending</span>
+                                        @elseif ($latestMembership->status === 'REJECTED')
+                                            <span class="badge bg-secondary">Rejected</span>
                                         @else
                                             <span class="badge bg-secondary">Expired</span>
                                         @endif

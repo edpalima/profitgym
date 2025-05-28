@@ -85,7 +85,16 @@ class UserMembershipResource extends Resource
                         ->label('Payment Records')
                         ->relationship('payments') // morphMany handled automatically
                         ->schema([
-                            Grid::make(4)->schema([
+                            Grid::make(5)->schema([
+                                Forms\Components\FileUpload::make('image')
+                                    ->disk('public')
+                                    ->directory('payments')
+                                    ->disabled(fn($get) => $get('image') !== null)
+                                    ->image()
+                                    ->imagePreviewHeight('250')
+                                    ->downloadable()
+                                    ->openable()
+                                    ->label('Payment Image'),
                                 Select::make('payment_method')
                                     ->label('Payment Method')
                                     ->options([
@@ -145,13 +154,13 @@ class UserMembershipResource extends Resource
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge()
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         'PENDING' => 'heroicon-o-clock',
                         'APPROVED' => 'heroicon-o-check-circle',
                         'REJECTED' => 'heroicon-o-x-circle',
                         default => 'heroicon-o-question-mark-circle',
                     })
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'PENDING' => 'primary',
                         'APPROVED' => 'success',
                         'REJECTED' => 'danger',
@@ -187,25 +196,24 @@ class UserMembershipResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-            
     }
-    
+
     public static function getTabs(): array
     {
         return [
             'All' => Tab::make(),
 
             'Pending' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'PENDING')),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'PENDING')),
 
             'Approved' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'APPROVED')),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'APPROVED')),
 
             'Rejected' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'REJECTED')),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'REJECTED')),
         ];
     }
-    
+
     public static function getRelations(): array
     {
         return [
@@ -220,7 +228,7 @@ class UserMembershipResource extends Resource
     {
         return 'primary';
     }
-    
+
     public static function getPages(): array
     {
         return [

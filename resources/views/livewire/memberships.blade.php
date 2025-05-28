@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
-                    @if (session()->has('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @if (session()->has('success-member'))
+                        <div class="alert alert-success">{{ session('success-member') }}</div>
                     @endif
                     <span>Our Plan</span>
                     <h2>Choose your pricing plan</h2>
