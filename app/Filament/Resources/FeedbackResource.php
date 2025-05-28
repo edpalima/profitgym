@@ -82,11 +82,17 @@ class FeedbackResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->label('Submitted At'),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->since()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -101,6 +107,14 @@ class FeedbackResource extends Resource
         return [
             //
         ];
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count() ?: null;
+    }
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'primary';
     }
 
     public static function getPages(): array

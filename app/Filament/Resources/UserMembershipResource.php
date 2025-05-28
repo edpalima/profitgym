@@ -24,6 +24,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Closure;
+use Filament\Resources\Tables\Components\Tab;
 
 class UserMembershipResource extends Resource
 {
@@ -143,7 +144,19 @@ class UserMembershipResource extends Resource
                 TextColumn::make('end_date')->date()
                     ->sortable(),
                 TextColumn::make('status')
-                    ->sortable(),
+                    ->badge()
+                    ->icon(fn (string $state): string => match ($state) {
+                        'PENDING' => 'heroicon-o-clock',
+                        'APPROVED' => 'heroicon-o-check-circle',
+                        'REJECTED' => 'heroicon-o-x-circle',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'PENDING' => 'primary',
+                        'APPROVED' => 'success',
+                        'REJECTED' => 'danger',
+                        default => 'gray',
+                    }),
                 TextColumn::make('is_active')
                     ->formatStateUsing(fn($state) => $state ? 'Yes' : 'No')
                     ->sortable(),
@@ -151,12 +164,22 @@ class UserMembershipResource extends Resource
                     ->dateTime('F j, Y g:i A') // Format in words with AM/PM
                     ->label('Date Submitted')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->since()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('membership_id')
+                    ->label('Membership')
+                    ->options(
+                        \App\Models\Membership::all()->pluck('name', 'id')->toArray()
+                    ),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -164,15 +187,40 @@ class UserMembershipResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+            
     }
+    
+    public static function getTabs(): array
+    {
+        return [
+            'All' => Tab::make(),
 
+            'Pending' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'PENDING')),
+
+            'Approved' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'APPROVED')),
+
+            'Rejected' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'REJECTED')),
+        ];
+    }
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count() ?: null;
+    }
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'primary';
+    }
+    
     public static function getPages(): array
     {
         return [

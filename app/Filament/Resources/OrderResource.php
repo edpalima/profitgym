@@ -141,11 +141,26 @@ class OrderResource extends Resource
                 TextColumn::make('id')->label('Order ID')->sortable(),
                 TextColumn::make('user.name')->label('User')->sortable()->searchable(),
                 TextColumn::make('total_amount')->label('Total')->money('PHP')->sortable(),
-                TextColumn::make('status')->sortable(),
+                                TextColumn::make('status')
+                    ->formatStateUsing(fn(string $state): string => ucfirst($state))
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'PENDING' => 'warning',
+                        'FOR PICKUP' => 'info',
+                        'COMPLETED' => 'success',
+                        'REJECTED' => 'danger',
+                        default => 'secondary',
+                    }),
                 TextColumn::make('created_at')->label('Date')->dateTime('M d, Y h:i A')->sortable(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->since()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('id', 'desc')
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -158,6 +173,14 @@ class OrderResource extends Resource
         return [
             // If you want to add relation managers for payments, etc., do that here
         ];
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count() ?: null;
+    }
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'primary';
     }
 
     public static function getPages(): array
