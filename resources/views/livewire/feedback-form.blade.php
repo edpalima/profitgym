@@ -15,7 +15,7 @@
                     <div class="cw-text">
                         <i class="fa fa-map-marker"></i>
                         <p>Zone 5, AFP Housing </br>
-                            Bulihan, Silang, Cavite/p>
+                            Bulihan, Silang, Cavite</p>
                     </div>
                     <div class="cw-text">
                         <i class="fa fa-mobile"></i>

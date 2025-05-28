@@ -14,4 +14,6 @@
     <livewire:trainer-section />
 
     <livewire:feedback-section />
+
+    <livewire:contact-section />
 @endsection

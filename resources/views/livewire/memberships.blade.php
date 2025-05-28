@@ -33,10 +33,18 @@
             @endforeach
         </div>
     </div>
-    @auth
-        <livewire:feedback-form />
-    @else
-        <p class="text-center mt-4">You want to submit feedback? Please <a href="{{ route('login') }}"
-                class="color-primary">log in</a> to provide feedback.</p>
-    @endauth
+    @php
+        use Illuminate\Support\Facades\Route;
+    @endphp
+
+    @if (Route::is('membership'))
+        @auth
+            <livewire:feedback-form />
+        @else
+            <p class="text-center mt-4">
+                You want to submit feedback? Please
+                <a href="{{ route('login') }}" class="color-primary">log in</a> to provide feedback.
+            </p>
+        @endauth
+    @endif
 </section>
