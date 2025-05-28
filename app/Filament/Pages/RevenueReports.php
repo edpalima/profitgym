@@ -95,4 +95,9 @@ class RevenueReports extends Page
             'revenue-report.pdf'
         );
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role === 'ADMIN';
+    }
 }
