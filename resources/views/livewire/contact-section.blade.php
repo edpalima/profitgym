@@ -1,5 +1,5 @@
 <div>
-    <section class="contact-section spad">
+    <section class="contact-section spad" id="contact-section">
         <div class="container">
             @if (session()->has('success-message'))
                 <div x-data="{ show: true }" x-init="$watch('show', value => {

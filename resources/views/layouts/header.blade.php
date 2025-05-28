@@ -20,6 +20,7 @@
             <li><a href="{{ route('products') }}">Products</a></li>
             <li><a href="{{ route('home') }}#workout-guides">Workout Guide</a></li>
             <li><a href="{{ route('trainers.index') }}">Trainers</a></li>
+            <li><a href="{{ route('home') }}#contact-section">Contact Us</a></li>
             @if (!Auth::check() || Auth::user()->role !== \App\Models\User::ROLE_MEMBER)
                 <li class="{{ Route::currentRouteName() === 'login' ? 'active' : '' }}">
                     <a href="{{ route('login') }}">Sign In</a>
@@ -82,6 +83,9 @@
                         {{-- <li><a href="./services.html">Services</a></li>
                         <li><a href="./team.html">Our Team</a></li> --}}
 
+                        <li class="">
+                            <a href="{{ route('home') }}#contact-section">Contact Us</a>
+                        </li>
                         @if (!Auth::check() || Auth::user()->role !== \App\Models\User::ROLE_MEMBER)
                             <li class="{{ Route::currentRouteName() === 'login' ? 'active' : '' }}">
                                 <a href="{{ route('login') }}">Sign In</a>
