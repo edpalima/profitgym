@@ -60,7 +60,7 @@
                             <div x-data="{ show: true }" x-init="$watch('show', value => {
                                 if (!value) $el.remove(); // Remove element when hidden
                             });
-                            setTimeout(() => show = false, 3000);" x-show="show"
+                            setTimeout(() => show = false, 1000);" x-show="show"
                                 class="alert alert-success">
                                 {{ session('success-message') }}
                             </div>
