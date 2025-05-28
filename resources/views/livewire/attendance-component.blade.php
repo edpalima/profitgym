@@ -106,7 +106,7 @@
 
     <!-- Modal for order creation -->
     @if ($showOrderModal)
-        <div class="modal fade show d-block" tabindex="-1" style="padding-top: 50px;">
+        <div class="modal fade show d-block" tabindex="-1" style="padding-top: 50px; background-color: rgba(0, 0, 0, 0.5);">
             <div class="modal-dialog" role="document">
                 <div class="modal-content bg-white text-dark">
                     <div class="modal-header">
@@ -338,7 +338,7 @@
     @endif
     <!-- Modal for order creation -->
     @if ($showViewOrderModal)
-        <div class="modal fade show d-block" tabindex="-1" style="padding-top: 50px;">
+        <div class="modal fade show d-block" tabindex="-1" style="padding-top: 50px; background-color: rgba(0, 0, 0, 0.5);">
             <div class="modal-dialog" role="document">
                 <div class="modal-content bg-white text-dark">
                     <div class="modal-header">
