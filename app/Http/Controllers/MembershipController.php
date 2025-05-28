@@ -10,10 +10,6 @@ class MembershipController extends Controller
 {
     public function index()
     {
-        if (!Auth::check() || Auth::user()->role !== 'MEMBER') {
-            return redirect()->route('login');
-        }
-
         $memberships = Membership::where('is_active', true)->get();
         return view('pages.memberships', compact('memberships'));
     }

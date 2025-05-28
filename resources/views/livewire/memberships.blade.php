@@ -37,9 +37,16 @@
         use Illuminate\Support\Facades\Route;
     @endphp
 
-    @if (Route::is('membership'))
+    @if (Route::is('memberships.index'))
         @auth
-            <livewire:feedback-form />
+            @if (auth()->user()->role === 'MEMBER')
+                <livewire:feedback-form />
+            @else
+                <p class="text-center mt-4">
+                    You want to submit feedback? Please
+                    <a href="{{ route('login') }}" class="color-primary">log in</a> as a MEMBER to provide feedback.
+                </p>
+            @endif
         @else
             <p class="text-center mt-4">
                 You want to submit feedback? Please
