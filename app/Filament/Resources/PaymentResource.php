@@ -31,10 +31,12 @@ class PaymentResource extends Resource
                         'user_memberships' => 'User Membership',
                         'orders' => 'Orders',
                     ])
+                    ->disabled()
                     ->required(),
 
                 TextInput::make('type_id')
                     ->numeric()
+                    ->disabled()
                     ->required(),
 
                 TextInput::make('amount')
@@ -83,9 +85,14 @@ class PaymentResource extends Resource
                     ->numeric()
                     ->searchable()
                     ->sortable(),
+
+                TextColumn::make('customer_name')
+                    ->label('Customer Name')
+                    ->searchable() // works only if the underlying query supports it
+                    ->getStateUsing(fn($record) => $record->customer_name ?? '-'),
                 TextColumn::make('type')->sortable()->searchable(),
                 TextColumn::make('type_id'),
-                TextColumn::make('amount')->money(),
+                TextColumn::make('amount')->money('PHP', true),
                 TextColumn::make('payment_method'),
                 TextColumn::make('status')
                     ->formatStateUsing(fn(string $state): string => ucfirst($state))
@@ -150,5 +157,10 @@ class PaymentResource extends Resource
             'create' => Pages\CreatePayment::route('/create'),
             'edit' => Pages\EditPayment::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with(['typeable.user']);
     }
 }
