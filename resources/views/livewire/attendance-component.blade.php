@@ -241,7 +241,7 @@
                                     </select>
                                     @error('selectedUserId')
                                         <div class="text-danger">{{ $message }}</div>
-                                    @enderror SERVICES
+                                    @enderror
                                 </div>
                             @endif
                             @if ($userOption === 'create')
