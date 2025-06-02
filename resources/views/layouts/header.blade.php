@@ -53,14 +53,14 @@
 <header class="header-section">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="logo">
                     <a href="/">
                         <img class="menu-logo" src="{{ asset('logos/profit-gym.png') }}" alt="">
                     </a>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <nav class="nav-menu">
                     <ul>
                         <li class="{{ Route::currentRouteName() === 'home' ? 'active' : '' }}">
@@ -106,7 +106,7 @@
                     </ul>
                 </nav>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="top-option">
                     <div class="to-search search-switch">
                         <i class="fa fa-search"></i>

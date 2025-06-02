@@ -34,7 +34,7 @@ class AttendanceComponent extends Component
     public $start_date;
     public $end_date;
     public $total_amount = 0;
-    public $payment_amount = 0;
+    public $payment_amount = null;
     public $change_amount = 0;
     public $viewUserOrder;
     public $memberships;
@@ -44,7 +44,6 @@ class AttendanceComponent extends Component
 
     protected $rules = [
         'userOption' => 'required|in:select,create',
-        'selectedUserId' => 'required_if:userOption,select|exists:users,id',
         'first_name' => 'required_if:userOption,create|string|max:255',
         'last_name' => 'required_if:userOption,create|string|max:255',
         'membership_id' => 'required|exists:memberships,id',
@@ -55,7 +54,7 @@ class AttendanceComponent extends Component
     protected $messages = [
         'userOption.required' => 'Please select whether to use an existing user or create a new one.',
         'selectedUserId.required_if' => 'Please select an existing user.',
-        'selectedUserId.exists' => 'The user is already registered.',
+        'selectedUserId.exists' => 'The given First Name and Last Name of a Member is already registered',
         'first_name.required_if' => 'First name is required for a new user.',
         'last_name.required_if' => 'Last name is required for a new user.',
         'membership_id.required' => 'Please select a membership.',
@@ -233,7 +232,7 @@ class AttendanceComponent extends Component
         $this->membership_id = null;
         $this->start_date = now()->format('Y-m-d');
         $this->total_amount = 0;
-        $this->payment_amount = 0;
+        $this->payment_amount = null;
         $this->change_amount = 0;
         $this->selectedUserId = null;
     }
@@ -258,7 +257,7 @@ class AttendanceComponent extends Component
             if ($this->step == 1) {
                 $this->validate([
                     'userOption' => 'required|in:select,create',
-                    'selectedUserId' => 'required_if:userOption,select|exists:users,id',
+                    // 'selectedUserId' => 'required_if:userOption,select|exists:users,id',
                     'first_name' => 'required_if:userOption,create|string|max:255',
                     'last_name' => 'required_if:userOption,create|string|max:255',
                 ]);
@@ -327,7 +326,7 @@ class AttendanceComponent extends Component
     {
         $this->validate([
             'userOption' => 'required|in:select,create',
-            'selectedUserId' => 'required_if:userOption,select|exists:users,id',
+            // 'selectedUserId' => 'required_if:userOption,select|exists:users,id',
             'first_name' => 'required_if:userOption,create|string|max:255',
             'last_name' => 'required_if:userOption,create|string|max:255',
             'membership_id' => 'required|exists:memberships,id',
@@ -336,6 +335,13 @@ class AttendanceComponent extends Component
         ]);
 
         $userId = $this->userOption === 'select' ? $this->selectedUserId : null;
+
+        if ($this->userOption === 'select' && $userId == null) {
+            throw ValidationException::withMessages([
+                'selectedUserId' => 'Please select a user',
+            ]);
+        }
+
         if ($this->userOption === 'create') {
             $existingUser = User::where('first_name', $this->first_name)
                 ->where('last_name', $this->last_name)
