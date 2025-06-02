@@ -73,16 +73,40 @@ class UserResource extends Resource
                     ->maxLength(255)
                     ->label('Email'),
 
-                // Role
-                Select::make('role')
-                    ->options([
-                        'ADMIN' => 'Admin',
-                        'STAFF' => 'Staff',
-                        'MEMBER' => 'Member',
-                    ])
-                    ->default('member')
+                Forms\Components\Select::make('role')
                     ->required()
-                    ->label('Role'),
+                    ->options(function ($livewire) {
+                        if ($livewire instanceof CreateUser) {
+                            return [
+                                'ADMIN' => 'ADMIN',
+                                'STAFF' => 'STAFF',
+                            ];
+                        }
+
+                        if ($livewire instanceof EditUser) {
+                            $currentRole = $livewire->record->role ?? null;
+
+                            if ($currentRole === 'CUSTOMER') {
+                                return [
+                                    'ADMIN' => 'ADMIN',
+                                    'STAFF' => 'STAFF',
+                                    'CUSTOMER' => 'CUSTOMER',
+                                ];
+                            } else {
+                                return [
+                                    'ADMIN' => 'ADMIN',
+                                    'STAFF' => 'STAFF',
+                                ];
+                            }
+                        }
+
+                        return [];
+                    })
+                    ->disabled(
+                        fn($livewire) =>
+                        $livewire instanceof EditUser &&
+                            $livewire->record->role === 'CUSTOMER'
+                    ),
 
                 TextInput::make('password')
                     ->password()
