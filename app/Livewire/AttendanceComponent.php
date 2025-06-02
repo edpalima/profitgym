@@ -149,6 +149,10 @@ class AttendanceComponent extends Component
         if ($this->total_amount) {
             $this->change_amount = max(0, (float) $this->payment_amount - (float) $this->total_amount);
         }
+
+        if ($this->totalAmount) {
+            $this->changeAmount = max(0, (float) $this->paymentAmount - (float) $this->totalAmount);
+        }
     }
 
     public function createOrder($userId)
@@ -160,6 +164,9 @@ class AttendanceComponent extends Component
         $this->quantities = [];
         $this->showViewOrderModal = false;
         $this->showOrderModal = true;
+        $this->paymentAmount = null;
+        $this->changeAmount = 0.00;
+        $this->change_amount = 0.00;
     }
 
     public function viewOrder($orderId): void

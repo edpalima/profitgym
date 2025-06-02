@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\MembershipCheckoutController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\TrainerController;
@@ -14,12 +13,10 @@ Route::get('/', function () {
     return view('pages.home');
 })->name('home');
 
-// Route::get('/workout-guide/{id}', WorkoutGuideDetails::class)->name('workout-guide.details');
 Route::get('/workout-guide/{id}', action: [WorkoutGuideController::class, 'show'])->name('workout-guide.show');
 Route::get('/trainers', [TrainerController::class, 'index'])->name('trainers.index');
 Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
 Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
-
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('register', [RegisterController::class, 'showRegisterForm'])->name('register');
@@ -34,7 +31,3 @@ Route::middleware('auth')->group(function () {
     Route::get('account', [App\Http\Controllers\PageController::class, 'account'])->name('account');
     Route::get('attendance', AttendanceComponent::class)->name('attendance');
 });
-
-// Route::get('/admin/login', function () {
-//     return redirect('/login');
-// });

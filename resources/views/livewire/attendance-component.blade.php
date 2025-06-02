@@ -164,7 +164,7 @@
                                 wire:model.live="paymentAmount" placeholder="Enter payment (₱)">
                         </div>
 
-                        @if ($changeAmount > 0 && $paymentAmount <= 0)
+                        @if ($changeAmount > 0)
                             <div class="form-group mt-2 text-end">
                                 <strong>Change: ₱{{ number_format($changeAmount, 2) }}</strong>
                             </div>

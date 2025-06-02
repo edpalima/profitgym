@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\UserMembership;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -15,11 +16,11 @@ class StatsOverview extends BaseWidget
         $totalRevenue = Payment::where('status', 'CONFIRMED')->sum('amount');
 
         return [
-            Stat::make('Total Members', UserMembership::distinct('user_id')->count('user_id'))
+            Stat::make('Total Members', User::where('role', 'MEMBER')->count('role'))
                 ->description('All registered members')
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('success')
-                ->url(route('filament.admin.resources.user-memberships.index')),
+                ->url(route('filament.admin.resources.users.index') .'?activeTab=MEMBER'),
 
             Stat::make('Active Memberships', UserMembership::where('status', 'APPROVED')
                 ->whereDate('start_date', '<=', now())

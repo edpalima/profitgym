@@ -31,10 +31,6 @@ class PageController extends Controller
 
     public function products()
     {
-        if (!Auth::check() || Auth::user()->role !== 'MEMBER') {
-            return redirect()->route('login');
-        }
-
         return view('pages.products');
     }
 

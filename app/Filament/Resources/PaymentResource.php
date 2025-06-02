@@ -46,7 +46,16 @@ class PaymentResource extends Resource
                         'OVER_THE_COUNTER' => 'Over the Counter',
                         'GCASH' => 'GCash',
                     ])
+                    ->live()
+                    ->dehydrated(fn($get) => $get('payment_method') !== null)
                     ->required(),
+
+                TextInput::make('reference_no')
+                    ->integer()
+                    ->maxLength(13)
+                    ->live()
+                    ->disabled(fn($get) => $get('payment_method') != 'GCASH')
+                    ->required(fn($get) => $get('payment_method') == 'GCASH'),
 
                 Select::make('status')
                     ->options([
