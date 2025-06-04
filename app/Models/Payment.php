@@ -21,4 +21,11 @@ class Payment extends Model
     {
         return $this->morphTo('typeable', 'type', 'type_id');
     }
+
+    public function getCustomerNameAttribute()
+    {
+        return $this->typeable && method_exists($this->typeable, 'user')
+            ? $this->typeable->user->name
+            : null;
+    }
 }

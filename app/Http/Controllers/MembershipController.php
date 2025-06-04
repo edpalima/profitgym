@@ -16,6 +16,10 @@ class MembershipController extends Controller
 
     public function checkout(Membership $membership)
     {
+        if (!Auth::check() || Auth::user()->role !== 'MEMBER') {
+            return redirect()->route('login');
+        }
+
         $userHasMembership = Auth::user()->hasMembership($membership->id);
 
         return view('pages.memberships-checkout', compact('membership', 'userHasMembership'));

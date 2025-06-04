@@ -13,12 +13,18 @@
         </div>
         <div class="row">
             <div class="ts-slider owl-carousel">
-                @foreach($trainers as $trainer)
+                @foreach ($trainers as $trainer)
                     <div class="col-lg-4">
                         <div class="ts-item set-bg" data-setbg="{{ asset('storage/' . $trainer->image) }}">
                             <div class="ts_text">
                                 <h4>{{ $trainer->first_name }} {{ $trainer->last_name }}</h4>
-                                <span>{{ $trainer->specialization }}</span>
+                                <span>{{ Str::upper($trainer->specialization) }}</span>
+                                <span>{{ $trainer->email }}</span>
+                                <span>{{ $trainer->phone }}</span>
+                                <br>
+                                <span>{{ $trainer->bio }}</span>
+                                <br>
+                                <span>{{ $trainer->description }}</span>
                             </div>
                         </div>
                     </div>

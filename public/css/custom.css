@@ -132,3 +132,59 @@
 	cursor: pointer;
 	color: #aaa;
 }
+
+#attendanceDiv {
+	/* padding: 0.25rem 0.5rem !important; */
+	/* margin-bottom: 0.25rem; */
+	/* font-size: 0.75rem; */
+}
+
+#membersTable thead th {
+	/* background-color: #343a40; */
+	/* Dark gray */
+	color: #64748b;
+	/* White text */
+	text-transform: uppercase;
+	font-size: 0.85rem;
+	font-weight: 500;
+	border-bottom: 2px solid #dee2e6;
+}
+
+#membersTable td,
+#membersTable th {
+	padding: 0.25rem 0.5rem !important;
+	font-size: 0.85rem;
+	vertical-align: middle;
+}
+
+#membersTable ul {
+	margin: 0;
+	padding-left: 1rem;
+}
+
+#membersTable li {
+	margin-bottom: 0.25rem;
+	font-size: 0.8rem;
+}
+
+#membersTable small {
+	font-size: 0.75rem;
+}
+
+#membersTable .btn-sm {
+	padding: 0.5rem 0.5rem;
+	font-size: 0.75rem;
+	margin: 0.1rem 0;
+	border-radius: calc(var(.5rem) - 2px);
+}
+
+#membersTable td.text-truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.btn-create-order {
+	background-color: #d97706 !important;
+	color: white !important;
+}

@@ -23,8 +23,13 @@
                     <x-filament::button type="submit" wire:loading.attr="disabled">
                         Generate Reports
                     </x-filament::button>
-                    <x-filament::button wire:click="printPdf" wire:loading.attr="disabled">
-                        Download Reports
+                    <x-filament::button wire:click="exportExcel" wire:loading.attr="disabled"
+                        icon="heroicon-o-arrow-down-tray">
+                        Excel
+                    </x-filament::button>
+                    <x-filament::button wire:click="printPdf" wire:loading.attr="disabled"
+                        icon="heroicon-o-arrow-down-tray">
+                        PDF
                     </x-filament::button>
                 </div>
             </div>
@@ -66,7 +71,8 @@
                     <tfoot>
                         <tr class="bg-gray-200 dark:bg-gray-800 font-semibold">
                             <td class="px-4 py-2 border border-gray-300 dark:border-gray-600">Total Revenue</td>
-                            <td class="px-4 py-2 border border-gray-300 dark:border-gray-600">₱{{ number_format($totalRevenue, 2) }}</td>
+                            <td class="px-4 py-2 border border-gray-300 dark:border-gray-600">
+                                ₱{{ number_format($totalRevenue, 2) }}</td>
                         </tr>
                     </tfoot>
                 @endif

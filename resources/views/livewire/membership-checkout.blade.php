@@ -53,8 +53,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="referenceNo" class="form-label">Reference Number</label>
-                                        <input type="text" wire:model="referenceNo" id="referenceNo"
-                                            class="form-control">
+                                        <input type="text" wire:model="referenceNo" id="referenceNo" pattern="[0-9]*"
+                                            maxlength="13" class="form-control">
                                         @error('referenceNo')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror

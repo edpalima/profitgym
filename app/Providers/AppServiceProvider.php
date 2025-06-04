@@ -37,6 +37,8 @@ class AppServiceProvider extends ServiceProvider
                 NavigationGroup::make()
                     ->label('Gym Content'),
                 NavigationGroup::make()
+                    ->label('Contacts'),
+                NavigationGroup::make()
                     ->label('Reports'),
                 NavigationGroup::make()
                     ->label('Account'),

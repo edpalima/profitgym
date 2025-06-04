@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\{
     FileUpload,
     TextInput,
@@ -41,8 +42,7 @@ class GalleryResource extends Resource
                 ->required()
                 ->directory('galleries'),
 
-            Textarea::make('description')
-                ->rows(5)
+            RichEditor::make('description')
                 ->columnSpanFull(),
 
             Toggle::make('is_active')
@@ -62,11 +62,11 @@ class GalleryResource extends Resource
 
                 ToggleColumn::make('is_active')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->since()
                     ->sortable()

@@ -1,5 +1,5 @@
-<section class="team-section team-page spad">
-    <div class="container">
+<section class="team-section team-page spad ">
+    <div class="container dark" style="color: white">
         @if (session()->has('message'))
             <div class="alert alert-success">{{ session('message') }}</div>
         @endif
@@ -16,7 +16,7 @@
 
         <div class="row">
             <div class="chart-table">
-                <table class="table table-bordered table-striped align-middle w-100">
+                <table id="orders-table" class="table table-bordered table-striped align-middle w-100">
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>

@@ -1,22 +1,20 @@
-<div class="container mt-5">
+<div id="attendanceDiv" class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <button wire:click="previousDate" class="btn btn-secondary px-4 py-2">
-            <i class="fa fa-arrow-left me-2"></i> Previous
-        </button>
+        <button wire:click="previousDate" class="btn btn-sm px-2 py-1 border " style="background-color: #d7d7d7">
+            < &nbsp;&nbsp;&nbsp;Prev </button>
 
-        <h2 class="h4 text-center mb-0">Attendance - {{ \Carbon\Carbon::parse($currentDate)->format('F d, Y') }}</h2>
+                <h2 class="h6 text-center">Attendance - {{ \Carbon\Carbon::parse($currentDate)->format('F d, Y') }}</h2>
 
-        <button wire:click="nextDate" class="btn btn-secondary px-4 py-2">
-            Next <i class="fa fa-arrow-right ms-2"></i>
-        </button>
+                <button wire:click="nextDate" class="btn btn-sm px-2 py-1 border " style="background-color: #d7d7d7;">
+                    Next &nbsp;&nbsp;&nbsp;>
+                </button>
     </div>
 
     <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-success" wire:click="showCreateUserModal">
-            + Create New User
+        <button class="btn btn-success btn-sm px-2 py-1" wire:click="showCreateUserModal">
+            + Create User Membership
         </button>
     </div>
-
     <!-- Mobile-responsive table wrapper -->
     <div class="table-responsive">
         @if (session()->has('message'))
@@ -35,37 +33,33 @@
                 No active members for the selected date.
             </div>
         @else
-            <table class="table table-bordered table-striped">
+            <table id="membersTable" class="table table-bordered table-striped">
                 <thead class="table-light">
                     <tr>
-                        <th class="px-4 py-2" style="width: 30px;">Member ID</th>
-                        <th class="px-4 py-2">Member Name</th>
-                        <th class="px-4 py-2">Membership</th>
-                        <th class="px-4 py-2">Orders</th>
-                        <th class="px-4 py-2">Time In</th>
-                        <th class="px-4 py-2">Time Out</th>
-                        <th class="px-4 py-2">Actions</th>
+                        <th>Member ID</th>
+                        <th>Member Name</th>
+                        <th>Membership</th>
+                        <th>Orders</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
                         @php
                             $attendance = $attendances->get($user->id);
-                            $membership = $user
-                                ->memberships()
-                                ->where('is_active', true)
-                                ->where('status', 'APPROVED')
-                                ->whereDate('start_date', '<=', now())
-                                ->whereDate('end_date', '>=', now())
-                                ->first();
+                            $startOfDay = \Carbon\Carbon::parse($currentDate)->startOfDay(); // 00:00:00
+                            $endOfDay = \Carbon\Carbon::parse($currentDate)->endOfDay(); // 23:59:59
+
+                            $membership = $user->memberships->first();
                         @endphp
                         <tr>
-                            <td class="px-4 py-2 text-truncate" style="max-width: 100px;">{{ $user->id }}</td>
-                            <td class="px-4 py-2">{{ $user->fullName }}</td>
-                            <td class="px-4 py-2">
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user->fullName }}</td>
+                            <td>
                                 @if ($membership)
-                                    {{ $membership->membership->name ?? 'N/A' }}
-                                    <br>
+                                    {{ $membership->membership->name ?? 'N/A' }}<br>
                                     <small class="text-muted">
                                         {{ \Carbon\Carbon::parse($membership->start_date)->format('M d') }} -
                                         {{ \Carbon\Carbon::parse($membership->end_date)->format('M d, Y') }}
@@ -74,40 +68,33 @@
                                     <span class="text-danger">No Active</span>
                                 @endif
                             </td>
-                            <td class="px-4 py-2">
+                            <td>
                                 @if (isset($orders[$user->id]) && $orders[$user->id]->count() > 0)
                                     <ul>
                                         @foreach ($orders[$user->id] as $order)
-                                            <li>
-                                                <strong>Order #{{ $order->id }}</strong> -
-                                                ₱{{ number_format($order->total_amount, 2) }}
-                                                <br>
-                                                @foreach ($order->orderItems as $orderItem)
-                                                    <span class="text-muted">{{ $orderItem->quantity }} pcs </span>-
-                                                    {{ $orderItem->product->name }}<br>
-                                                @endforeach
-                                            </li>
+                                            <button wire:click="viewOrder({{ $order->id }})"
+                                                class="btn btn-sm border border-primary text-primary bg-transparent">
+                                                <i class="fa fa-shopping-bag me-1"></i> View Order #{{ $order->id }}
+                                            </button>
                                         @endforeach
                                     </ul>
                                 @endif
                             </td>
-                            <td class="px-4 py-2">
-                                {{ $attendance && $attendance->time_in ? \Carbon\Carbon::parse($attendance->time_in)->format('h:i A') : '-' }}
+                            <td>{{ $attendance && $attendance->time_in ? \Carbon\Carbon::parse($attendance->time_in)->format('h:i A') : '-' }}
                             </td>
-                            <td class="px-4 py-2">
-                                {{ $attendance && $attendance->time_out ? \Carbon\Carbon::parse($attendance->time_out)->format('h:i A') : '-' }}
+                            <td>{{ $attendance && $attendance->time_out ? \Carbon\Carbon::parse($attendance->time_out)->format('h:i A') : '-' }}
                             </td>
-                            <td class="px-4 py-2">
+                            <td>
                                 @if (\Carbon\Carbon::parse($currentDate)->isToday())
                                     @if (!$attendance || !$attendance->time_in)
                                         <button wire:click="timeIn({{ $user->id }})"
-                                            class="btn btn-success btn-sm">Time In</button>
+                                            class="btn btn-success btn-sm text-white">Time In</button>
                                     @elseif ($attendance && $attendance->time_in && !$attendance->time_out)
                                         <button wire:click="timeOut({{ $user->id }})"
-                                            class="btn btn-primary btn-sm">Time Out</button>
+                                            class="btn btn-primary btn-sm text-white">Time Out</button>
                                     @endif
                                     <button wire:click="createOrder({{ $user->id }})"
-                                        class="btn btn-warning btn-sm">Create Order</button>
+                                        class="btn btn-warning btn-sm btn-create-order">Create Order</button>
                                 @endif
                             </td>
                         </tr>
@@ -119,8 +106,7 @@
 
     <!-- Modal for order creation -->
     @if ($showOrderModal)
-        <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5);"
-            aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal fade show d-block" tabindex="-1" style="padding-top: 50px; background-color: rgba(0, 0, 0, 0.5);">
             <div class="modal-dialog" role="document">
                 <div class="modal-content bg-white text-dark">
                     <div class="modal-header">
@@ -178,9 +164,11 @@
                                 wire:model.live="paymentAmount" placeholder="Enter payment (₱)">
                         </div>
 
-                        <div class="form-group mt-2 text-end">
-                            <strong>Change: ₱{{ number_format($changeAmount, 2) }}</strong>
-                        </div>
+                        @if ($changeAmount > 0)
+                            <div class="form-group mt-2 text-end">
+                                <strong>Change: ₱{{ number_format($changeAmount, 2) }}</strong>
+                            </div>
+                        @endif
 
                         @error('paymentAmount')
                             <div class="text-danger">{{ $message }}</div>
@@ -189,8 +177,10 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
                             wire:click="$set('showOrderModal', false)">Cancel</button>
-                        <button type="button" class="btn btn-primary" wire:click="submitOrder">Confirm Payment and
-                            Submit Order</button>
+                        <button type="button" class="btn btn-create-order" wire:click="submitOrder"
+                            @if ($paymentAmount <= 0 && empty($selectedProducts)) disabled @endif>
+                            Confirm Payment and Submit Order
+                        </button>
                     </div>
                 </div>
             </div>
@@ -198,86 +188,211 @@
     @endif
     <!-- Modal for new user creation -->
     @if ($userModal)
-        <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5);"
-            aria-labelledby="userModalLabel" aria-hidden="true">
+        <div class="modal fade show d-block" tabindex="-1"
+            style="padding-top: 50px; background-color: rgba(0, 0, 0, 0.5);">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content bg-white text-dark" style="height: 80vh;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userModalLabel">Create New Member</h5>
+                        <button type="button" class="close" wire:click="$set('userModal', false)" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-dark" style="max-height: 600px; overflow-y: auto;">
+                        <!-- Progress Indicator -->
+                        <div class="mb-4">
+                            <ul class="nav nav-pills nav-fill">
+                                <li class="nav-item">
+                                    <span
+                                        class="nav-link {{ $step == 1 ? 'active btn-sm btn-create-order' : '' }}">Step
+                                        1: User
+                                        Selection</span>
+                                </li>
+                                <li class="nav-item">
+                                    <span
+                                        class="nav-link {{ $step == 2 ? 'active btn-sm btn-create-order' : '' }}">Step
+                                        2: Membership</span>
+                                </li>
+                                <li class="nav-item">
+                                    <span
+                                        class="nav-link {{ $step == 3 ? 'active btn-sm btn-create-order' : '' }}">Step
+                                        3: Payment</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Step 1: User Selection -->
+                        @if ($step == 1)
+                            <div class="mb-3">
+                                <label class="form-label">User Option</label>
+                                <select class="form-control" wire:model.live="userOption">
+                                    <option value="select">Select Existing User</option>
+                                    <option value="create">Create New User</option>
+                                </select>
+                            </div>
+                            @if ($userOption === 'select')
+                                <div class="mb-3">
+                                    <label class="form-label">Select Existing User</label>
+                                    <select class="form-control" wire:model="selectedUserId">
+                                        <option value="">-- Choose User --</option>
+                                        @foreach ($existingUsers as $user)
+                                            <option value="{{ $user->id }}">{{ $user->fullName }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('selectedUserId')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
+                            @if ($userOption === 'create')
+                                <div class="mb-3">
+                                    <label for="first_name" class="form-label">First Name</label>
+                                    <input type="text" id="first_name" wire:model.defer="first_name"
+                                        class="form-control">
+                                    @error('first_name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="last_name" class="form-label">Last Name</label>
+                                    <input type="text" id="last_name" wire:model.defer="last_name"
+                                        class="form-control">
+                                    @error('last_name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
+                        @endif
+
+                        <!-- Step 2: Membership Selection -->
+                        @if ($step == 2)
+                            <div class="mb-3">
+                                <label for="membership_id" class="form-label">Select Membership</label>
+                                <select id="membership_id" wire:model.live="membership_id" class="form-control">
+                                    <option value="">-- Select Membership --</option>
+                                    @foreach ($memberships as $membership)
+                                        <option value="{{ $membership->id }}">{{ $membership->name }} -
+                                            ₱{{ number_format($membership->price, 2) }}</option>
+                                    @endforeach
+                                </select>
+                                @error('membership_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="start_date" class="form-label">Select Start Date</label>
+                                <input type="date" id="start_date" wire:model="start_date" class="form-control">
+                                @error('start_date')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        @endif
+
+                        <!-- Step 3: Payment Details -->
+                        @if ($step == 3)
+                            <div class="mb-3">
+                                <label for="total_amount" class="form-label">Total Amount</label>
+                                <input type="text" id="total_amount" wire:model.live="total_amount"
+                                    class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Payment Amount:</label>
+                                <input type="number" min="0" step="0.01" class="form-control"
+                                    wire:model.live="payment_amount" placeholder="Enter payment (₱)">
+                            </div>
+                            <div class="mb-3">
+                                <strong>Change: ₱{{ number_format($change_amount, 2) }}</strong>
+                            </div>
+                        @endif
+                        @if ($userModal && $errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        @if ($step == 1)
+                            <button type="button" class="btn btn-secondary"
+                                wire:click="$set('userModal', false)">Cancel</button>
+                        @endif
+                        @if ($step > 1)
+                            <button type="button" class="btn btn-secondary"
+                                wire:click="$set('step', {{ $step - 1 }})">Back</button>
+                        @endif
+                        @if ($step < 3)
+                            <button type="button" class="btn btn-primary btn-sm btn-create-order"
+                                wire:click="$set('step', {{ $step + 1 }})">Next</button>
+                        @else
+                            <button type="button" class="btn btn-primary btn-sm btn-create-order"
+                                wire:click="createNewUser">Create
+                                Member</button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    <!-- Modal for order creation -->
+    @if ($showViewOrderModal)
+        <div class="modal fade show d-block" tabindex="-1" style="padding-top: 50px; background-color: rgba(0, 0, 0, 0.5);">
             <div class="modal-dialog" role="document">
                 <div class="modal-content bg-white text-dark">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="userModalLabel">Create New Member</h5>
-                        <button type="button" class="close" wire:click="$set('userModal', false)"
+                        <h5 class="modal-title" id="orderModalLabel">Order #{{ $viewUserOrder->id }} for
+                            {{ $order->user->fullName }}
+                        </h5><br>
+                        <button type="button" class="close" wire:click="$set('showViewOrderModal', false)"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    {{-- <div wire:loading wire:target="viewOrder">
+                        <p>Loading order details...</p>
+                    </div> --}}
                     <div class="modal-body text-dark" style="max-height: 400px; overflow-y: auto;">
-                        <div class="mb-3">
-                            <label for="first_name" class="form-label">First Name</label>
-                            <input type="text" id="first_name" wire:model.defer="first_name"
-                                class="form-control">
-                            @error('first_name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="last_name" class="form-label">Last Name</label>
-                            <input type="text" id="last_name" wire:model.defer="last_name" class="form-control">
-                            @error('last_name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        {{-- <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" id="email" wire:model.defer="email" class="form-control">
-                            @error('email')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div> --}}
-
-                        <div class="mb-3">
-                            <label for="membership_id" class="form-label">Select Membership</label>
-                            <select id="membership_id" wire:model.live="membership_id" class="form-control">
-                                <option value="">-- Select Membership --</option>
-                                @foreach ($memberships as $membership)
-                                    <option value="{{ $membership->id }}">{{ $membership->name }} -
-                                        ₱{{ number_format($membership->price, 2) }}</option>
-                                @endforeach
-                            </select>
-                            @error('membership_id')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="start_date" class="form-label">Select Start Date</label>
-                            <input type="date" id="start_date" wire:model="start_date" class="form-control">
-                            @error('start_date')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="total_amount" class="form-label">Total Amount</label>
-                            <input type="text" id="total_amount" wire:model.live="total_amount"
-                                class="form-control" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Payment Amount:</label>
-                            <input type="number" min="0" step="0.01" class="form-control"
-                                wire:model.live="payment_amount" placeholder="Enter payment (₱)">
-                        </div>
-
-                        <div class="mb-3">
-                            <strong>Change: ₱{{ number_format($change_amount, 2) }}</strong>
-                        </div>
+                        {{-- {{dd($order)}} --}}
+                        @if ($viewUserOrder)
+                            <h6 class="text-muted">Product Information:</h6>
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Unit Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($viewUserOrder->orderItems as $item)
+                                            <tr>
+                                                <td>{{ $item->product->name }}</td>
+                                                <td>₱{{ number_format($item->product->price, 2) }}</td>
+                                                <td>{{ $item->quantity }}</td>
+                                                <td>₱{{ number_format($item->product->price * $item->quantity, 2) }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="3" class="text-end">Total:</th>
+                                            <th>₱{{ number_format($viewUserOrder->total_amount, 2) }}</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        @endif
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
-                            wire:click="$set('userModal', false)">Cancel</button>
-                        <button type="button" class="btn btn-primary" wire:click="createNewUser">Create
-                            Member</button>
+                            wire:click="$set('showViewOrderModal', false)">Cancel</button>
+                        <button type="button" class="btn btn-warning btn-create-order"
+                            wire:click="createOrder({{ $viewUserOrder->user->id }})">Create Order</button>
                     </div>
                 </div>
             </div>

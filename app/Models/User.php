@@ -6,6 +6,7 @@ use Filament\Panel;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -53,10 +54,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'remember_token',
     ];
 
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->role === self::ROLE_ADMIN || $this->role === self::ROLE_STAFF;
-    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -68,6 +66,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->role === self::ROLE_ADMIN || $this->role === self::ROLE_STAFF;
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === self::ROLE_ADMIN;
     }
 
     public function memberships()
@@ -170,5 +178,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             ->whereDate('start_date', '<=', $today)
             ->whereDate('end_date', '>=', $today)
             ->first();
+    }
+
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->first_name . ' ' . $this->last_name,
+        );
     }
 }

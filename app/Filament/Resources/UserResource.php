@@ -45,15 +45,15 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->label('First Name'),
+
+                TextInput::make('middle_name')
+                    ->nullable()
+                    ->maxLength(255)
+                    ->label('Middle Name'),
                 TextInput::make('last_name')
                     ->required()
                     ->maxLength(255)
                     ->label('Last Name'),
-                TextInput::make('middle_name')
-                    ->nullable()
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Middle Name'),
 
                 TextInput::make('address')
                     ->nullable()
@@ -61,6 +61,7 @@ class UserResource extends Resource
                     ->maxLength(255)
                     ->label('Address'),
                 TextInput::make('phone_number')
+                    ->numeric()
                     ->nullable()
                     ->required()
                     ->maxLength(255)
@@ -72,16 +73,40 @@ class UserResource extends Resource
                     ->maxLength(255)
                     ->label('Email'),
 
-                // Role
-                Select::make('role')
-                    ->options([
-                        'ADMIN' => 'Admin',
-                        'STAFF' => 'Staff',
-                        'MEMBER' => 'Member',
-                    ])
-                    ->default('member')
+                Forms\Components\Select::make('role')
                     ->required()
-                    ->label('Role'),
+                    ->options(function ($livewire) {
+                        if ($livewire instanceof CreateUser) {
+                            return [
+                                'ADMIN' => 'ADMIN',
+                                'STAFF' => 'STAFF',
+                            ];
+                        }
+
+                        if ($livewire instanceof EditUser) {
+                            $currentRole = $livewire->record->role ?? null;
+
+                            if ($currentRole === 'CUSTOMER') {
+                                return [
+                                    'ADMIN' => 'ADMIN',
+                                    'STAFF' => 'STAFF',
+                                    'CUSTOMER' => 'CUSTOMER',
+                                ];
+                            } else {
+                                return [
+                                    'ADMIN' => 'ADMIN',
+                                    'STAFF' => 'STAFF',
+                                ];
+                            }
+                        }
+
+                        return [];
+                    })
+                    ->disabled(
+                        fn($livewire) =>
+                        $livewire instanceof EditUser &&
+                            $livewire->record->role === 'CUSTOMER'
+                    ),
 
                 TextInput::make('password')
                     ->password()
@@ -112,6 +137,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('first_name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('last_name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('email')->sortable()->searchable(),

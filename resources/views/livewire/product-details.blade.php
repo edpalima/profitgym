@@ -113,7 +113,8 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Reference Number</label>
-                                            <input type="text" wire:model="referenceNo"
+                                            <input type="text" wire:model="referenceNo" max="10000000000000" pattern="[0-9]*" maxlength="13"
+                                                title="Numbers only"
                                                 class="form-control bg-dark text-white border-secondary">
                                             @error('referenceNo')
                                                 <span class="text-danger">{{ $message }}</span>

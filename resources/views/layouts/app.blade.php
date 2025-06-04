@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.css" />
     
     @livewireStyles
 </head>
@@ -54,7 +55,23 @@
     <script src="{{ asset('js/jquery.slicknav.js') }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-
+    <script src="https://cdn.datatables.net/2.3.1/js/dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#orders-table').DataTable({
+                pageLength: 10,
+                lengthMenu: [10, 25, 50, 100],
+                paging: true,
+                searching: true,
+                lengthChange: true,
+                responsive: true,
+                autoWidth: false,
+                order: [
+                    [0, 'asc']
+                ], // Default sort by ID
+            });
+        });
+    </script>
 
     @livewireScripts
 </body>

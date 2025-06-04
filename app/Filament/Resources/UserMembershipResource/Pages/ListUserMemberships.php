@@ -4,11 +4,13 @@ namespace App\Filament\Resources\UserMembershipResource\Pages;
 
 use App\Filament\Resources\UserMembershipResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Pages\ListRecords\Tab;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\UserMembership;
+
 class ListUserMemberships extends ListRecords
 {
     protected static string $resource = UserMembershipResource::class;
@@ -16,32 +18,36 @@ class ListUserMemberships extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Action::make('viewAttendance')
+                ->label('View Attendance')
+                ->url(route('filament.admin.pages.attendance-page')) // Change to your actual route
+                ->icon('heroicon-o-eye')
+                ->color('primary'),
         ];
     }
     public function getTabs(): array
-{
-    // Get counts for each status
-    $statusCounts = UserMembership::select('status', DB::raw('count(*) as total'))
-        ->groupBy('status')
-        ->pluck('total', 'status');
+    {
+        // Get counts for each status
+        $statusCounts = UserMembership::select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status');
 
-    return [
-        'all' => Tab::make('All')
-            ->badge(UserMembership::count())
-            ->query(fn (Builder $query) => $query),
+        return [
+            'all' => Tab::make('All')
+                ->badge(UserMembership::count())
+                ->query(fn(Builder $query) => $query),
 
-        'pending' => Tab::make('Pending')
-            ->badge($statusCounts->get('PENDING', 0))
-            ->query(fn (Builder $query) => $query->where('status', 'PENDING')),
+            'pending' => Tab::make('Pending')
+                ->badge($statusCounts->get('PENDING', 0))
+                ->query(fn(Builder $query) => $query->where('status', 'PENDING')),
 
-        'approved' => Tab::make('Approved')
-            ->badge($statusCounts->get('APPROVED', 0))
-            ->query(fn (Builder $query) => $query->where('status', 'APPROVED')),
+            'approved' => Tab::make('Approved')
+                ->badge($statusCounts->get('APPROVED', 0))
+                ->query(fn(Builder $query) => $query->where('status', 'APPROVED')),
 
-        'rejected' => Tab::make('Rejected')
-            ->badge($statusCounts->get('REJECTED', 0))
-            ->query(fn (Builder $query) => $query->where('status', 'REJECTED')),
-    ];
-}
+            'rejected' => Tab::make('Rejected')
+                ->badge($statusCounts->get('REJECTED', 0))
+                ->query(fn(Builder $query) => $query->where('status', 'REJECTED')),
+        ];
+    }
 }

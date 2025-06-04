@@ -100,7 +100,16 @@ class OrderResource extends Resource
                         ->label('Payment Records')
                         ->relationship('payments')
                         ->schema([
-                            Grid::make(4)->schema([
+                            Grid::make(5)->schema([
+                                Forms\Components\FileUpload::make('image')
+                                    ->disk('public')
+                                    ->directory('payments')
+                                    ->disabled(fn($get) => $get('image') !== null)
+                                    ->image()
+                                    ->imagePreviewHeight('250')
+                                    ->downloadable()
+                                    ->openable()
+                                    ->label('Payment Image'),
                                 Select::make('payment_method')
                                     ->label('Payment Method')
                                     ->options([
@@ -141,7 +150,7 @@ class OrderResource extends Resource
                 TextColumn::make('id')->label('Order ID')->sortable(),
                 TextColumn::make('user.name')->label('User')->sortable()->searchable(),
                 TextColumn::make('total_amount')->label('Total')->money('PHP')->sortable(),
-                                TextColumn::make('status')
+                TextColumn::make('status')
                     ->formatStateUsing(fn(string $state): string => ucfirst($state))
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {

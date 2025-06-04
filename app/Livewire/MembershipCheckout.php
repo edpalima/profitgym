@@ -67,7 +67,7 @@ class MembershipCheckout extends Component
             'image' => $paymentImage,
         ]);
 
-        session()->flash('success', 'Membership checkout submitted! Awaiting approval.');
+        session()->flash('success-member', 'Membership checkout submitted! Awaiting approval.');
         return redirect()->route('memberships.index');
     }
 

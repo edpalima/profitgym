@@ -20,25 +20,23 @@
             <li><a href="{{ route('products') }}">Products</a></li>
             <li><a href="{{ route('home') }}#workout-guides">Workout Guide</a></li>
             <li><a href="{{ route('trainers.index') }}">Trainers</a></li>
-            @if (!Auth::check() || Auth::user()->role !== 'member')
+            <li><a href="{{ route('home') }}#contact-section">Contact Us</a></li>
+            @if (!Auth::check() || Auth::user()->role !== \App\Models\User::ROLE_MEMBER)
                 <li class="{{ Route::currentRouteName() === 'login' ? 'active' : '' }}">
                     <a href="{{ route('login') }}">Sign In</a>
                 </li>
             @else
                 <li><a href="{{ route('logout') }}">Logout</a></li>
+                <li><a href="#">My Account</a>
+                    <ul class="dropdown">
+                        
+                        <li><a href="{{ route('account') }}">Profile</a></li>
+                        <li><a href="{{ route('orders') }}">Orders</a></li>
+                        <li><a href="{{ route('feedbacks') }}">My Feedbacks</a></li>
+                        <li><a href="{{ route('logout') }}">Logout</a></li>
+                    </ul>
+                </li>
             @endif
-            {{-- <li><a href="#">Pages</a>
-                <ul class="dropdown">
-                    <li><a href="./about-us.html">About us</a></li>
-                    <li><a href="./class-timetable.html">Classes timetable</a></li>
-                    <li><a href="./bmi-calculator.html">Bmi calculate</a></li>
-                    <li><a href="./team.html">Our team</a></li>
-                    <li><a href="./gallery.html">Gallery</a></li>
-                    <li><a href="./blog.html">Our blog</a></li>
-                    <li><a href="./404.html">404</a></li>
-                </ul>
-            </li> --}}
-            {{-- <li><a href="./contact.html">Contact</a></li> --}}
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -55,14 +53,14 @@
 <header class="header-section">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="logo">
                     <a href="/">
                         <img class="menu-logo" src="{{ asset('logos/profit-gym.png') }}" alt="">
                     </a>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <nav class="nav-menu">
                     <ul>
                         <li class="{{ Route::currentRouteName() === 'home' ? 'active' : '' }}">
@@ -85,6 +83,9 @@
                         {{-- <li><a href="./services.html">Services</a></li>
                         <li><a href="./team.html">Our Team</a></li> --}}
 
+                        <li class="">
+                            <a href="{{ route('home') }}#contact-section">Contact Us</a>
+                        </li>
                         @if (!Auth::check() || Auth::user()->role !== \App\Models\User::ROLE_MEMBER)
                             <li class="{{ Route::currentRouteName() === 'login' ? 'active' : '' }}">
                                 <a href="{{ route('login') }}">Sign In</a>
@@ -105,13 +106,14 @@
                     </ul>
                 </nav>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="top-option">
                     <div class="to-search search-switch">
                         <i class="fa fa-search"></i>
                     </div>
                     <div class="to-social">
-                        <a href="https://www.facebook.com/ProfitTonesFlexes" target="_blank" ><i class="fa fa-facebook"></i></a>
+                        <a href="https://www.facebook.com/ProfitTonesFlexes" target="_blank"><i
+                                class="fa fa-facebook"></i></a>
                         <a href="#"><i class="fa fa-twitter"></i></a>
                         <a href="#"><i class="fa fa-youtube-play"></i></a>
                         <a href="#"><i class="fa fa-instagram"></i></a>
