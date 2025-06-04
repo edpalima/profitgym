@@ -140,19 +140,20 @@ class UserMembershipResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label('Id')
-                    ->sortable(),
+                //TextColumn::make('id')->label('Id')
+                    //->sortable(),
                 TextColumn::make('user.name')
-                    ->label('User')
+                    ->label('USER')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('membership.name')->label('Membership')
+                TextColumn::make('membership.name')->label('MEMBERSHIP')
                     ->sortable(),
-                TextColumn::make('start_date')->date()
+                TextColumn::make('start_date')->label('START DATE')->date()
                     ->sortable(),
-                TextColumn::make('end_date')->date()
+                TextColumn::make('end_date')->label('END DATE')->date()
                     ->sortable(),
                 TextColumn::make('status')
+                   ->label('STATUS')
                     ->badge()
                     ->icon(fn(string $state): string => match ($state) {
                         'PENDING' => 'heroicon-o-clock',
@@ -171,9 +172,10 @@ class UserMembershipResource extends Resource
                 //     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime('F j, Y g:i A') // Format in words with AM/PM
-                    ->label('Date Submitted')
+                    ->label('DATE SUBMITTED')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()
@@ -195,6 +197,13 @@ class UserMembershipResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+                Tables\Actions\BulkAction::make('printAll')
+                    ->label('Print All Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('info')
+                    ->deselectRecordsAfterCompletion()
+                    ->url(route('print.all.data.usermembership'))
+                    ->openUrlInNewTab(),
             ]);
     }
 

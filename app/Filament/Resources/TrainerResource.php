@@ -112,17 +112,19 @@ class TrainerResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->circular(),
-                TextColumn::make('first_name')->searchable(),
-                TextColumn::make('last_name')->searchable(),
-                TextColumn::make('specialization')->searchable(),
-                TextColumn::make('email')->searchable(),
-                TextColumn::make('phone'),
+                ImageColumn::make('image')->label('DURATION VALUE')->circular(),
+                TextColumn::make('first_name')->label('FIRST NAME')->sortable()->searchable(),
+                TextColumn::make('last_name')->label('LAST NAME')->sortable()->searchable(),
+                TextColumn::make('specialization')->label('SPECIALIZATION')->sortable()->searchable(),
+                TextColumn::make('email')->label('EMAIL')->sortable()->searchable(),
+                TextColumn::make('phone')->label('PHONE')->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('CREATED AT')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()

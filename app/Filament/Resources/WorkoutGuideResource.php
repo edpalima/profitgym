@@ -77,14 +77,14 @@ class WorkoutGuideResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('featured_photo')
-                    ->label('Photo')
+                    ->label('PHOTO')
                     ->size(50),
-                TextColumn::make('title')->sortable()->searchable(),
+                TextColumn::make('title')->label('TITLE')->sortable()->searchable(),
                 TextColumn::make('description')
-                    ->label('Description')
+                    ->label('DESCRIPTION')
                     ->formatStateUsing(fn($state) => Str::limit(strip_tags($state), 50))
                     ->tooltip(fn($record) => strip_tags($record->description)),
-                ToggleColumn::make('is_active')->sortable(),
+                ToggleColumn::make('is_active')->label('IS ACTIVE')->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

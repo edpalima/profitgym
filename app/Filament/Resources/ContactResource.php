@@ -44,10 +44,10 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('message')->limit(50),
-                Tables\Columns\TextColumn::make('created_at')->dateTime('M d, Y H:i')->sortable(),
+                Tables\Columns\TextColumn::make('name')->label('NAME')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('email')->label('EMAIL')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('message')->label('MESSAGE')->limit(50),
+                Tables\Columns\TextColumn::make('created_at')->label('CREATED AT')->dateTime('M d, Y H:i')->sortable(),
             ])
             ->filters([
                 //

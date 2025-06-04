@@ -25,18 +25,28 @@ class ListPayments extends ListRecords
         $paymentCounts = Payment::select('payment_method', DB::raw('count(*) as total'))
             ->groupBy('payment_method')
             ->pluck('total', 'payment_method');
-
+        $paymentColors = [
+            'GCASH' => 'info',
+            'OVER_THE_COUNTER' => 'success',
+            'all' => 'gray',
+        ];
         return [
             'all' => Tab::make('All')
+            ->label('ALL')
                 ->badge(Payment::count()) // Total count of all payments
+                ->badgeColor($paymentColors['all'])
                 ->query(fn(Builder $query) => $query),
 
             'GCASH' => Tab::make('GCash')
+            ->label('GCASH')
                 ->badge($paymentCounts->get('GCASH', 0)) // Count for GCash payments
+                ->badgeColor($paymentColors['GCASH'])
                 ->query(fn(Builder $query) => $query->where('payment_method', 'GCASH')),
 
             'OVER_THE_COUNTER' => Tab::make('Over the Counter')
+            ->label('OVER THE COUNTER')
                 ->badge($paymentCounts->get('OVER_THE_COUNTER', 0)) // Count for Over the Counter payments
+                ->badgeColor($paymentColors['OVER_THE_COUNTER'])
                 ->query(fn(Builder $query) => $query->where('payment_method', 'OVER_THE_COUNTER')),
         ];
     }

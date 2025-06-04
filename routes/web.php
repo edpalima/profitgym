@@ -3,7 +3,12 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\UserMembershipController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\WorkoutGuideController;
 use App\Livewire\AttendanceComponent;
@@ -31,3 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('account', [App\Http\Controllers\PageController::class, 'account'])->name('account');
     Route::get('attendance', AttendanceComponent::class)->name('attendance');
 });
+Route::get('/print-all-data.usermembership', [UserMembershipController::class, 'printAllDataUserMembership'])->name('print.all.data.usermembership');
+Route::get('/print-all-data.orders', [OrderController::class, 'printAllDataOrders'])->name('print.all.data.orders');
+Route::get('/print-all-data.payments', [PaymentController::class, 'printAllDataPayment'])->name('print.all.data.payments');
+Route::get('/print-all-data.users', [UserController::class, 'printAllDataUser'])->name('print.all.data.users');
+Route::get('/print-all-data.products', [ProductController::class, 'printAllDataProduct'])->name('print.all.data.products');

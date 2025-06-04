@@ -29,7 +29,12 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             // ->login()
             ->colors([
-                'primary' => '#f36100',
+            'danger' => Color::Red,
+            'gray' => Color::Slate,
+            'info' => Color::Blue,
+            'primary' => '#f36100',
+            'success' => Color::Emerald,
+            'warning' => Color::Orange,
             ])
             ->font('Poppins')
             ->profile(isSimple: false)

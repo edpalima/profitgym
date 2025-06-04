@@ -37,10 +37,11 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                //Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('name')->label('NAME')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->label('CREATED AT')->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()
