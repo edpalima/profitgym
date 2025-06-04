@@ -141,16 +141,18 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('first_name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('last_name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('role')->sortable(),
+                //Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('first_name')->label('FIRST NAME')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('last_name')->label('LAST NAME')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('email')->label('EMAIL')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('role')->label('ROLE')->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('CREATED AT')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()
@@ -163,10 +165,17 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
+             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ]), 
+                Tables\Actions\BulkAction::make('printAll')
+                    ->label('Print All Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('info')
+                    ->deselectRecordsAfterCompletion()
+                    ->url(route('print.all.data.users'))
+                    ->openUrlInNewTab(),
             ]);
     }
 

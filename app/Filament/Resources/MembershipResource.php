@@ -87,14 +87,15 @@ class MembershipResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('duration_unit')->sortable(),
-                Tables\Columns\TextColumn::make('duration_value')->sortable(),
-                Tables\Columns\TextColumn::make('price')->money('PHP')->sortable(),
-                Tables\Columns\TextColumn::make('is_active')->label('Is Active')->sortable()->formatStateUsing(fn($state) => $state ? 'Yes' : 'No'),
-                Tables\Columns\TextColumn::make('walk_in_only')->label('Walk In Only')->sortable()->formatStateUsing(fn($state) => $state ? 'Yes' : 'No'),
-                Tables\Columns\TextColumn::make('created_at')->dateTime('Y-m-d H:i'),
+                Tables\Columns\TextColumn::make('name')->label('NAME')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('duration_unit')->label('DURATION UNIT')->sortable(),
+                Tables\Columns\TextColumn::make('duration_value')->label('DURATION VALUE')->sortable(),
+                Tables\Columns\TextColumn::make('price')->label('PRICE')->money('PHP')->sortable(),
+                Tables\Columns\TextColumn::make('is_active')->label('IS ACTIVE')->sortable()->formatStateUsing(fn($state) => $state ? 'Yes' : 'No'),
+                Tables\Columns\TextColumn::make('walk_in_only')->label('WALK IN ONLY')->sortable()->formatStateUsing(fn($state) => $state ? 'Yes' : 'No'),
+                Tables\Columns\TextColumn::make('created_at')->label('CREATED AT')->dateTime('Y-m-d H:i'),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()

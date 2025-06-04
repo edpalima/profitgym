@@ -54,19 +54,23 @@ class GalleryResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image'),
+                ImageColumn::make('image')->label('IMAGE'),
 
                 TextColumn::make('title')
+                ->label('TITLE')
                     ->sortable()
                     ->searchable(),
 
                 ToggleColumn::make('is_active')
+                ->label('IS ACTIVE')
                     ->sortable(),
                 TextColumn::make('created_at')
+                ->label('CREATED AT')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
+              TextColumn::make('updated_at')
+              ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()

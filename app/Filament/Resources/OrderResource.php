@@ -33,24 +33,6 @@ class OrderResource extends Resource
                 ->schema([
                     Grid::make(3)
                         ->schema([
-                            Placeholder::make('id')
-                                ->label('Order ID')
-                                ->content(fn($record) => $record->id ?? '-'),
-
-                            Select::make('user_id')
-                                ->label('User')
-                                ->relationship('user', 'name')
-                                ->searchable()
-                                ->required(),
-
-                            TextInput::make('total_amount')
-                                ->label('Total Amount')
-                                ->numeric()
-                                ->required(),
-                        ]),
-
-                    Grid::make(3)
-                        ->schema([
                             Select::make('status')
                                 ->label('Status')
                                 ->options([
@@ -59,7 +41,27 @@ class OrderResource extends Resource
                                     'COMPLETED' => 'COMPLETED',
                                     'REJECTED' => 'REJECTED',
                                 ])
+                                ->required(),    
+                            Select::make('user_id')
+                                ->disabled()
+                                ->label('User')
+                                ->relationship('user', 'name')
+                                ->searchable()
                                 ->required(),
+
+                            TextInput::make('total_amount')
+                                ->label('Total Amount')
+                                ->numeric()
+                                ->required()
+                                ->disabled(),
+                        ]),
+
+                    Grid::make(3)
+                    
+                        ->schema([
+                            Placeholder::make('id')
+                                ->label('Order ID')
+                                ->content(fn($record) => $record->id ?? '-'),
 
                             Placeholder::make('created_at')
                                 ->label('Created At')
@@ -151,10 +153,11 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label('Order ID')->sortable(),
-                TextColumn::make('user.name')->label('User')->sortable()->searchable(),
-                TextColumn::make('total_amount')->label('Total')->money('PHP')->sortable(),
+                //TextColumn::make('id')->label('Order ID')->sortable(),
+                TextColumn::make('user.name')->label('USER')->sortable()->searchable(),
+                TextColumn::make('total_amount')->label('TOTAL AMOUNT')->money('PHP')->sortable(),
                 TextColumn::make('status')
+                     ->label('STATUS')
                     ->formatStateUsing(fn(string $state): string => ucfirst($state))
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
@@ -164,8 +167,9 @@ class OrderResource extends Resource
                         'REJECTED' => 'danger',
                         default => 'secondary',
                     }),
-                TextColumn::make('created_at')->label('Date')->dateTime('M d, Y h:i A')->sortable(),
+                TextColumn::make('created_at')->label('DATE')->dateTime('M d, Y h:i A')->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()
@@ -177,7 +181,16 @@ class OrderResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]), 
+                Tables\Actions\BulkAction::make('printAll')
+                    ->label('Print All Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('info')
+                    ->deselectRecordsAfterCompletion()
+                    ->url(route('print.all.data.orders'))
+                    ->openUrlInNewTab(),
             ]);
     }
 

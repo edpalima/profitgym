@@ -66,27 +66,30 @@ class FeedbackResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.full_name')
-                    ->label('User')
+                    ->label('USER')
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('membership.name')
-                    ->label('Membership')
+                    ->label('MEMBERSHIP')
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('message')
+                    ->label('MESSAGE')
                     ->limit(50)
                     ->wrap(),
 
                 Tables\Columns\IconColumn::make('is_approved')
+                    ->label('IS APPROVED')
                     ->boolean()
-                    ->label('Approved'),
+                    ->label('APPROVED'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->label('Submitted At'),
+                    ->label('CREATED AT'),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()

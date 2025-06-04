@@ -89,14 +89,15 @@ class PaymentResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('customer_name')
-                    ->label('Customer Name')
+                    ->label('CUSTOMER NAME')
                     ->searchable() // works only if the underlying query supports it
                     ->getStateUsing(fn($record) => $record->customer_name ?? '-'),
-                TextColumn::make('type')->sortable()->searchable(),
-                TextColumn::make('type_id'),
-                TextColumn::make('amount')->money('PHP', true),
-                TextColumn::make('payment_method'),
+                TextColumn::make('type')->label('TYPE')->sortable()->searchable(),
+                //TextColumn::make('type_id'),
+                TextColumn::make('amount')->label('AMOUNT')->money('PHP', true),
+                TextColumn::make('payment_method')->label('PAYMENT METHOD'),
                 TextColumn::make('status')
+                    ->label('STATUS')
                     ->formatStateUsing(fn(string $state): string => ucfirst($state))
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
@@ -105,13 +106,15 @@ class PaymentResource extends Resource
                         'REJECTED' => 'danger',
                         default => 'secondary',
                     }),
-                TextColumn::make('payment_date')->date(),
-                ImageColumn::make('image')->disk('public')->circular(),
+                TextColumn::make('payment_date')->label('PAYMENT DATE')->date(),
+                ImageColumn::make('image')->disk('public')->label('IMAGE')->circular(),
                 Tables\Columns\TextColumn::make('created_at')
+                ->label('CREATED AT')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()
@@ -133,8 +136,16 @@ class PaymentResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+                Tables\Actions\BulkAction::make('printAll')
+                    ->label('Print All Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('info')
+                    ->deselectRecordsAfterCompletion()
+                    ->url(route('print.all.data.payments'))
+                    ->openUrlInNewTab(),
             ]);
     }
 

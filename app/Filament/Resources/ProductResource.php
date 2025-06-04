@@ -70,20 +70,23 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable()->searchable()
+                TextColumn::make('name')->label('NAME')->sortable()->searchable()
                     ->searchable(),
                 TextColumn::make('category.name')
+                    ->label('CATEGORY')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('price'),
-                TextColumn::make('stock_quantity')->sortable(),
-                BooleanColumn::make('is_active'),
+                TextColumn::make('price')->money('PHP')->label('PRICE'),
+                TextColumn::make('stock_quantity')->label('STOCK')->sortable(),
+                BooleanColumn::make('is_active')->label('IS ACTIVE'),
                 TextColumn::make('created_at')->dateTime('M d, Y'),
                 Tables\Columns\TextColumn::make('created_at')
+                ->label('CREATED AT')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                ->label('UPDATED AT')
                     ->dateTime()
                     ->since()
                     ->sortable()
@@ -100,10 +103,17 @@ class ProductResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
+             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ]), 
+                Tables\Actions\BulkAction::make('printAll')
+                    ->label('Print All Data')
+                    ->icon('heroicon-o-printer')
+                    ->color('info')
+                    ->deselectRecordsAfterCompletion()
+                    ->url(route('print.all.data.products'))
+                    ->openUrlInNewTab(),
             ]);
     }
 
