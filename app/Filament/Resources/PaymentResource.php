@@ -41,6 +41,7 @@ class PaymentResource extends Resource
 
                 TextInput::make('amount')
                     ->numeric()
+                    ->disabled()
                     ->required(),
 
                 Select::make('payment_method')
@@ -49,6 +50,7 @@ class PaymentResource extends Resource
                         'GCASH' => 'GCash',
                     ])
                     ->live()
+                    ->disabled()
                     ->dehydrated(fn($get) => $get('payment_method') !== null)
                     ->required(),
 

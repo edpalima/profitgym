@@ -109,6 +109,7 @@ class UserMembershipResource extends Resource
                                 TextInput::make('amount')
                                     ->numeric()
                                     ->label('Amount')
+                                    ->disabled()
                                     ->required(),
                                 Select::make('status')
                                     ->options([

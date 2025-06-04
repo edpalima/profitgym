@@ -1053,11 +1053,13 @@ ol {
 }
 
 .ts-item .ts_text span {
-	padding: 0 5px;
 	display: block;
 	font-size: 12px;
 	font-weight: 700;
-	color: #aaa;
+	color: #aaaaaa;
+	text-transform: uppercase;
+	-webkit-transform: skewY(5deg);
+	-ms-transform: skewY(5deg);
 	transform: skewY(5deg);
 }
 
@@ -3259,4 +3261,3 @@ ol {
 		font-size: 28px;
 	}
 }
-

@@ -68,11 +68,17 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="map">
+            <div style="width: 100%; height: 550px; display: block;">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12087.069761554938!2d-74.2175599360452!3d40.767139456514954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c254b5958982c3%3A0xb6ab3931055a2612!2sEast%20Orange%2C%20NJ%2C%20USA!5e0!3m2!1sen!2sbd!4v1581710470843!5m2!1sen!2sbd"
-                    height="550" style="border:0;" allowfullscreen=""></iframe>
-            </div> --}}
+                    src= "https://www.google.com/maps/embed?pb=!4v1749006694006!6m8!1m7!1s_lySX1LpeX_ZrG_RdmzmYQ!2m2!1d14.27913047940936!2d120.9969352804435!3f109.56204!4f0!5f0.7820865974627469" width="1200" height="550" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    width="100%"
+                    height="100%"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
         </div>
     </section>
 </div>

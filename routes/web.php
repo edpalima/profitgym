@@ -30,4 +30,6 @@ Route::middleware('auth')->group(function () {
     Route::get('orders', [PageController::class, 'orders'])->name('orders');
     Route::get('account', [App\Http\Controllers\PageController::class, 'account'])->name('account');
     Route::get('attendance', AttendanceComponent::class)->name('attendance');
+
+    Route::post('/trainers/{trainer}/rate', [TrainerController::class, 'rate'])->name('trainers.rate');
 });

@@ -43,19 +43,23 @@ class UserResource extends Resource
                     ->columnSpanFull(),
                 TextInput::make('first_name')
                     ->required()
+                    ->disabled()
                     ->maxLength(255)
                     ->label('First Name'),
 
                 TextInput::make('middle_name')
+                    ->disabled()
                     ->nullable()
                     ->maxLength(255)
                     ->label('Middle Name'),
                 TextInput::make('last_name')
+                    ->disabled()
                     ->required()
                     ->maxLength(255)
                     ->label('Last Name'),
 
                 TextInput::make('address')
+                    ->disabled()
                     ->nullable()
                     ->required()
                     ->maxLength(255)

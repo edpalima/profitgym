@@ -77,13 +77,16 @@ class OrderResource extends Resource
                             Grid::make(3)->schema([
                                 Select::make('product_id')
                                     ->relationship('product', 'name')
+                                    ->disabled()
                                     ->label('Product')
                                     ->required(),
                                 TextInput::make('quantity')
                                     ->numeric()
+                                    ->disabled()
                                     ->label('Quantity')
                                     ->required(),
                                 TextInput::make('price')
+                                    ->disabled()
                                     ->numeric()
                                     ->label('Price')
                                     ->required(),
@@ -123,6 +126,7 @@ class OrderResource extends Resource
 
                                 TextInput::make('amount')
                                     ->label('Amount')
+                                    ->disabled()
                                     ->numeric()
                                     ->required(),
 

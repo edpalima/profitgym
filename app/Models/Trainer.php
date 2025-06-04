@@ -42,4 +42,9 @@ class Trainer extends Model
 
         return $formatted;
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(TrainerRating::class);
+    }
 }

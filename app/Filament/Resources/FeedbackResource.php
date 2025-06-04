@@ -28,11 +28,13 @@ class FeedbackResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'full_name') // make sure your User model has 'full_name'
+                    ->disabled()
                     ->getOptionLabelFromRecordUsing(fn($record) => $record->full_name)
                     ->nullable(),
 
                 Forms\Components\Select::make('membership_id')
                     ->relationship('membership', 'name') // make sure your Membership model has 'name'
+                    ->disabled()
                     ->nullable(),
 
                 Forms\Components\Select::make('rating')
@@ -43,12 +45,14 @@ class FeedbackResource extends Resource
                         4 => '4',
                         5 => '5',
                     ])
+                    ->disabled()
                     ->nullable()
                     ->label('Rating'),
 
                 Forms\Components\Textarea::make('message')
                     ->required()
                     ->columnSpanFull()
+                    ->readonly()
                     ->rows(5),
 
                 Forms\Components\Toggle::make('is_approved')
