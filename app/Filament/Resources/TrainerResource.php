@@ -143,11 +143,11 @@ class TrainerResource extends Resource
                 ]),
             ]);
     }
-
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\SchedulesRelationManager::class,
+            RelationManagers\RatingsRelationManager::class,
         ];
     }
 

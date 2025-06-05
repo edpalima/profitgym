@@ -107,45 +107,37 @@
                                             <p>{{ $trainer->specialization }}</p>
                                             
                                             <h4 class="orange-text mt-4">Schedule</h4>
-                                            <div class="table-responsive">
-                                                <table class="table table-dark schedule-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Day</th>
-                                                            <th>Time</th>
-                                                            <th>Class</th>
-                                                            <th>Availability</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Monday</td>
-                                                            <td>9:00 AM - 2:00 PM</td>
-                                                            <td>Beginner Yoga</td>
-                                                            <td><span class="badge badge-success">Available</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Wednesday</td>
-                                                            <td>3:00 PM - 7:00 PM</td>
-                                                            <td>Advanced Yoga</td>
-                                                            <td><span class="badge badge-success">Available</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Friday</td>
-                                                            <td>10:00 AM - 1:00 PM</td>
-                                                            <td>Meditation</td>
-                                                            <td><span class="badge badge-warning">Limited</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Saturday</td>
-                                                            <td>1:00 PM - 4:00 PM</td>
-                                                            <td>Private Session</td>
-                                                            <td><span class="badge badge-success">Available</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+<div class="table-responsive">
+    <table class="table table-dark schedule-table">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Class</th>
+                <th>Availability</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($trainer->schedules as $schedule)
+                <tr>
+                    <td>{{ $schedule->day }}</td>
+                                <td>{{ date('g:i A', strtotime($schedule->start_time)) }} - {{ date('g:i A', strtotime($schedule->end_time)) }}</td>
+                                <td>{{ $schedule->class_type }}</td>
+                                <td>
+                                    @if($schedule->availability === 'Available')
+                                        <span class="badge badge-success">Available</span>
+                                    @elseif($schedule->availability === 'Limited')
+                                            <span class="badge badge-warning">Limited</span>
+                                        @else
+                                            <span class="badge badge-danger">Booked</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer dark-modal-footer">

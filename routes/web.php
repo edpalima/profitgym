@@ -36,9 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::get('account', [App\Http\Controllers\PageController::class, 'account'])->name('account');
     Route::get('attendance', AttendanceComponent::class)->name('attendance');
 
-    Route::post('/trainers/{trainer}/rate', [TrainerController::class, 'rate'])->name('trainers.rate');
+    
 });
-
+Route::post('/trainers/{trainer}/rate', [TrainerController::class, 'rateTrainer'])->name('trainers.rate');
 Route::get('/print-all-data.usermembership', [UserMembershipController::class, 'printAllDataUserMembership'])->name('print.all.data.usermembership');
 Route::get('/print-all-data.orders', [OrderController::class, 'printAllDataOrders'])->name('print.all.data.orders');
 Route::get('/print-all-data.payments', [PaymentController::class, 'printAllDataPayment'])->name('print.all.data.payments');

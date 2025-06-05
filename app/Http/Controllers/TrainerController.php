@@ -14,22 +14,21 @@ class TrainerController extends Controller
         return view('pages.trainers', compact('trainers'));
     }
 
-    public function rate(Request $request, Trainer $trainer)
+   public function rateTrainer(Request $request, Trainer $trainer)
 {
-    $request->validate([
+    $validated = $request->validate([
         'rating' => 'required|integer|between:1,5',
-        'feedback' => 'nullable|string|max:500',
+        'feedback' => 'nullable|string',
         'recommend' => 'required|boolean'
     ]);
 
-    // Create a new rating/feedback record (you'll need to adjust this based on your database structure)
     $trainer->ratings()->create([
         'user_id' => auth()->id(),
-        'rating' => $request->rating,
-        'feedback' => $request->feedback,
-        'recommend' => $request->recommend
+        'rating' => $validated['rating'],
+        'feedback' => $validated['feedback'],
+        'recommend' => $validated['recommend']
     ]);
 
-    return back()->with('success', 'Thank you for your feedback!');
+    return redirect()->back()->with('success', 'Thank you for your feedback!');
 }
 }

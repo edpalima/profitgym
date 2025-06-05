@@ -12,7 +12,7 @@
 
     <div class="d-flex justify-content-end mb-3">
         <button class="btn btn-success btn-sm px-2 py-1" wire:click="showCreateUserModal">
-            + Create User Membership
+            + Create Attendance
         </button>
     </div>
     <!-- Mobile-responsive table wrapper -->
@@ -193,7 +193,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content bg-white text-dark" style="height: 80vh;">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="userModalLabel">Create New Member</h5>
+                        <h5 class="modal-title" id="userModalLabel">Create New Attendance</h5>
                         <button type="button" class="close" wire:click="$set('userModal', false)" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>

@@ -64,6 +64,16 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+              ->navigationGroups([
+                'Attendance Management',
+                'Membership Management',
+                'Products',
+                'Payments',
+                'Gym Content',
+                'Contacts',
+                'Account',
+                'Reports',
             ]);
     }
 }

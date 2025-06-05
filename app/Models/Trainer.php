@@ -20,11 +20,32 @@ class Trainer extends Model
         'email',
         'image',
         'is_active',
+        'years_of_experience',
     ];
 
     public function workoutGuides()
     {
         return $this->hasMany(WorkoutGuide::class);
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(TrainerSchedule::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(TrainerRating::class);
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return $this->ratings()->avg('rating') ?? 0;
+    }
+
+    public function getReviewsCountAttribute()
+    {
+        return $this->ratings()->count();
     }
 
     public function getFormattedDescriptionAttribute()
@@ -41,10 +62,5 @@ class Trainer extends Model
         }
 
         return $formatted;
-    }
-
-    public function ratings()
-    {
-        return $this->hasMany(TrainerRating::class);
     }
 }

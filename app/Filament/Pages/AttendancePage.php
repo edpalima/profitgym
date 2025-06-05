@@ -10,8 +10,8 @@ class AttendancePage extends Page
 
     protected static string $view = 'filament.pages.attendance-page';
 
-    protected static ?string $navigationGroup = 'Membership Management';
+    protected static ?string $navigationGroup = 'Attendance Management';
     protected static ?string $navigationLabel = 'Attendance';
     
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 }

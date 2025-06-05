@@ -272,7 +272,7 @@ class AttendanceComponent extends Component
                 if ($this->userOption === 'create') {
                     $existingUser = User::where('first_name', $this->first_name)
                         ->where('last_name', $this->last_name)
-                        ->first();
+                        ->first();  
                     if ($existingUser) {
                         throw ValidationException::withMessages([
                             'first_name' => 'A user with this first and last name already exists.',
