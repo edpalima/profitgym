@@ -112,23 +112,39 @@ class TrainerResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->label('DURATION VALUE')->circular(),
+                ImageColumn::make('image')->label('')->circular(),
                 TextColumn::make('first_name')->label('FIRST NAME')->sortable()->searchable(),
                 TextColumn::make('last_name')->label('LAST NAME')->sortable()->searchable(),
                 TextColumn::make('specialization')->label('SPECIALIZATION')->sortable()->searchable(),
-                TextColumn::make('email')->label('EMAIL')->sortable()->searchable(),
-                TextColumn::make('phone')->label('PHONE')->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('CREATED AT')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('UPDATED AT')
-                    ->dateTime()
-                    ->since()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('schedules_count')
+                    ->label('Schedules')
+                    ->counts('schedules')
+                    ->badge(),
+                TextColumn::make('ratings_avg_rating')
+                    ->label('Avg Rating')
+                    ->avg('ratings', 'rating')
+                    ->formatStateUsing(fn ($state): string => number_format($state, 1) . ' ★'),
+                TextColumn::make('feedback_count')
+                    ->label('Feedback Count')
+                    ->state(function (Trainer $record) {
+                        return $record->ratings()->whereNotNull('feedback')->count();
+                    })
+                    ->badge()
+                    ->color(function ($state) {
+                        return match (true) {
+                            $state == 0 => 'danger',       // No feedback
+                            $state <= 5 => 'warning',      // 1-5 feedbacks
+                            $state <= 20 => 'info',        // 6-20 feedbacks
+                            default => 'success',          // 21+ feedbacks
+                        };
+                    })
+                    ->formatStateUsing(function ($state) {
+                        return match (true) {
+                            $state == 0 => 'No feedback',
+                            $state == 1 => '1 feedback',
+                            default => "{$state} feedbacks",
+                        };
+                    }),
             ])
             ->filters([
                 //
@@ -143,6 +159,7 @@ class TrainerResource extends Resource
                 ]),
             ]);
     }
+
     public static function getRelations(): array
     {
         return [
@@ -150,7 +167,7 @@ class TrainerResource extends Resource
             RelationManagers\RatingsRelationManager::class,
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [

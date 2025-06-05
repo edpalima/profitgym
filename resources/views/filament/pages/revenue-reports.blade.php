@@ -29,7 +29,7 @@
                     </x-filament::button>
                     <x-filament::button wire:click="printPdf" wire:loading.attr="disabled"
                         icon="heroicon-o-arrow-down-tray">
-                        PDF
+                        Print
                     </x-filament::button>
                 </div>
             </div>

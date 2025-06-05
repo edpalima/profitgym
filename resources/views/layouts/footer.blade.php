@@ -53,6 +53,7 @@
                         <li><a href="{{ route('trainers.index') }}">Trainers</a></li>
                         <li><a href="{{ route('memberships.index') }}">Memberships</a></li>
                         <li><a href="#">Contact</a></li>
+                        <li><a href="{{ route('terms-and-conditions') }}">Terms and Conditions</a></li>
                     </ul>
                 </div>
             </div>

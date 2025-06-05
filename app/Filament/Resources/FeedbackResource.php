@@ -65,10 +65,10 @@ class FeedbackResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.full_name')
-                    ->label('USER')
-                    ->sortable()
-                    ->searchable(),
+                //Tables\Columns\TextColumn::make('user.full_name')
+                    //->label('USER')
+                    //->sortable()
+                   // ->searchable(),
 
                 Tables\Columns\TextColumn::make('membership.name')
                     ->label('MEMBERSHIP')

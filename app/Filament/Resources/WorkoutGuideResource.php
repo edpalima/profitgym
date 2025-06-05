@@ -58,6 +58,16 @@ class WorkoutGuideResource extends Resource
                             ->required()
                             ->columnSpanFull(),
 
+                        FileUpload::make('video_path')
+                            ->label('Workout Video')
+                            ->directory('workout-videos')
+                            ->acceptedFileTypes(['video/mp4', 'video/quicktime', 'video/x-msvideo'])
+                            ->maxSize(50000) // 50MB in KB
+                            ->helperText('Upload a video file (MP4, MOV, AVI) max 50MB')
+                            ->imagePreviewHeight(150) // Reduced from 50 to avoid taking too much space
+                            ->extraAttributes(['style' => 'max-width: 300px;']), // Takes half-width in a 2-column layout
+                  
+
                         Toggle::make('is_active')
                             ->label('Active')
                             ->helperText('Toggle to activate or deactivate this workout guide.')
@@ -65,10 +75,6 @@ class WorkoutGuideResource extends Resource
                     ])
                     ->columns(1)
                     ->collapsible(),
-
-                TextInput::make('video_url')
-                    ->label('Video URL')
-                    ->columnSpanFull(),
             ]);
     }
 

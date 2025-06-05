@@ -19,25 +19,29 @@ class RatingsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
-                    ->required(),
+                    ->required()
+                    ->disabled(),
 
                 Forms\Components\Select::make('rating')
                     ->options([
                         1 => '1 Star',
                         2 => '2 Stars',
-                        3 => '3 Stars',
+                        3 => '3 Stars', 
                         4 => '4 Stars',
                         5 => '5 Stars',
                     ])
-                    ->required(),
+                    ->required()
+                    ->disabled(),
 
                 Forms\Components\Textarea::make('feedback')
                     ->maxLength(500)
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->disabled(),
 
                 Forms\Components\Toggle::make('recommend')
                     ->label('Would recommend?')
-                    ->required(),
+                    ->required()
+                    ->disabled(),
             ]);
     }
 
@@ -45,9 +49,9 @@ class RatingsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->label('User')
-                    ->sortable(),
+                //Tables\Columns\TextColumn::make('user.name')
+                    //->label('User')
+                    //->sortable(),
                     
                 Tables\Columns\TextColumn::make('rating')
                     ->badge()
@@ -59,6 +63,18 @@ class RatingsRelationManager extends RelationManager
                         5 => 'success',
                     })
                     ->formatStateUsing(fn (int $state): string => "$state " . str('star')->plural($state)),
+                    
+                Tables\Columns\TextColumn::make('feedback')
+                    ->label('Feedback')
+                    ->wrap()
+                    ->words(20)
+                    ->tooltip(function ($column) {
+                        $state = $column->getState();
+                        if (str_word_count($state) > 20) {
+                            return $state;
+                        }
+                        return null;
+                    }),
                     
                 Tables\Columns\IconColumn::make('recommend')
                     ->label('Recommended')
@@ -72,16 +88,23 @@ class RatingsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // No CreateAction here - creation is disabled
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    // Correct non-static method to prevent creation
+    public function canCreate(): bool
+    {
+        return false;
     }
 }

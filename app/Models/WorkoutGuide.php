@@ -15,6 +15,7 @@ class WorkoutGuide extends Model
         'featured_photo',
         'trainer_id',
         'video_url',
+        'video_path', // Add this new field
         'is_active',
     ];
 
