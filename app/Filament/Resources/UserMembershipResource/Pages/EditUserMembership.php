@@ -9,13 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditUserMembership extends EditRecord
 {
     protected static string $resource = UserMembershipResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    
     protected function getRedirectUrl(): string
     {
         $status = strtolower($this->record->status);

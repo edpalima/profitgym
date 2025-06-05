@@ -128,7 +128,8 @@ class UserMembershipResource extends Resource
                             ]),
                         ])
                         ->maxItems(1)
-                        ->defaultItems(1),
+                        ->defaultItems(1)
+                        ->disableItemDeletion(),
                 ]),
 
             Toggle::make('is_active')
