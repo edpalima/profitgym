@@ -58,7 +58,7 @@
                                     <div class="product-summary" style="background: #222; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
                                         <div class="text-center mb-3">
                                             <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded-3" style="max-height: 250px; width: auto; object-fit: contain; border: 1px solid #333;">
-                                            <h5 class="mt-3 fw-bold" style="color: #FF7F00;">{{ $product->name }}</h5>
+                                            <h5 class="mt-3 fw-bold" style="color: #ffffff;">{{ $product->name }}</h5>
                                             <div style="color: #FF7F00; font-size: 1.25rem; font-weight: 600;">₱{{ number_format($product->price, 2) }}</div>
                                         </div>
 
