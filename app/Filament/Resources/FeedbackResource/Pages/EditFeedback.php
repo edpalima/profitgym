@@ -10,12 +10,6 @@ class EditFeedback extends EditRecord
 {
     protected static string $resource = FeedbackResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

@@ -95,7 +95,8 @@ class OrderResource extends Resource
                             ]),
                         ])
                         ->defaultItems(1)
-                        ->maxItems(1),
+                        ->maxItems(1)
+                        ->disableItemDeletion(),
                 ]),
 
             Section::make('Payments')
@@ -144,7 +145,9 @@ class OrderResource extends Resource
                             ]),
                         ])
                         ->maxItems(1)
-                        ->defaultItems(1),
+                        ->defaultItems(1)
+                        ->disableItemDeletion(),
+                        
                 ]),
         ]);
     }

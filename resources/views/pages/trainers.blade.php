@@ -78,6 +78,7 @@
                         </div>
                     </div>
 
+                    <!-- Trainer Details Modal (XL Size) -->
                     <div class="modal fade" id="trainerModal-{{ $trainer->id }}" tabindex="-1" role="dialog" aria-labelledby="trainerModalLabel-{{ $trainer->id }}" aria-hidden="true">
                         <div class="modal-dialog modal-xl" role="document">
                             <div class="modal-content dark-modal">
@@ -92,26 +93,10 @@
                                         <div class="col-md-5">
                                             <img src="{{ asset('storage/' . $trainer->image) }}" class="img-fluid mb-3 trainer-modal-img" alt="{{ $trainer->first_name }}">
                                             <div class="trainer-contact-info">
-                                                <h4 class="orange-text mb-3">{{ strtoupper($trainer->specialization) }}</h4>
-                                                <div class="rating mb-3">
-                                                    <div class="stars">
-                                                        @for($i = 1; $i <= 5; $i++)
-                                                            @if($i <= ($trainer->average_rating ?? 4.9))
-                                                                <i class="fa fa-star"></i>
-                                                            @else
-                                                                <i class="fa fa-star-o"></i>
-                                                            @endif
-                                                        @endfor
-                                                    </div>
-                                                    <span class="rating-text">{{ $trainer->reviews_count ?? '156' }} reviews</span>
-                                                </div>
-                                                <p class="contact-info"><i class="fa fa-envelope orange-text"></i> {{ $trainer->email }}</p>
-                                                <p class="contact-info"><i class="fa fa-phone orange-text"></i> {{ $trainer->phone }}</p>
-                                                <div class="social-icons mt-4">
-                                                    <a href="#" class="social-icon"><i class="fa fa-facebook"></i></a>
-                                                    <a href="#" class="social-icon"><i class="fa fa-instagram"></i></a>
-                                                    <a href="#" class="social-icon"><i class="fa fa-twitter"></i></a> <!-- TikTok icon (using music as replacement) -->
-                                                </div>
+                                                <h5 class="orange-text">Contact Information</h5>
+                                                <p><i class="fa fa-envelope orange-text"></i> <strong>Email:</strong> {{ $trainer->email }}</p>
+                                                <p><i class="fa fa-phone orange-text"></i> <strong>Phone:</strong> {{ $trainer->phone }}</p>
+                                                <p><i class="fa fa-clock-o orange-text"></i> <strong>Experience:</strong> {{ $trainer->years_of_experience ?? '7' }} years</p>
                                             </div>
                                         </div>
                                         <div class="col-md-7">
@@ -122,38 +107,6 @@
                                             <p>{{ $trainer->specialization }}</p>
                                             
                                             <h4 class="orange-text mt-4">Schedule</h4>
-<<<<<<< HEAD
-<div class="table-responsive">
-    <table class="table table-dark schedule-table">
-        <thead>
-            <tr>
-                <th>Day</th>
-                <th>Time</th>
-                <th>Class</th>
-                <th>Availability</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($trainer->schedules as $schedule)
-                <tr>
-                    <td>{{ $schedule->day }}</td>
-                                <td>{{ date('g:i A', strtotime($schedule->start_time)) }} - {{ date('g:i A', strtotime($schedule->end_time)) }}</td>
-                                <td>{{ $schedule->class_type }}</td>
-                                <td>
-                                    @if($schedule->availability === 'Available')
-                                        <span class="badge badge-success">Available</span>
-                                    @elseif($schedule->availability === 'Limited')
-                                            <span class="badge badge-warning">Limited</span>
-                                        @else
-                                            <span class="badge badge-danger">Booked</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-=======
                                             <div class="table-responsive">
                                                 <table class="table table-dark schedule-table">
                                                     <thead>
@@ -165,34 +118,26 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>Monday</td>
-                                                            <td>9:00 AM - 2pm:00 AM</td>
-                                                            <td>Beginner Yoga</td>
-                                                            <td><span class="badge badge-success">Available</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Wednesday</td>
-                                                            <td>4:00 PM - 6:00 PM</td>
-                                                            <td>Advanced Yoga</td>
-                                                            <td><span class="badge badge-success">Available</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Friday</td>
-                                                            <td>10:00 AM - 12:00 PM</td>
-                                                            <td>Meditation</td>
-                                                            <td><span class="badge badge-warning">Limited</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Saturday</td>
-                                                            <td>2:00 PM - 4:00 PM</td>
-                                                            <td>Private Session</td>
-                                                            <td><span class="badge badge-success">Available</span></td>
-                                                        </tr>
+                                                        @foreach($trainer->schedules as $schedule)
+                                                            <tr>
+                                                                <td>{{ $schedule->day }}</td>
+                                                                <td>{{ date('g:i A', strtotime($schedule->start_time)) }} - {{ date('g:i A', strtotime($schedule->end_time)) }}</td>
+                                                                <td>{{ $schedule->class_type }}</td>
+                                                                <td>
+                                                                    @if($schedule->availability === 'Available')
+                                                                        <span class="badge badge-success">Available</span>
+                                                                    @elseif($schedule->availability === 'Limited')
+                                                                        <span class="badge badge-warning">Limited</span>
+                                                                    @else
+                                                                        <span class="badge badge-danger">Booked</span>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
->>>>>>> 72a5325769f89fbce44147f2579dca36ea89185d
                                             </div>
+                                                                                    </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer dark-modal-footer">
@@ -563,21 +508,6 @@
         .form-check-input:checked {
             background-color: var(--orange);
             border-color: var(--orange);
-        }
-
-        .social-icons {
-        display: flex;
-        gap: 15px;
-        }
-
-        .social-icon {
-            color: var(--orange);
-            font-size: 1.5rem;
-            transition: color 0.3s;
-        }
-
-        .social-icon:hover {
-            color: white;
         }
     </style>
 @endsection
