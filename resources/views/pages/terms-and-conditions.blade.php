@@ -26,9 +26,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="team-title">
-                        <div class="section-title">
-                            <span>Terms and Conditions</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -38,7 +35,7 @@
                 @endphp
                 
                 @if($terms)
-                    <h1 class="mb-4">{{ $terms->title }}</h1>
+                    <h1 class="mb-4 text-white">{{ $terms->title }}</h1>
                     <div class="last-updated mb-4 text-muted">
                         Last updated: {{ $terms->updated_at->format('F j, Y') }}
                     </div>

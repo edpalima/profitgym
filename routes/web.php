@@ -6,6 +6,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\UserMembershipController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PaymentController;
@@ -44,3 +45,4 @@ Route::get('/print-all-data.orders', [OrderController::class, 'printAllDataOrder
 Route::get('/print-all-data.payments', [PaymentController::class, 'printAllDataPayment'])->name('print.all.data.payments');
 Route::get('/print-all-data.users', [UserController::class, 'printAllDataUser'])->name('print.all.data.users');
 Route::get('/print-all-data.products', [ProductController::class, 'printAllDataProduct'])->name('print.all.data.products');
+Route::get('/print-all-data.ratings', [RatingController::class, 'printAllDataRatings'])->name('print.all.data.ratings');
