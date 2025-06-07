@@ -22,10 +22,22 @@ class Payment extends Model
         return $this->morphTo('typeable', 'type', 'type_id');
     }
 
+    //SIR NI-COMMENT OUT KO LANG PO, HINDI PO KASE MA SEARCH YUNG NAME SA PAYMENT NITRY KO LANG PO. 
+    //public function getCustomerNameAttribute()
+    //{
+        //return $this->typeable && method_exists($this->typeable, 'user')
+           // ? $this->typeable->user->name
+            //: null;
+    //}
+
     public function getCustomerNameAttribute()
     {
-        return $this->typeable && method_exists($this->typeable, 'user')
-            ? $this->typeable->user->name
-            : null;
+        if ($this->typeable && method_exists($this->typeable, 'user')) {
+            $user = $this->typeable->user;
+            return trim("{$user->first_name} {$user->last_name}");
+        }
+        return null;
     }
+
+
 }

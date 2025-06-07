@@ -88,9 +88,18 @@ class PaymentResource extends Resource
                     //->searchable()
                     //->sortable(),
 
+                //ADDITION - FOR SEARCHING
                 TextColumn::make('customer_name')
                     ->label('CUSTOMER NAME')
-                    ->searchable() // works only if the underlying query supports it
+                    ->searchable(query: function (Builder $query, string $search) {
+                        $query->whereHas('typeable', function($q) use ($search) {
+                            $q->whereHas('user', function($q) use ($search) {
+                                $q->where('first_name', 'like', "%{$search}%")
+                                ->orWhere('last_name', 'like', "%{$search}%")
+                                ->orWhereRaw("first_name || ' ' || last_name LIKE ?", ["%{$search}%"]);
+                            });
+                        });
+                    })
                     ->getStateUsing(fn($record) => $record->customer_name ?? '-'),
                 TextColumn::make('type')->label('TYPE')->sortable()->searchable(),
                 //TextColumn::make('type_id'),
