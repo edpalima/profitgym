@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TrainerRatingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['showLoginNotice']);
+    }
+
     public function store(Request $request, Trainer $trainer)
     {
         $request->validate([
@@ -27,5 +32,13 @@ class TrainerRatingController extends Controller
         );
 
         return back()->with('success', 'Thank you for your feedback!');
+    }
+
+    public function showLoginNotice(Request $request, Trainer $trainer)
+    {
+        return redirect()->route('login')->with('rate_redirect', [
+            'trainer_id' => $trainer->id,
+            'intended' => url()->previous()
+        ]);
     }
 }

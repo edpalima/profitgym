@@ -68,14 +68,12 @@
                     </div>
                 </div>
             </div>
-            <div style="width: 100%; height: 550px; display: block;">
+            <div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;">
                 <iframe
-                    src= "https://www.google.com/maps/embed?pb=!4v1749006694006!6m8!1m7!1s_lySX1LpeX_ZrG_RdmzmYQ!2m2!1d14.27913047940936!2d120.9969352804435!3f109.56204!4f0!5f0.7820865974627469" width="1200" height="550" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                    width="100%"
-                    height="100%"
-                    style="border:0;"
+                    src="https://www.google.com/maps/embed?pb=!4v1749006694006!6m8!1m7!1s_lySX1LpeX_ZrG_RdmzmYQ!2m2!1d14.27913047940936!2d120.9969352804435!3f109.56204!4f0!5f0.7820865974627469" 
+                    style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%; border:0;"
                     allowfullscreen=""
-                    loading="lazy"
+                    loading="lazy" 
                     referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>

@@ -83,10 +83,10 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->numeric()
-                    ->searchable()
-                    ->sortable(),
+                //TextColumn::make('id')
+                    //->numeric()
+                    //->searchable()
+                    //->sortable(),
 
                 TextColumn::make('customer_name')
                     ->label('CUSTOMER NAME')
@@ -120,7 +120,7 @@ class PaymentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('id', 'desc')
+            //->defaultSort('id', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Payment Status')

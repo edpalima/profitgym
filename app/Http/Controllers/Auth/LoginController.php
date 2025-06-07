@@ -18,4 +18,17 @@ class LoginController extends Controller
         Auth::logout();
         return redirect('/login');
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if (session()->has('rate_redirect')) {
+            $redirectData = session('rate_redirect');
+            session()->forget('rate_redirect');
+            
+            return redirect()->to($redirectData['intended'])
+                ->with('show_rate_modal', $redirectData['trainer_id']);
+        }
+
+        return redirect()->intended($this->redirectPath());
+    }
 }

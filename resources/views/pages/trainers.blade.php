@@ -152,70 +152,80 @@
                         <div class="modal-dialog modal-xl" role="document">
                             <div class="modal-content dark-modal">
                                 <div class="modal-header orange-bg">
-                                    <h5 class="modal-title" id="rateFeedbackModalLabel-{{ $trainer->id }}">Rate & Feedback for {{ $trainer->first_name }}</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form action="{{ route('trainers.rate', $trainer->id) }}" method="POST">
-                                    @csrf
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="trainer-rate-card text-center">
-                                                    <img src="{{ asset('storage/' . $trainer->image) }}" class="img-fluid rounded-circle mb-3 rate-trainer-img" alt="{{ $trainer->first_name }}">
-                                                    <h4>{{ $trainer->first_name }} {{ $trainer->last_name }}</h4>
-                                                    <p class="text-muted">{{ $trainer->specialization }}</p>
-                                                    <div class="current-rating mb-3">
-                                                        <h5>Current Rating</h5>
-                                                        <div class="stars">
-                                                            @for($i = 1; $i <= 5; $i++)
-                                                                @if($i <= ($trainer->average_rating ?? 4.9))
-                                                                    <i class="fa fa-star"></i>
-                                                                @else
-                                                                    <i class="fa fa-star-o"></i>
-                                                                @endif
-                                                            @endfor
-                                                            <span>({{ $trainer->reviews_count ?? '89' }} reviews)</span>
-                                                        </div>
+                                <h5 class="modal-title" id="rateFeedbackModalLabel-{{ $trainer->id }}">Rate & Feedback for {{ $trainer->first_name }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <!-- Replace the entire modal form with this: -->
+                            <form action="{{ Auth::check() ? route('trainers.rate', $trainer->id) : '#' }}" method="POST">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="trainer-rate-card text-center">
+                                                <img src="{{ asset('storage/' . $trainer->image) }}" class="img-fluid rounded-circle mb-3 rate-trainer-img" alt="{{ $trainer->first_name }}">
+                                                <h4>{{ $trainer->first_name }} {{ $trainer->last_name }}</h4>
+                                                <p class="text-muted">{{ $trainer->specialization }}</p>
+                                                <div class="current-rating mb-3">
+                                                    <h5>Current Rating</h5>
+                                                    <div class="stars">
+                                                        @for($i = 1; $i <= 5; $i++)
+                                                            @if($i <= ($trainer->average_rating ?? 4.9))
+                                                                <i class="fa fa-star"></i>
+                                                            @else
+                                                                <i class="fa fa-star-o"></i>
+                                                            @endif
+                                                        @endfor
+                                                        <span>({{ $trainer->reviews_count ?? '89' }} reviews)</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="rating-{{ $trainer->id }}">Your Rating</label>
-                                                    <div class="rating-stars text-center">
-                                                        @for($i = 5; $i >= 1; $i--)
-                                                            <input type="radio" id="star{{ $i }}-{{ $trainer->id }}" name="rating" value="{{ $i }}" {{ $i == 5 ? 'checked' : '' }}>
-                                                            <label for="star{{ $i }}-{{ $trainer->id }}"><i class="fa fa-star"></i></label>
-                                                        @endfor
+                                        </div>
+                                        <div class="col-md-6">
+                                            @guest
+                                                <div class="alert alert-warning">
+                                                    <p>Please <a href="{{ route('login') }}">login</a> to submit your feedback.</p>
+                                                </div>
+                                            @endguest
+                                            <div class="form-group">
+                                                <label for="rating-{{ $trainer->id }}">Your Rating</label>
+                                                <div class="rating-stars text-center">
+                                                    @for($i = 5; $i >= 1; $i--)
+                                                        <input type="radio" id="star{{ $i }}-{{ $trainer->id }}" name="rating" value="{{ $i }}" {{ $i == 5 ? 'checked' : '' }} {{ Auth::guest() ? 'disabled' : '' }}>
+                                                        <label for="star{{ $i }}-{{ $trainer->id }}"><i class="fa fa-star"></i></label>
+                                                    @endfor
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="feedback-{{ $trainer->id }}">Your Feedback</label>
+                                                <textarea class="form-control dark-input" id="feedback-{{ $trainer->id }}" name="feedback" rows="5" placeholder="Share your experience with {{ $trainer->first_name }}..." {{ Auth::guest() ? 'disabled' : '' }}></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Would you recommend this trainer?</label>
+                                                <div class="recommend-options">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="recommend" id="recommend-yes-{{ $trainer->id }}" value="1" checked {{ Auth::guest() ? 'disabled' : '' }}>
+                                                        <label class="form-check-label" for="recommend-yes-{{ $trainer->id }}">Yes</label>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="feedback-{{ $trainer->id }}">Your Feedback</label>
-                                                    <textarea class="form-control dark-input" id="feedback-{{ $trainer->id }}" name="feedback" rows="5" placeholder="Share your experience with {{ $trainer->first_name }}..."></textarea>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Would you recommend this trainer?</label>
-                                                    <div class="recommend-options">
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="recommend" id="recommend-yes-{{ $trainer->id }}" value="1" checked>
-                                                            <label class="form-check-label" for="recommend-yes-{{ $trainer->id }}">Yes</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="recommend" id="recommend-no-{{ $trainer->id }}" value="0">
-                                                            <label class="form-check-label" for="recommend-no-{{ $trainer->id }}">No</label>
-                                                        </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="recommend" id="recommend-no-{{ $trainer->id }}" value="0" {{ Auth::guest() ? 'disabled' : '' }}>
+                                                        <label class="form-check-label" for="recommend-no-{{ $trainer->id }}">No</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer dark-modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn orange-btn">Submit Feedback</button>
-                                    </div>
-                                </form>
+                                </div>
+                                <div class="modal-footer dark-modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn orange-btn" {{ Auth::guest() ? 'disabled' : '' }}>Submit Feedback</button>
+                                    @guest
+                                        <a href="{{ route('login') }}" class="btn orange-btn ml-2">Login to Rate</a>
+                                    @endguest
+                                </div>
+                            </form>
                             </div>
                         </div>
                     </div>
@@ -233,7 +243,7 @@
             --darker-bg: #1f1f1f;
             --card-bg: #333;
             --text-light: #f8f9fa;
-            --text-muted: #adb5bd;
+            --text-muted: #FFFFFF;
         }
 
         body {
@@ -514,6 +524,15 @@
 
 @section('scripts')
     <script>
+        $(document).ready(function() {
+            // Check if we need to show a rate modal after login
+            @if(session('show_rate_modal'))
+                $('#rateFeedbackModal-{{ session('show_rate_modal') }}').modal('show');
+            @endif
+
+            // Rest of your existing script
+        });
+
         $(document).ready(function() {
             // Initialize modals
             $('.modal').modal();

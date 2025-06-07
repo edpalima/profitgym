@@ -19,7 +19,6 @@
                 <table id="orders-table" class="table table-bordered table-striped align-middle w-100">
                     <thead class="table-dark">
                         <tr>
-                            <th>#</th>
                             <th>Date</th>
                             <th>Items</th>
                             <th>Total</th>
@@ -29,7 +28,6 @@
                     <tbody>
                         @forelse ($orders as $order)
                             <tr>
-                                <td>{{ $order->id }}</td>
                                 <td>{{ $order->created_at->format('M d, Y') }}</td>
                                 <td>
                                     <!-- Display Order Items -->
@@ -58,7 +56,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center">
+                                <td colspan="4" class="text-center">
                                     No orders found.
                                     <a href="{{ route('products') }}" class="primary-color">Browse Products</a>
                                     to place an order.

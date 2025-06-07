@@ -30,6 +30,9 @@ Route::get('terms-and-conditions', [PageController::class, 'termsAndConditions']
 Route::get('products', [PageController::class, 'products'])->name('products');
 Route::get('/product/{id}', [PageController::class, 'product'])->name('product.show');
 
+Route::post('/trainers/{trainer}/rate', [TrainerRatingController::class, 'store'])->name('trainers.rate');
+Route::get('/trainers/{trainer}/rate/login-notice', [TrainerRatingController::class, 'showLoginNotice'])->name('trainers.rate.login-notice');
+
 Route::middleware('auth')->group(function () {
     Route::get('memberships/{membership}/checkout', [MembershipController::class, 'checkout'])->name('membership.checkout');
     Route::get('feedback', [PageController::class, 'feedback'])->name('feedbacks');
