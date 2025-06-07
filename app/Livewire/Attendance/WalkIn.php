@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Attendance;
 
 use App\Models\Attendance;
 use App\Models\Membership;
@@ -13,8 +13,9 @@ use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
-class AttendanceComponent extends Component
+class WalkIn extends Component
 {
     public $currentDate;
     public $showOrderModal = false;
@@ -27,8 +28,11 @@ class AttendanceComponent extends Component
     public $paymentAmount = 0.00;
     public $changeAmount = 0.00;
     public $userModal = false;
+    public $full_name;
     public $first_name;
     public $last_name;
+    public $search = '';
+    public $address;
     public $email;
     public $membership_id;
     public $start_date;
@@ -44,8 +48,10 @@ class AttendanceComponent extends Component
 
     protected $rules = [
         'userOption' => 'required|in:select,create',
+        'full_name' => 'required|string|max:255',
         'first_name' => 'required_if:userOption,create|string|max:255',
         'last_name' => 'required_if:userOption,create|string|max:255',
+        'address' => 'required|string|max:255',
         'membership_id' => 'required|exists:memberships,id',
         'start_date' => 'required|date',
         'payment_amount' => 'required|numeric|min:0',
@@ -238,20 +244,30 @@ class AttendanceComponent extends Component
         $this->email = '';
         $this->membership_id = null;
         $this->start_date = now()->format('Y-m-d');
-        $this->total_amount = 0;
         $this->payment_amount = null;
         $this->change_amount = 0;
         $this->selectedUserId = null;
+
+        $membership = Membership::find(4);
+        $this->total_amount = $membership->price;
     }
 
-    public function generateUniqueEmail($firstName, $lastName)
+    public function generateUniqueEmail($fullName)
     {
-        $baseEmail = strtolower(str_replace(' ', '', $firstName) . '_' . str_replace(' ', '', $lastName));
-        $email = $baseEmail . '@gmail.com';
+        $baseUsername = Str::of($fullName)
+            ->lower()
+            ->replaceMatches('/[^a-z0-9]+/', '.')
+            ->trim('.')
+            ->__toString();
+
+        // Set the domain
+        $domain = 'gym.local';
+        $email = $baseUsername . '@' . $domain;
         $counter = 1;
 
+        // Ensure the email is unique
         while (User::where('email', $email)->exists()) {
-            $email = $baseEmail . $counter . '@gmail.com';
+            $email = $baseUsername . $counter . '@' . $domain;
             $counter++;
         }
 
@@ -332,49 +348,31 @@ class AttendanceComponent extends Component
     public function createNewUser()
     {
         $this->validate([
-            'userOption' => 'required|in:select,create',
-            // 'selectedUserId' => 'required_if:userOption,select|exists:users,id',
-            'first_name' => 'required_if:userOption,create|string|max:255',
-            'last_name' => 'required_if:userOption,create|string|max:255',
-            'membership_id' => 'required|exists:memberships,id',
+            'full_name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'start_date' => 'required|date',
             'payment_amount' => 'required|numeric|min:' . $this->total_amount,
         ]);
 
-        $userId = $this->userOption === 'select' ? $this->selectedUserId : null;
+        $email = $this->generateUniqueEmail($this->full_name);
 
-        if ($this->userOption === 'select' && $userId == null) {
-            throw ValidationException::withMessages([
-                'selectedUserId' => 'Please select a user',
-            ]);
-        }
+        $names = explode(' ', trim($this->full_name), 2);
 
-        if ($this->userOption === 'create') {
-            $existingUser = User::where('first_name', $this->first_name)
-                ->where('last_name', $this->last_name)
-                ->first();
-            if ($existingUser) {
-                throw ValidationException::withMessages([
-                    'first_name' => 'A user with this first and last name already exists.',
-                ]);
-            }
+        $first_name = $names[0];
+        $last_name = $names[1] ?? '';
 
-            $email = $this->generateUniqueEmail($this->first_name, $this->last_name);
-            $user = User::create([
-                'name' => trim($this->first_name . ' ' . $this->last_name),
-                'password' => bcrypt('password'),
-                'first_name' => $this->first_name,
-                'last_name' => $this->last_name,
-                'email' => $email,
-                'role' => User::ROLE_MEMBER,
-            ]);
-            $userId = $user->id;
-        } else {
-            $user = User::find($this->selectedUserId);
-            $userId = $user->id;
-        }
+        $user = User::create([
+            'name' => $this->full_name,
+            'password' => bcrypt('password'),
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'address' => $this->address,
+            'email' => $email,
+            'role' => User::ROLE_MEMBER,
+        ]);
+        $userId = $user->id;
 
-        $membership = Membership::find($this->membership_id);
+        $membership = Membership::find(4);
         $start = Carbon::parse($this->start_date);
         $end = $membership->duration_unit === 'days' && $membership->duration_value == 1
             ? $start->copy()
@@ -402,7 +400,7 @@ class AttendanceComponent extends Component
 
         $userMembership = UserMembership::create([
             'user_id' => $userId,
-            'membership_id' => $this->membership_id,
+            'membership_id' => $membership->id,
             'start_date' => $start,
             'end_date' => $end,
             'status' => 'APPROVED',
@@ -425,8 +423,10 @@ class AttendanceComponent extends Component
         $this->userModal = false;
         $this->step = 1;
         $this->userOption = 'select';
+        $this->full_name = '';
         $this->first_name = '';
         $this->last_name = '';
+        $this->address = '';
         $this->email = '';
         $this->selectedUserId = null;
         $this->membership_id = null;
@@ -440,11 +440,17 @@ class AttendanceComponent extends Component
     public function render()
     {
         $users = User::where('role', 'MEMBER')
+            ->where(function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('address', 'like', '%' . $this->search . '%');
+            })
             ->with(['memberships' => function ($query) {
-                $query->activeForDate($this->currentDate);
+                $query->activeForDate($this->currentDate)
+                    ->where('membership_id', 4);
             }])
             ->whereHas('memberships', function ($query) {
-                $query->activeForDate($this->currentDate);
+                $query->activeForDate($this->currentDate)
+                    ->where('membership_id', 4);
             })
             ->get();
 
@@ -466,7 +472,7 @@ class AttendanceComponent extends Component
             }
         }
 
-        return view('livewire.attendance-component', [
+        return view('livewire.attendance.walk-in', [
             'users' => $users,
             'attendances' => $attendances,
             'currentDate' => $this->currentDate,

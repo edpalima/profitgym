@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Attendance;
 
 use App\Models\Attendance;
 use App\Models\Membership;
@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
-class AttendanceComponent extends Component
+class Members extends Component
 {
     public $currentDate;
     public $showOrderModal = false;
@@ -40,7 +40,8 @@ class AttendanceComponent extends Component
     public $memberships;
     public $userOption = 'select';
     public $existingUsers;
-    public $step = 1; // Initialize step for wizard
+    public $step = 1;
+    public $search = '';
 
     protected $rules = [
         'userOption' => 'required|in:select,create',
@@ -440,11 +441,17 @@ class AttendanceComponent extends Component
     public function render()
     {
         $users = User::where('role', 'MEMBER')
+            ->where(function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('address', 'like', '%' . $this->search . '%');
+            })
             ->with(['memberships' => function ($query) {
-                $query->activeForDate($this->currentDate);
+                $query->activeForDate($this->currentDate)
+                    ->where('membership_id', '!=', 4);
             }])
             ->whereHas('memberships', function ($query) {
-                $query->activeForDate($this->currentDate);
+                $query->activeForDate($this->currentDate)
+                    ->where('membership_id', '!=', 4);
             })
             ->get();
 
@@ -466,7 +473,7 @@ class AttendanceComponent extends Component
             }
         }
 
-        return view('livewire.attendance-component', [
+        return view('livewire.attendance.members', [
             'users' => $users,
             'attendances' => $attendances,
             'currentDate' => $this->currentDate,

@@ -11,8 +11,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\TrainerRatingController;
 use App\Http\Controllers\WorkoutGuideController;
+use App\Livewire\Attendance\WalkIn;
 use App\Livewire\AttendanceComponent;
+use App\Livewire\Attendance\Members;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -39,8 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::get('orders', [PageController::class, 'orders'])->name('orders');
     Route::get('account', [App\Http\Controllers\PageController::class, 'account'])->name('account');
     Route::get('attendance', AttendanceComponent::class)->name('attendance');
+    Route::get('attendance/walk-in', WalkIn::class)->name('attendance.walkin');
+    Route::get('attendance/members', Members::class)->name('attendance.members');
 
-    
+
 });
 Route::post('/trainers/{trainer}/rate', [TrainerController::class, 'rateTrainer'])->name('trainers.rate');
 Route::get('/print-all-data.usermembership', [UserMembershipController::class, 'printAllDataUserMembership'])->name('print.all.data.usermembership');

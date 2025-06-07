@@ -29,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
                 NavigationGroup::make()
                     ->label('Membership Management'),
                 NavigationGroup::make()
+                    ->label('Attendance Management'),
+                NavigationGroup::make()
                     ->label('Orders'),
                 NavigationGroup::make()
                     ->label('Products'),
