@@ -314,7 +314,7 @@
 
                         <button type="button" class="btn btn-primary btn-sm btn-create-order"
                             wire:click="createNewUser" wire:loading.attr="disabled">
-                            <span wire:loading.remove> Create Member </span>
+                            <span wire:loading.remove> Create Attendance </span>
                             <span wire:loading>
                                 <span class="spinner-border spinner-border-sm" role="status"
                                     aria-hidden="true"></span>
