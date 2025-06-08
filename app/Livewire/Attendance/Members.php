@@ -16,10 +16,12 @@ use Illuminate\Support\Facades\Auth;
 
 class Members extends Component
 {
+    public $searchTerm = '';
+
     public $currentDate;
     public $showOrderModal = false;
     public $showViewOrderModal = false;
-    public $selectedUserId;
+    public $selectedUserId = null;
     public $selectedUserFullName;
     public $selectedProducts = [];
     public $quantities = [];
@@ -65,6 +67,47 @@ class Members extends Component
         'payment_amount.required' => 'Please enter a payment amount.',
         'payment_amount.min' => 'Payment amount must be at least the total amount.',
     ];
+
+    public function selectUser($userId)
+    {
+        $this->selectedUserId = $userId;
+    }
+
+    public function getExistingUsersProperty()
+    {
+        return User::query()
+            ->when($this->searchTerm, function($query) {
+                $terms = explode(' ', trim($this->searchTerm));
+                $query->where(function($q) use ($terms) {
+                    foreach ($terms as $term) {
+                        $q->orWhere('fullName', 'like', '%'.$term.'%');
+                    }
+                });
+            })
+            ->orderBy('fullName')
+            ->get();
+    }
+
+    // Helper method to highlight matches
+    public function highlightMatches($text)
+    {
+        if (empty($this->searchTerm)) {
+            return $text;
+        }
+
+        $terms = explode(' ', trim($this->searchTerm));
+        $highlighted = $text;
+        
+        foreach ($terms as $term) {
+            $highlighted = preg_replace(
+                "/(".$term.")/i",
+                '<span class="bg-blue-100 text-blue-800 px-1 rounded">$1</span>',
+                $highlighted
+            );
+        }
+        
+        return $highlighted;
+    }
 
     public function mount()
     {

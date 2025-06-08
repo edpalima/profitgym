@@ -235,26 +235,90 @@
                                 </li>
                             </ul>
                         </div>
-
-                        <!-- Step 1: User Selection -->
                         @if ($step == 1)
-                            {{-- <div class="mb-3">
-                                <label class="form-label">User Option</label>
-                                <select class="form-control" wire:model.live="userOption">
-                                    <option value="select">Select Existing User</option>
-                                </select>
-                            </div> --}}
                             <div class="mb-3">
-                                <label class="form-label">Select Existing User</label>
-                                <select class="form-control" wire:model="selectedUserId">
-                                    <option value="">-- Choose User --</option>
-                                    @foreach ($existingUsers as $user)
-                                        <option value="{{ $user->id }}">{{ $user->fullName }}</option>
-                                    @endforeach
-                                </select>
-                                @error('selectedUserId')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                <label class="form-label">Search User</label>
+                                
+                                <!-- Search bar -->
+                                <div class="input-group mb-3">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        placeholder="Type first or last name..." 
+                                        wire:model.live.debounce.300ms="searchTerm"
+                                        autofocus
+                                    >
+                                </div>
+                                
+                                <!-- User list -->
+                                <div class="user-list-container" style="max-height: 300px; overflow-y: auto;">
+                                    @php
+                                        // Sort users - exact matches first, then partial matches, then others
+                                        $sortedUsers = $this->existingUsers->sortByDesc(function($user) {
+                                            if (empty($this->searchTerm)) {
+                                                return 0;
+                                            }
+                                            
+                                            $score = 0;
+                                            $terms = explode(' ', trim($this->searchTerm));
+                                            
+                                            foreach ($terms as $term) {
+                                                if (stripos($user->fullName, $term) !== false) {
+                                                    // Exact match at start of name gets highest priority
+                                                    if (stripos($user->fullName, $term) === 0) {
+                                                        $score += 3;
+                                                    } 
+                                                    // Exact match anywhere
+                                                    else {
+                                                        $score += 1;
+                                                    }
+                                                }
+                                            }
+                                            
+                                            return $score;
+                                        });
+                                    @endphp
+                                    
+                                    @forelse($sortedUsers as $user)
+                                        <button 
+                                            type="button"
+                                            class="list-group-item list-group-item-action {{ $selectedUserId == $user->id ? 'active' : '' }}"
+                                            wire:click="selectUser({{ $user->id }})"
+                                            style="order: {{ $sortedUsers->search($user) }};"
+                                        >
+                                            @if($searchTerm)
+                                                @php
+                                                    $highlightedName = $user->fullName;
+                                                    $terms = explode(' ', trim($this->searchTerm));
+                                                    foreach ($terms as $term) {
+                                                        $highlightedName = preg_replace(
+                                                            "/(".$term.")/i",
+                                                            '<span style="background-color: #dbeafe; color: #1e40af; padding: 0 2px; border-radius: 3px;">$1</span>',
+                                                            $highlightedName
+                                                        );
+                                                    }
+                                                @endphp
+                                                {!! $highlightedName !!}
+                                            @else
+                                                {{ $user->fullName }}
+                                            @endif
+                                            
+                                            @if($selectedUserId == $user->id)
+                                                <span style="float: right;">
+                                                    <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                                                </span>
+                                            @endif
+                                        </button>
+                                    @empty
+                                        <div class="text-center py-3 text-muted">
+                                            @if($searchTerm)
+                                                No users found for "{{ $searchTerm }}"
+                                            @else
+                                                No users available
+                                            @endif
+                                        </div>
+                                    @endforelse
+                                </div>
                             </div>
                         @endif
 
