@@ -12,6 +12,11 @@ class WalkInPage extends Page
 
     protected static ?string $navigationGroup = 'Attendance Management';
     protected static ?string $navigationLabel = 'Walk In';
-    
+
     // protected static ?int $navigationSort = 1;
+
+    public function getTitle(): string
+    {
+        return 'Walk-In';
+    }
 }

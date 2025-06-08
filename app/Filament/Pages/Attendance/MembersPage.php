@@ -14,4 +14,9 @@ class MembersPage extends Page
     protected static ?string $navigationLabel = 'Members';
 
     protected static ?int $navigationSort = 1;
+
+    public function getTitle(): string
+    {
+        return 'Members';
+    }
 }
