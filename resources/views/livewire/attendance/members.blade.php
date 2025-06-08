@@ -94,13 +94,19 @@
                             <td>
                                 @if (\Carbon\Carbon::parse($currentDate)->isToday())
                                     @if (!$attendance || !$attendance->time_in)
-                                        <button wire:click="timeIn({{ $user->id }})"
-                                            class="btn btn-success btn-sm text-white">Time In</button>
+                                        <button class="btn btn-success btn-sm text-white"
+                                            onclick="if(confirm('Are you sure you want to time in this user?')) { @this.timeIn({{ $user->id }}) }">
+                                            Time In
+                                        </button>
                                     @elseif ($attendance && $attendance->time_in && !$attendance->time_out)
-                                        <button wire:click="timeOut({{ $user->id }})"
-                                            class="btn btn-primary btn-sm text-white">Time Out</button>
+                                        <button class="btn btn-primary btn-sm text-white"
+                                            onclick="if(confirm('Are you sure you want to time out this user?')) { @this.timeOut({{ $user->id }}) }">
+                                            Time Out
+                                        </button>
                                         <button wire:click="createOrder({{ $user->id }})"
-                                            class="btn btn-warning btn-sm btn-create-order">Create Order</button>
+                                            class="btn btn-warning btn-sm btn-create-order">
+                                            Create Order
+                                        </button>
                                     @endif
                                 @endif
                             </td>
@@ -232,12 +238,12 @@
 
                         <!-- Step 1: User Selection -->
                         @if ($step == 1)
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label class="form-label">User Option</label>
                                 <select class="form-control" wire:model.live="userOption">
                                     <option value="select">Select Existing User</option>
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="mb-3">
                                 <label class="form-label">Select Existing User</label>
                                 <select class="form-control" wire:model="selectedUserId">
