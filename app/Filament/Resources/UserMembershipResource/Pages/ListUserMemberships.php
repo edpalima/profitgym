@@ -20,7 +20,7 @@ class ListUserMemberships extends ListRecords
         return [
             Action::make('viewAttendance')
                 ->label('View Attendance')
-                ->url(route('filament.admin.pages.attendance-page')) // Change to your actual route
+                ->url(route('filament.admin.pages.members-page')) // Change to your actual route
                 ->icon('heroicon-o-eye')
                 ->color('primary'),
         ];
