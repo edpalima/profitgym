@@ -48,7 +48,7 @@
                         <th>Member Name</th>
                         <th>Address</th>
                         {{-- <th>Membership</th> --}}
-                        <th>Orders</th>
+                        <!-- <th>Orders</th> -->
                         <th>Time In</th>
                         <th>Time Out</th>
                         <th>Actions</th>
@@ -78,18 +78,7 @@
                                     <span class="text-danger">No Active</span>
                                 @endif
                             </td> --}}
-                            <td>
-                                @if (isset($orders[$user->id]) && $orders[$user->id]->count() > 0)
-                                    <ul>
-                                        @foreach ($orders[$user->id] as $order)
-                                            <button wire:click="viewOrder({{ $order->id }})"
-                                                class="btn btn-sm border border-primary text-primary bg-transparent">
-                                                <i class="fa fa-shopping-bag me-1"></i> View Order #{{ $order->id }}
-                                            </button>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            </td>
+
                             <td>{{ $attendance && $attendance->time_in ? \Carbon\Carbon::parse($attendance->time_in)->format('h:i A') : '-' }}
                             </td>
                             <td>{{ $attendance && $attendance->time_out ? \Carbon\Carbon::parse($attendance->time_out)->format('h:i A') : '-' }}
@@ -106,10 +95,10 @@
                                             onclick="if(confirm('Are you sure you want to time out this user?')) { @this.timeOut({{ $user->id }}) }">
                                             Time Out
                                         </button>
-                                        <button wire:click="createOrder({{ $user->id }})"
+                                        <!--<button wire:click="createOrder({{ $user->id }})"
                                             class="btn btn-warning btn-sm btn-create-order">
                                             Create Order
-                                        </button>
+                                        </button>-->
                                     @endif
                                 @endif
                             </td>
@@ -383,8 +372,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
                             wire:click="$set('showViewOrderModal', false)">Cancel</button>
-                        <button type="button" class="btn btn-warning btn-create-order"
-                            wire:click="createOrder({{ $viewUserOrder->user->id }})">Create Order</button>
+                        
                     </div>
                 </div>
             </div>

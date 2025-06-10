@@ -36,6 +36,14 @@ Route::get('/product/{id}', [PageController::class, 'product'])->name('product.s
 Route::post('/trainers/{trainer}/rate', [TrainerRatingController::class, 'store'])->name('trainers.rate');
 Route::get('/trainers/{trainer}/rate/login-notice', [TrainerRatingController::class, 'showLoginNotice'])->name('trainers.rate.login-notice');
 
+Route::get('/membership/upgrade/{membership}', [MembershipController::class, 'showUpgradeForm'])
+     ->name('membership.upgrade')
+     ->middleware('auth');
+
+Route::post('/membership/upgrade', [MembershipController::class, 'processUpgrade'])
+     ->name('membership.processUpgrade')
+     ->middleware('auth');
+
 Route::middleware('auth')->group(function () {
     Route::get('memberships/{membership}/checkout', [MembershipController::class, 'checkout'])->name('membership.checkout');
     Route::get('feedback', [PageController::class, 'feedback'])->name('feedbacks');

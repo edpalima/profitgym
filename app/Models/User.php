@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Filament\Panel;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -14,18 +13,12 @@ use Illuminate\Support\Carbon;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     const ROLE_ADMIN = 'ADMIN';
     const ROLE_STAFF = 'STAFF';
     const ROLE_MEMBER = 'MEMBER';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'first_name',
@@ -44,22 +37,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'height_unit',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -84,28 +66,91 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     }
 
     /**
-     * Check if the user has an active membership.
-     *
-     * @param int $membershipId
-     * @return bool
+     * Check if user has a specific membership (active or not)
      */
-    public function hasMembership($membershipId)
+    public function hasMembership($membershipId = null)
     {
-        return $this->memberships()
-            ->where('membership_id', $membershipId)
-            ->exists();
+        if ($membershipId) {
+            return $this->memberships()
+                ->where('membership_id', $membershipId)
+                ->exists();
+        }
+        return $this->memberships()->exists();
     }
 
-    public function hasActiveMembership()
+    /**
+     * Check if user has any active membership
+     */
+    public function hasActiveMembership($membershipId = null)
     {
         $today = Carbon::today();
+        $query = $this->memberships()
+            ->where('is_active', true)
+            ->where('status', 'APPROVED')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today);
 
+        if ($membershipId) {
+            $query->where('membership_id', $membershipId);
+        }
+
+        return $query->exists();
+    }
+
+    /**
+     * Get the current active membership
+     */
+    public function getActiveMembership()
+    {
+        $today = Carbon::today();
         return $this->memberships()
+            ->with('membership')
             ->where('is_active', true)
             ->where('status', 'APPROVED')
             ->whereDate('start_date', '<=', $today)
             ->whereDate('end_date', '>=', $today)
-            ->exists();
+            ->first();
+    }
+
+    /**
+     * Check if user can upgrade to a specific membership
+     * Based on membership level/rank or price
+     */
+    public function canUpgradeTo($membershipId)
+    {
+        $activeMembership = $this->getActiveMembership();
+        
+        // If no active membership, they can "upgrade" (which would be initial enrollment)
+        if (!$activeMembership) {
+            return true;
+        }
+
+        $targetMembership = Membership::find($membershipId);
+        
+        // If target membership doesn't exist, can't upgrade
+        if (!$targetMembership) {
+            return false;
+        }
+
+        // Compare based on your business logic - here using price as an example
+        // You might want to use a 'level' or 'rank' field instead
+        return $targetMembership->price > $activeMembership->membership->price;
+    }
+
+    /**
+     * Get available upgrade options for the user
+     */
+    public function availableUpgrades()
+    {
+        $activeMembership = $this->getActiveMembership();
+        
+        if (!$activeMembership) {
+            return Membership::all(); // All memberships available if no current one
+        }
+
+        return Membership::where('price', '>', $activeMembership->membership->price)
+            ->orWhere('level', '>', $activeMembership->membership->level) // if you have a level field
+            ->get();
     }
 
     public function hasPendingMembership()
@@ -118,7 +163,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function hasExpiredMembership()
     {
         $today = Carbon::today();
-
         return $this->memberships()
             ->where('is_active', true)
             ->where('status', 'APPROVED')
@@ -129,7 +173,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function hasUpcomingApprovedMembership()
     {
         $today = now()->toDateString();
-
         return $this->memberships()
             ->where('status', 'APPROVED')
             ->where('is_active', true)
@@ -156,22 +199,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->photo ? asset('storage/' . $this->photo) : asset('img/profile.jpg');
     }
 
-    public function getActiveMembership()
-    {
-        $today = Carbon::today();
-
-        return $this->memberships()
-            ->where('is_active', true)
-            ->where('status', 'APPROVED')
-            ->whereDate('start_date', '<=', $today)
-            ->whereDate('end_date', '>=', $today)
-            ->first();
-    }
-
     public function activeMembership()
     {
         $today = now();
-
         return $this->memberships()
             ->where('is_active', true)
             ->where('status', 'APPROVED')
@@ -186,4 +216,5 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             get: fn() => $this->first_name . ' ' . $this->last_name,
         );
     }
+
 }
