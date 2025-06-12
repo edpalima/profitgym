@@ -38,6 +38,11 @@ class Trainer extends Model
         return $this->hasMany(TrainerRating::class);
     }
 
+    public function students()
+    {
+        return $this->hasMany(TrainerStudent::class);
+    }
+
     public function getAverageRatingAttribute()
     {
         return $this->ratings()->avg('rating') ?? 0;

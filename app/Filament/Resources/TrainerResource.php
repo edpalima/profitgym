@@ -165,6 +165,7 @@ class TrainerResource extends Resource
         return [
             RelationManagers\SchedulesRelationManager::class,
             RelationManagers\RatingsRelationManager::class,
+            RelationManagers\StudentsRelationManager::class,
         ];
     }
     

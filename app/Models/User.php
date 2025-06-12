@@ -78,6 +78,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->memberships()->exists();
     }
 
+    public function trainerStudents()
+    {
+        return $this->hasMany(\App\Models\TrainerStudent::class, 'user_id');
+    }
+
+    public function hasTrainer(int $trainerId): bool
+    {
+        return $this->trainerStudents()->where('trainer_id', $trainerId)->exists();
+    }
+
     /**
      * Check if user has any active membership
      */
@@ -119,14 +129,14 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function canUpgradeTo($membershipId)
     {
         $activeMembership = $this->getActiveMembership();
-        
+
         // If no active membership, they can "upgrade" (which would be initial enrollment)
         if (!$activeMembership) {
             return true;
         }
 
         $targetMembership = Membership::find($membershipId);
-        
+
         // If target membership doesn't exist, can't upgrade
         if (!$targetMembership) {
             return false;
@@ -143,7 +153,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function availableUpgrades()
     {
         $activeMembership = $this->getActiveMembership();
-        
+
         if (!$activeMembership) {
             return Membership::all(); // All memberships available if no current one
         }
@@ -216,5 +226,4 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             get: fn() => $this->first_name . ' ' . $this->last_name,
         );
     }
-
 }
