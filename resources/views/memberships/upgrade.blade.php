@@ -54,7 +54,7 @@
 </style>
 
 <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
-    <div class="row justify-content-center w-100">
+    <div class="row justify-content-center w-100" style="padding-top:110px">
         <div class="col-lg-6 col-md-8">
             <div class="card membership-card">
                 <div class="card-header">

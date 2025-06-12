@@ -185,9 +185,9 @@
                                         @elseif ($latestMembership->status === 'PENDING')
                                             <span class="badge bg-warning text-dark">Pending</span>
                                         @elseif ($latestMembership->status === 'REJECTED')
-                                            <span class="badge bg-secondary">Rejected</span>
+                                            <span class="badge bg-secondary text-dark">Rejected</span>
                                         @else
-                                            <span class="badge bg-secondary">Expired</span>
+                                            <span class="badge bg-secondary text-dark">Expired</span>
                                         @endif
                                     </span>
                                 </p>
