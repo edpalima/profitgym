@@ -28,6 +28,7 @@ class WalkIn extends Component
     public $paymentAmount = 0.00;
     public $changeAmount = 0.00;
     public $userModal = false;
+    public $showModalError = false;
     public $full_name;
     public $first_name;
     public $last_name;
@@ -79,7 +80,8 @@ class WalkIn extends Component
             return redirect()->route('account');
         }
 
-        $this->currentDate = Carbon::today()->toDateString();
+        // $this->currentDate = Carbon::today()->toDateString();
+        $this->currentDate = now()->format('Y-m-d');
         $this->memberships = Membership::where('is_active', true)->get();
         $this->existingUsers = User::where('role', 'MEMBER')->get();
     }
@@ -347,75 +349,82 @@ class WalkIn extends Component
 
     public function createNewUser()
     {
-        $this->validate([
-            'full_name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'payment_amount' => 'required|numeric|min:' . $this->total_amount,
-        ]);
-
-        $email = $this->generateUniqueEmail($this->full_name);
-
-        $names = explode(' ', trim($this->full_name), 2);
-
-        $first_name = $names[0];
-        $last_name = $names[1] ?? '';
-
-        $user = User::create([
-            'name' => $this->full_name,
-            'password' => bcrypt('password'),
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'address' => $this->address,
-            'email' => $email,
-            'role' => User::ROLE_MEMBER,
-        ]);
-        $userId = $user->id;
-
-        $membership = Membership::find(4);
-        $start = Carbon::parse($this->start_date);
-        $end = $membership->duration_unit === 'days' && $membership->duration_value == 1
-            ? $start->copy()
-            : $start->copy()->add($membership->duration_unit, $membership->duration_value);
-
-        $existingMembership = UserMembership::where('user_id', $userId)
-            ->where('membership_id', $this->membership_id)
-            ->where(function ($query) use ($start, $end) {
-                $query->whereBetween('start_date', [$start, $end])
-                    ->orWhereBetween('end_date', [$start, $end])
-                    ->orWhere(function ($q) use ($start, $end) {
-                        $q->where('start_date', '<=', $start)
-                            ->where('end_date', '>=', $end);
-                    });
-            })
-            ->first();
-
-        if ($existingMembership) {
-            throw ValidationException::withMessages([
-                'membership_id' => 'This user already has an active membership of this type with overlapping dates.',
+        try {
+            $this->validate([
+                'full_name' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'start_date' => 'required|date',
+                'payment_amount' => 'required|numeric|min:' . $this->total_amount,
             ]);
+
+            $email = $this->generateUniqueEmail($this->full_name);
+
+            $names = explode(' ', trim($this->full_name), 2);
+
+            $first_name = $names[0];
+            $last_name = $names[1] ?? '';
+
+            $user = User::create([
+                'name' => $this->full_name,
+                'password' => bcrypt('password'),
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'address' => $this->address,
+                'email' => $email,
+                'role' => User::ROLE_MEMBER,
+            ]);
+            $userId = $user->id;
+
+            $membership = Membership::find(4);
+            $start = Carbon::parse($this->start_date);
+            $end = $membership->duration_unit === 'days' && $membership->duration_value == 1
+                ? $start->copy()
+                : $start->copy()->add($membership->duration_unit, $membership->duration_value);
+
+            $existingMembership = UserMembership::where('user_id', $userId)
+                ->where('membership_id', $this->membership_id)
+                ->where(function ($query) use ($start, $end) {
+                    $query->whereBetween('start_date', [$start, $end])
+                        ->orWhereBetween('end_date', [$start, $end])
+                        ->orWhere(function ($q) use ($start, $end) {
+                            $q->where('start_date', '<=', $start)
+                                ->where('end_date', '>=', $end);
+                        });
+                })
+                ->first();
+
+            if ($existingMembership) {
+                throw ValidationException::withMessages([
+                    'membership_id' => 'This user already has an active membership of this type with overlapping dates.',
+                ]);
+            }
+
+            $this->total_amount = $membership->price;
+
+            $userMembership = UserMembership::create([
+                'user_id' => $userId,
+                'membership_id' => $membership->id,
+                'start_date' => $start,
+                'end_date' => $end,
+                'status' => 'APPROVED',
+            ]);
+
+            Payment::create([
+                'type' => 'user_memberships',
+                'type_id' => $userMembership->id,
+                'amount' => $this->total_amount,
+                'payment_method' => 'OVER_THE_COUNTER',
+                'status' => 'CONFIRMED',
+            ]);
+
+            $this->resetForm();
+            session()->flash('message', 'User created successfully.');
+        } catch (ValidationException $e) {
+            $this->showModalError = true;
+            $this->setErrorBag($e->validator->getMessageBag());
+            $this->dispatch('showValidationErrors');
+            throw $e;
         }
-
-        $this->total_amount = $membership->price;
-
-        $userMembership = UserMembership::create([
-            'user_id' => $userId,
-            'membership_id' => $membership->id,
-            'start_date' => $start,
-            'end_date' => $end,
-            'status' => 'APPROVED',
-        ]);
-
-        Payment::create([
-            'type' => 'user_memberships',
-            'type_id' => $userMembership->id,
-            'amount' => $this->total_amount,
-            'payment_method' => 'OVER_THE_COUNTER',
-            'status' => 'CONFIRMED',
-        ]);
-
-        $this->resetForm();
-        session()->flash('message', 'User created successfully.');
     }
 
     protected function resetForm()

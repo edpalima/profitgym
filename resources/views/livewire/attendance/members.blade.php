@@ -1,22 +1,34 @@
 <div id="attendanceDiv" class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <button wire:click="previousDate" class="btn btn-sm px-2 py-1 border " style="background-color: #d7d7d7">
-            < &nbsp;&nbsp;&nbsp;Prev </button>
-
-                <h2 class="h6 text-center">Attendance - {{ \Carbon\Carbon::parse($currentDate)->format('F d, Y') }}</h2>
-
-                <button wire:click="nextDate" class="btn btn-sm px-2 py-1 border " style="background-color: #d7d7d7;">
-                    Next &nbsp;&nbsp;&nbsp;>
-                </button>
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <div class="text-center">
+            <div class="mb-2">
+                <label for="filterDate" class="form-label fw-semibold text-secondary" style="font-size: 14px;">Select
+                    Date</label>
+                <input type="date" id="filterDate" wire:model.live="currentDate" class="form-control mx-auto"
+                    style="max-width: 250px;">
+            </div>
+            <br>
+            <h2 class="h6 mb-2">
+                Attendance for {{ \Carbon\Carbon::parse($currentDate)->format('F d, Y') }}
+            </h2>
+        </div>
     </div>
 
-    <div class="d-flex justify-content-end mb-3">
-        <button onclick="printAttendanceTable()" class="btn btn-outline-secondary btn-sm me-2">
-            🖨️ Print
-        </button> &nbsp;
-        <button class="btn btn-success btn-sm px-2 py-1" wire:click="showCreateUserModal">
-            + Create Membership
-        </button>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div style="max-width: 500px;">
+            <input type="text" class="form-control" placeholder="🔍 Search Member Name" wire:model.live="search">
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <button onclick="printAttendanceTable()" class="btn btn-outline-secondary btn-sm me-3">
+                🖨️ Print
+            </button>
+            &nbsp;
+            <button class="btn btn-success btn-sm px-3 py-1 bg-color-primary" wire:click="showCreateUserModal">
+                + Create Membership
+            </button>
+        </div>
+
     </div>
     <!-- Mobile-responsive table wrapper -->
     <div class="table-responsive">
@@ -36,10 +48,6 @@
                 No active members for the selected date.
             </div>
         @else
-            <div class="mb-3">
-                <input type="text" class="form-control" placeholder="🔍 Search Member Name"
-                    wire:model.model.live="search" wire:model.live>
-            </div>
             <table id="membersTable" class="table table-bordered table-striped">
                 <thead class="table-light">
                     <tr>
@@ -103,10 +111,10 @@
                                             onclick="if(confirm('Are you sure you want to time out this user?')) { @this.timeOut({{ $user->id }}) }">
                                             Time Out
                                         </button>
-                                        <button wire:click="createOrder({{ $user->id }})"
+                                        {{-- <button wire:click="createOrder({{ $user->id }})"
                                             class="btn btn-warning btn-sm btn-create-order">
                                             Create Order
-                                        </button>
+                                        </button> --}}
                                     @endif
                                 @endif
                             </td>
@@ -238,63 +246,57 @@
                         @if ($step == 1)
                             <div class="mb-3">
                                 <label class="form-label">Search User</label>
-                                
+
                                 <!-- Search bar -->
                                 <div class="input-group mb-3">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        placeholder="Type first or last name..." 
-                                        wire:model.live.debounce.300ms="searchTerm"
-                                        autofocus
-                                    >
+                                    <input type="text" class="form-control"
+                                        placeholder="Type first or last name..."
+                                        wire:model.live.debounce.300ms="searchTerm" autofocus>
                                 </div>
-                                
+
                                 <!-- User list -->
                                 <div class="user-list-container" style="max-height: 300px; overflow-y: auto;">
                                     @php
                                         // Sort users - exact matches first, then partial matches, then others
-                                        $sortedUsers = $this->existingUsers->sortByDesc(function($user) {
+                                        $sortedUsers = $this->existingUsers->sortByDesc(function ($user) {
                                             if (empty($this->searchTerm)) {
                                                 return 0;
                                             }
-                                            
+
                                             $score = 0;
                                             $terms = explode(' ', trim($this->searchTerm));
-                                            
+
                                             foreach ($terms as $term) {
                                                 if (stripos($user->fullName, $term) !== false) {
                                                     // Exact match at start of name gets highest priority
                                                     if (stripos($user->fullName, $term) === 0) {
                                                         $score += 3;
-                                                    } 
+                                                    }
                                                     // Exact match anywhere
                                                     else {
                                                         $score += 1;
                                                     }
                                                 }
                                             }
-                                            
+
                                             return $score;
                                         });
                                     @endphp
-                                    
+
                                     @forelse($sortedUsers as $user)
-                                        <button 
-                                            type="button"
+                                        <button type="button"
                                             class="list-group-item list-group-item-action {{ $selectedUserId == $user->id ? 'active' : '' }}"
                                             wire:click="selectUser({{ $user->id }})"
-                                            style="order: {{ $sortedUsers->search($user) }};"
-                                        >
-                                            @if($searchTerm)
+                                            style="order: {{ $sortedUsers->search($user) }};">
+                                            @if ($searchTerm)
                                                 @php
                                                     $highlightedName = $user->fullName;
                                                     $terms = explode(' ', trim($this->searchTerm));
                                                     foreach ($terms as $term) {
                                                         $highlightedName = preg_replace(
-                                                            "/(".$term.")/i",
+                                                            '/(' . $term . ')/i',
                                                             '<span style="background-color: #dbeafe; color: #1e40af; padding: 0 2px; border-radius: 3px;">$1</span>',
-                                                            $highlightedName
+                                                            $highlightedName,
                                                         );
                                                     }
                                                 @endphp
@@ -302,8 +304,8 @@
                                             @else
                                                 {{ $user->fullName }}
                                             @endif
-                                            
-                                            @if($selectedUserId == $user->id)
+
+                                            @if ($selectedUserId == $user->id)
                                                 <span style="float: right;">
                                                     <i class="fas fa-check-circle" style="color: #28a745;"></i>
                                                 </span>
@@ -311,7 +313,7 @@
                                         </button>
                                     @empty
                                         <div class="text-center py-3 text-muted">
-                                            @if($searchTerm)
+                                            @if ($searchTerm)
                                                 No users found for "{{ $searchTerm }}"
                                             @else
                                                 No users available
@@ -452,6 +454,36 @@
                             wire:click="$set('showViewOrderModal', false)">Cancel</button>
                         <button type="button" class="btn btn-warning btn-create-order"
                             wire:click="createOrder({{ $viewUserOrder->user->id }})">Create Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($showModalError)
+        <div class="modal fade show d-block" tabindex="-1"
+            style="background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-danger shadow">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="errorModalLabel">Validation Error</h5>
+                        <button type="button" class="btn-close" wire:click="$set('showModalError', false)"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body pt-3 pb-2 px-5">
+                        @if ($errors->any())
+                            <ul class="mb-0 text-danger">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                        <div class="text-center mt-3">
+                            <button type="button" class="btn btn-danger px-4"
+                                wire:click="$set('showModalError', false)">
+                                Okay
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

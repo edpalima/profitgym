@@ -1,24 +1,36 @@
 <div id="attendanceDiv" class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <button wire:click="previousDate" class="btn btn-sm px-2 py-1 border " style="background-color: #d7d7d7">
-            < &nbsp;&nbsp;&nbsp;Prev </button>
-
-                <h2 class="h6 text-center">Attendance - {{ \Carbon\Carbon::parse($currentDate)->format('F d, Y') }}</h2>
-
-                <button wire:click="nextDate" class="btn btn-sm px-2 py-1 border " style="background-color: #d7d7d7;">
-                    Next &nbsp;&nbsp;&nbsp;>
-                </button>
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <div class="text-center">
+            <div class="mb-2">
+                <label for="filterDate" class="form-label fw-semibold text-secondary" style="font-size: 14px;">Select
+                    Date</label>
+                <input type="date" id="filterDate" wire:model.live="currentDate" class="form-control mx-auto"
+                    style="max-width: 250px;">
+            </div>
+            <br>
+            <h2 class="h6 mb-2">
+                Attendance for {{ \Carbon\Carbon::parse($currentDate)->format('F d, Y') }}
+            </h2>
+        </div>
     </div>
 
-    <div class="d-flex justify-content-end mb-3">
-        <button onclick="printAttendanceTable()" class="btn btn-outline-secondary btn-sm me-2">
-            🖨️ Print
-        </button> &nbsp;
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div style="max-width: 500px;">
+            <input type="text" class="form-control" placeholder="🔍 Search Member Name" wire:model.live="search">
+        </div>
 
-        <button class="btn btn-success btn-sm px-2 py-1" wire:click="showCreateUserModal">
-            + Create Attendance
-        </button>
+        <div class="d-flex align-items-center gap-3">
+            <button onclick="printAttendanceTable()" class="btn btn-outline-secondary btn-sm me-3">
+                🖨️ Print
+            </button>
+            &nbsp;
+            <button class="btn btn-success btn-sm px-3 py-1 bg-color-primary" wire:click="showCreateUserModal">
+                + Create Attendance
+            </button>
+        </div>
+
     </div>
+
     <!-- Mobile-responsive table wrapper -->
     <div class="table-responsive">
         @if (session()->has('message'))
@@ -37,10 +49,6 @@
                 No active members for the selected date.
             </div>
         @else
-            <div class="mb-3">
-                <input type="text" class="form-control" placeholder="🔍 Search Member Name"
-                    wire:model.model.live="search" wire:model.live>
-            </div>
             <table id="membersTable" class="table table-bordered table-striped">
                 <thead class="table-light">
                     <tr>
@@ -281,20 +289,13 @@
                             <label class="form-label">Payment Amount:</label>
                             <input type="number" min="0" step="0.01" class="form-control"
                                 wire:model.live="payment_amount" placeholder="Enter payment (₱)">
+                            @error('payment_amount')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <strong>Change: ₱{{ number_format($change_amount, 2) }}</strong>
                         </div>
-
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
                     </div>
 
                     <div class="modal-footer">
@@ -372,7 +373,37 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
                             wire:click="$set('showViewOrderModal', false)">Cancel</button>
-                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($showModalError)
+        <div class="modal fade show d-block" tabindex="-1"
+            style="background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-danger shadow">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="errorModalLabel">Validation Error</h5>
+                        <button type="button" class="btn-close" wire:click="$set('showModalError', false)"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body pt-3 pb-2 px-5">
+                        @if ($errors->any())
+                            <ul class="mb-0 text-danger">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                        <div class="text-center mt-3">
+                            <button type="button" class="btn btn-danger px-4"
+                                wire:click="$set('showModalError', false)">
+                                Okay
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

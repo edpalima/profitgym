@@ -29,6 +29,7 @@ class Members extends Component
     public $paymentAmount = 0.00;
     public $changeAmount = 0.00;
     public $userModal = false;
+    public $showModalError = false;
     public $first_name;
     public $last_name;
     public $email;
@@ -76,11 +77,11 @@ class Members extends Component
     public function getExistingUsersProperty()
     {
         return User::query()
-            ->when($this->searchTerm, function($query) {
+            ->when($this->searchTerm, function ($query) {
                 $terms = explode(' ', trim($this->searchTerm));
-                $query->where(function($q) use ($terms) {
+                $query->where(function ($q) use ($terms) {
                     foreach ($terms as $term) {
-                        $q->orWhere('fullName', 'like', '%'.$term.'%');
+                        $q->orWhere('fullName', 'like', '%' . $term . '%');
                     }
                 });
             })
@@ -97,15 +98,15 @@ class Members extends Component
 
         $terms = explode(' ', trim($this->searchTerm));
         $highlighted = $text;
-        
+
         foreach ($terms as $term) {
             $highlighted = preg_replace(
-                "/(".$term.")/i",
+                "/(" . $term . ")/i",
                 '<span class="bg-blue-100 text-blue-800 px-1 rounded">$1</span>',
                 $highlighted
             );
         }
-        
+
         return $highlighted;
     }
 
@@ -375,93 +376,100 @@ class Members extends Component
 
     public function createNewUser()
     {
-        $this->validate([
-            'userOption' => 'required|in:select,create',
-            // 'selectedUserId' => 'required_if:userOption,select|exists:users,id',
-            'first_name' => 'required_if:userOption,create|string|max:255',
-            'last_name' => 'required_if:userOption,create|string|max:255',
-            'membership_id' => 'required|exists:memberships,id',
-            'start_date' => 'required|date',
-            'payment_amount' => 'required|numeric|min:' . $this->total_amount,
-        ]);
-
-        $userId = $this->userOption === 'select' ? $this->selectedUserId : null;
-
-        if ($this->userOption === 'select' && $userId == null) {
-            throw ValidationException::withMessages([
-                'selectedUserId' => 'Please select a user',
+        try {
+            $this->validate([
+                'userOption' => 'required|in:select,create',
+                // 'selectedUserId' => 'required_if:userOption,select|exists:users,id',
+                'first_name' => 'required_if:userOption,create|string|max:255',
+                'last_name' => 'required_if:userOption,create|string|max:255',
+                'membership_id' => 'required|exists:memberships,id',
+                'start_date' => 'required|date',
+                'payment_amount' => 'required|numeric|min:' . $this->total_amount,
             ]);
-        }
 
-        if ($this->userOption === 'create') {
-            $existingUser = User::where('first_name', $this->first_name)
-                ->where('last_name', $this->last_name)
-                ->first();
-            if ($existingUser) {
+            $userId = $this->userOption === 'select' ? $this->selectedUserId : null;
+
+            if ($this->userOption === 'select' && $userId == null) {
                 throw ValidationException::withMessages([
-                    'first_name' => 'A user with this first and last name already exists.',
+                    'selectedUserId' => 'Please select a user',
                 ]);
             }
 
-            $email = $this->generateUniqueEmail($this->first_name, $this->last_name);
-            $user = User::create([
-                'name' => trim($this->first_name . ' ' . $this->last_name),
-                'password' => bcrypt('password'),
-                'first_name' => $this->first_name,
-                'last_name' => $this->last_name,
-                'email' => $email,
-                'role' => User::ROLE_MEMBER,
+            if ($this->userOption === 'create') {
+                $existingUser = User::where('first_name', $this->first_name)
+                    ->where('last_name', $this->last_name)
+                    ->first();
+                if ($existingUser) {
+                    throw ValidationException::withMessages([
+                        'first_name' => 'A user with this first and last name already exists.',
+                    ]);
+                }
+
+                $email = $this->generateUniqueEmail($this->first_name, $this->last_name);
+                $user = User::create([
+                    'name' => trim($this->first_name . ' ' . $this->last_name),
+                    'password' => bcrypt('password'),
+                    'first_name' => $this->first_name,
+                    'last_name' => $this->last_name,
+                    'email' => $email,
+                    'role' => User::ROLE_MEMBER,
+                ]);
+                $userId = $user->id;
+            } else {
+                $user = User::find($this->selectedUserId);
+                $userId = $user->id;
+            }
+
+            $membership = Membership::find($this->membership_id);
+            $start = Carbon::parse($this->start_date);
+            $end = $membership->duration_unit === 'days' && $membership->duration_value == 1
+                ? $start->copy()
+                : $start->copy()->add($membership->duration_unit, $membership->duration_value);
+
+            $existingMembership = UserMembership::where('user_id', $userId)
+                ->where('membership_id', $this->membership_id)
+                ->where(function ($query) use ($start, $end) {
+                    $query->whereBetween('start_date', [$start, $end])
+                        ->orWhereBetween('end_date', [$start, $end])
+                        ->orWhere(function ($q) use ($start, $end) {
+                            $q->where('start_date', '<=', $start)
+                                ->where('end_date', '>=', $end);
+                        });
+                })
+                ->first();
+
+            if ($existingMembership) {
+                throw ValidationException::withMessages([
+                    'membership_id' => 'This user already has an active membership of this type with overlapping dates.',
+                ]);
+            }
+
+            $this->total_amount = $membership->price;
+
+            $userMembership = UserMembership::create([
+                'user_id' => $userId,
+                'membership_id' => $this->membership_id,
+                'start_date' => $start,
+                'end_date' => $end,
+                'status' => 'APPROVED',
             ]);
-            $userId = $user->id;
-        } else {
-            $user = User::find($this->selectedUserId);
-            $userId = $user->id;
-        }
 
-        $membership = Membership::find($this->membership_id);
-        $start = Carbon::parse($this->start_date);
-        $end = $membership->duration_unit === 'days' && $membership->duration_value == 1
-            ? $start->copy()
-            : $start->copy()->add($membership->duration_unit, $membership->duration_value);
-
-        $existingMembership = UserMembership::where('user_id', $userId)
-            ->where('membership_id', $this->membership_id)
-            ->where(function ($query) use ($start, $end) {
-                $query->whereBetween('start_date', [$start, $end])
-                    ->orWhereBetween('end_date', [$start, $end])
-                    ->orWhere(function ($q) use ($start, $end) {
-                        $q->where('start_date', '<=', $start)
-                            ->where('end_date', '>=', $end);
-                    });
-            })
-            ->first();
-
-        if ($existingMembership) {
-            throw ValidationException::withMessages([
-                'membership_id' => 'This user already has an active membership of this type with overlapping dates.',
+            Payment::create([
+                'type' => 'user_memberships',
+                'type_id' => $userMembership->id,
+                'amount' => $this->total_amount,
+                'payment_method' => 'OVER_THE_COUNTER',
+                'status' => 'CONFIRMED',
             ]);
+
+            $this->resetForm();
+            session()->flash('message', 'Member created successfully.');
+        } catch (ValidationException $e) {
+            $this->showModalError = true;
+            $this->setErrorBag($e->validator->getMessageBag());
+            $this->dispatch('showValidationErrors');
+            throw $e;
         }
-
-        $this->total_amount = $membership->price;
-
-        $userMembership = UserMembership::create([
-            'user_id' => $userId,
-            'membership_id' => $this->membership_id,
-            'start_date' => $start,
-            'end_date' => $end,
-            'status' => 'APPROVED',
-        ]);
-
-        Payment::create([
-            'type' => 'user_memberships',
-            'type_id' => $userMembership->id,
-            'amount' => $this->total_amount,
-            'payment_method' => 'OVER_THE_COUNTER',
-            'status' => 'CONFIRMED',
-        ]);
-
-        $this->resetForm();
-        session()->flash('message', 'User created successfully.');
     }
 
     protected function resetForm()
