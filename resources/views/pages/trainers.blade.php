@@ -78,7 +78,8 @@
 
                                     {{-- @if ($hasTrainer) --}}
                                     <div class="tooltip-wrapper">
-                                        <button class="rate-feedback-btn" data-toggle="modal" disabled
+                                        <button class="rate-feedback-btn" data-toggle="modal"
+                                            @unless ($hasTrainer) disabled @endunless
                                             data-target="#rateFeedbackModal-{{ $trainer->id }}">
                                             <i class="fa fa-star"></i> Rate & Feedback
                                         </button>

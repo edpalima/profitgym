@@ -29,7 +29,9 @@
                                 @if(auth()->user()->hasActiveMembership($membership->id))
                                     <button class="primary-btn pricing-btn" disabled>Current Plan</button>
                                 @elseif(auth()->user()->hasActiveMembership())
-                                    @if(auth()->user()->canUpgradeTo($membership->id))
+                                    @if(auth()->user()->hasPendingMembership())
+                                        <button class="primary-btn pricing-btn" disabled>Pending Approval</button>
+                                    @elseif(auth()->user()->canUpgradeTo($membership->id))
                                         <a href="{{ route('membership.checkout', $membership->id) }}"
                                            class="primary-btn pricing-btn upgrade-btn">Upgrade Now</a>
                                     @else
