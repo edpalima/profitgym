@@ -10710,11 +10710,11 @@
     "platform": {
         "php": "^8.2"
     },
-<<<<<<< HEAD
+
+    "platform": {
+        "php": "^8.2"
+    },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
-=======
-    "platform-dev": [],
-    "plugin-api-version": "2.2.0"
->>>>>>> 45384c545896cc148c888527cd389ced7c556202
 }
+

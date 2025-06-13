@@ -72,10 +72,10 @@
                                         data-target="#trainerModal-{{ $trainer->id }}">
                                         <i class="fa fa-info-circle"></i> View Details & Schedule
                                     </button>
-                                    @php
-                                        $hasTrainer = auth()->user()->hasTrainer($trainer->id);
-                                    @endphp
-
+                                        @php
+                                            // Safe initialization of the variable
+                                            $hasTrainer = auth()->check() ? auth()->user()->hasTrainer($trainer->id) : false;
+                                        @endphp
                                     {{-- @if ($hasTrainer) --}}
                                     <div class="tooltip-wrapper">
                                         <button class="rate-feedback-btn" data-toggle="modal"
