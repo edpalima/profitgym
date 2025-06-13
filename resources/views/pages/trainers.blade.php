@@ -76,12 +76,16 @@
                                         $hasTrainer = auth()->user()->hasTrainer($trainer->id);
                                     @endphp
 
-                                    @if ($hasTrainer)
-                                        <button class="rate-feedback-btn" data-toggle="modal"
+                                    {{-- @if ($hasTrainer) --}}
+                                    <div class="tooltip-wrapper">
+                                        <button class="rate-feedback-btn" data-toggle="modal" disabled
                                             data-target="#rateFeedbackModal-{{ $trainer->id }}">
                                             <i class="fa fa-star"></i> Rate & Feedback
                                         </button>
-                                    @endif
+                                        <span class="tooltip-text">You must be a student of this trainer to add rate and
+                                            feedback.</span>
+                                    </div>
+                                    {{-- @endif --}}
                                 </div>
                             </div>
                         </div>

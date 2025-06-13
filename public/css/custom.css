@@ -188,3 +188,37 @@
 	background-color: #d97706 !important;
 	color: white !important;
 }
+
+.rate-feedback-btn[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 6px 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.tooltip-wrapper:hover .rate-feedback-btn[disabled] + .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}

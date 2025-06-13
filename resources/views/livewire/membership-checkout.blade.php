@@ -8,8 +8,24 @@
                         @if (session()->has('success'))
                             <div class="alert alert-success">{{ session('success') }}</div>
                         @endif
-
-                        <h3 class="text-center mb-4">Enroll Membership</h3>
+                        @php
+                            if (auth()->user()->hasActiveMembership($membership->id)) {
+                                $membershipLabel = 'Your Current Plan';
+                            } elseif (auth()->user()->hasActiveMembership()) {
+                                if (auth()->user()->canUpgradeTo($membership->id)) {
+                                    $membershipLabel = 'Upgrade Membership';
+                                } else {
+                                    $membershipLabel = 'Membership Not Available';
+                                }
+                            } else {
+                                if (auth()->user()->hasPendingMembership()) {
+                                    $membershipLabel = 'Membership Pending Approval';
+                                } else {
+                                    $membershipLabel = 'Enroll Membership';
+                                }
+                            }
+                        @endphp
+                        <h3 class="text-center mb-4">{{ $membershipLabel }}</h3>
                         <div class="mb-4">
                             <p><strong>Name:</strong> {{ $membership->name }}</p>
                             <p><strong>Description:</strong> {{ $membership->description }}</p>
@@ -96,8 +112,15 @@
                                 </div>
 
                                 <div class="text-center">
+                                    @php
+                                        $disableConfirm =
+                                            auth()->user()->hasPendingMembership() ||
+                                            auth()->user()->hasActiveMembership($membership->id) ||
+                                            (auth()->user()->hasActiveMembership() &&
+                                                !auth()->user()->canUpgradeTo($membership->id));
+                                    @endphp
                                     <button type="submit" class="btn btn-outline-light px-5"
-                                        style="border-color: #f36100; color: #f36100;">Confirm Membership</button>
+                                        style="border-color: #f36100; color: #f36100;" @if($disableConfirm) disabled @endif>Confirm Membership</button>
                                 </div>
                             </form>
                         @endif

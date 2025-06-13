@@ -24,13 +24,13 @@
                             <ul>
                                 <li>{{ $membership->description ?? 'No description available' }}</li>
                             </ul>
-                            
+
                             @auth
                                 @if(auth()->user()->hasActiveMembership($membership->id))
                                     <button class="primary-btn pricing-btn" disabled>Current Plan</button>
                                 @elseif(auth()->user()->hasActiveMembership())
                                     @if(auth()->user()->canUpgradeTo($membership->id))
-                                        <a href="{{ route('membership.upgrade', $membership->id) }}" 
+                                        <a href="{{ route('membership.checkout', $membership->id) }}"
                                            class="primary-btn pricing-btn upgrade-btn">Upgrade Now</a>
                                     @else
                                         <button class="primary-btn pricing-btn" disabled>Not Available</button>
@@ -39,15 +39,15 @@
                                     @if(auth()->user()->hasPendingMembership())
                                         <button class="primary-btn pricing-btn" disabled>Pending Approval</button>
                                     @else
-                                        <a href="{{ route('membership.checkout', $membership->id) }}" 
+                                        <a href="{{ route('membership.checkout', $membership->id) }}"
                                            class="primary-btn pricing-btn">Enroll now</a>
                                     @endif
                                 @endif
                             @else
-                                <a href="{{ route('membership.checkout', $membership->id) }}" 
+                                <a href="{{ route('membership.checkout', $membership->id) }}"
                                    class="primary-btn pricing-btn">Enroll now</a>
                             @endauth
-                            
+
                             <a href="{{ route('membership.checkout', $membership->id) }}" class="thumb-icon">
                                 <i class="fa fa-picture-o"></i>
                             </a>
