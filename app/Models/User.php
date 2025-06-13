@@ -195,6 +195,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->memberships()
             ->with('membership')
             ->whereIn('status', ['APPROVED', 'PENDING'])
+            ->orderByRaw("FIELD(status, 'APPROVED', 'PENDING')")
             ->orderByDesc('created_at')
             ->first();
     }

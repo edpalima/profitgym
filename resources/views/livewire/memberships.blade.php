@@ -1,5 +1,5 @@
 <div>
-    <section class="pricing-section spad">
+    <section class="pricing-section spad" style="padding-top: 20px">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">

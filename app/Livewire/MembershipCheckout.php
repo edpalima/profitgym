@@ -28,7 +28,13 @@ class MembershipCheckout extends Component
 
     public function mount($membershipId)
     {
-        $this->discount = Auth::user()->getActiveMembership()->membership->price / 2;
+        $activeMembership = Auth::user()->getActiveMembership();
+
+        if ($activeMembership && $activeMembership->membership) {
+            $this->discount = $activeMembership->membership->price / 2;
+        } else {
+            $this->discount = 0; // or handle it as needed
+        }
 
         // dd($this->discount);
         $this->membership = Membership::findOrFail($membershipId);
