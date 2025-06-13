@@ -21,14 +21,18 @@ class MembershipCheckout extends Component
     public $referenceNo;
     public $startDate;
     public $terms = false;
+    public $discount = 0;
 
     public $userHasMembership = false;
     public $userHasPendingMembership = false;
 
     public function mount($membershipId)
     {
+        $this->discount = Auth::user()->getActiveMembership()->membership->price / 2;
+
+        // dd($this->discount);
         $this->membership = Membership::findOrFail($membershipId);
-        $this->amount = $this->membership->price;
+        $this->amount = $this->membership->price - $this->discount;
 
         $this->userHasMembership = Auth::user()->hasMembership($this->membership->id);
         $this->userHasPendingMembership = Auth::user()->hasPendingMembership($this->membership->id);
@@ -60,7 +64,7 @@ class MembershipCheckout extends Component
         Payment::create([
             'type' => 'user_memberships',
             'type_id' => $userMembership->id,
-            'amount' => $this->membership->price,
+            'amount' => $this->amount,
             'payment_method' => $this->paymentMethod,
             'reference_no' => $this->referenceNo,
             'status' => 'PENDING',

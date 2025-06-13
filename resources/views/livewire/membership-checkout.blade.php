@@ -32,6 +32,9 @@
                             <p><strong>Duration:</strong> {{ $membership->duration_value }}
                                 {{ ucfirst($membership->duration_unit) }}</p>
                             <p><strong>Price:</strong> ₱{{ number_format($membership->price, 2) }}</p>
+                            @if ($discount)
+                                <p><strong>Upgrade Discount:</strong> ₱{{ number_format($discount, 2) }}</p>
+                            @endif
                         </div>
                         @if ($userHasPendingMembership)
                             <div class="alert alert-warning">
@@ -120,7 +123,8 @@
                                                 !auth()->user()->canUpgradeTo($membership->id));
                                     @endphp
                                     <button type="submit" class="btn btn-outline-light px-5"
-                                        style="border-color: #f36100; color: #f36100;" @if($disableConfirm) disabled @endif>Confirm Membership</button>
+                                        style="border-color: #f36100; color: #f36100;"
+                                        @if ($disableConfirm) disabled @endif>Confirm Membership</button>
                                 </div>
                             </form>
                         @endif
