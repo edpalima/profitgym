@@ -250,7 +250,7 @@ class WalkIn extends Component
         $this->change_amount = 0;
         $this->selectedUserId = null;
 
-        $membership = Membership::find(4);
+        $membership = Membership::find(1000);
         $this->total_amount = $membership->price;
     }
 
@@ -375,7 +375,7 @@ class WalkIn extends Component
             ]);
             $userId = $user->id;
 
-            $membership = Membership::find(4);
+            $membership = Membership::find(1000);
             $start = Carbon::parse($this->start_date);
             $end = $membership->duration_unit === 'days' && $membership->duration_value == 1
                 ? $start->copy()
@@ -455,11 +455,11 @@ class WalkIn extends Component
             })
             ->with(['memberships' => function ($query) {
                 $query->activeForDate($this->currentDate)
-                    ->where('membership_id', 4);
+                    ->where('membership_id', 1000);
             }])
             ->whereHas('memberships', function ($query) {
                 $query->activeForDate($this->currentDate)
-                    ->where('membership_id', 4);
+                    ->where('membership_id', 1000);
             })
             ->get();
 

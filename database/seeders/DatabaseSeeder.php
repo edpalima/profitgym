@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserMembershipSeeder::class);
         $this->call(FeedbackSeeder::class);
         $this->call(TermsPolicySeeder::class);
+        $this->call(WalkinMembershipSeeder::class);
     }
 }

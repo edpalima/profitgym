@@ -40,15 +40,5 @@ class MembershipSeeder extends Seeder
             'price' => 1500.00,
             'is_active' => true,
         ]);
-
-        \App\Models\Membership::create([
-            'name' => '1 day - Walk In',
-            'description' => 'A one-day access membership for walk-in customers only. Ideal for occasional visitors or trial users.',
-            'duration_value' => 1,
-            'duration_unit' => 'days',
-            'price' => 50.00,
-            'is_active' => true,
-            'walk_in_only' => true,
-        ]);
     }
 }
