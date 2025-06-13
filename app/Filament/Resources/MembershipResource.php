@@ -86,6 +86,7 @@ class MembershipResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn(Builder $query) => $query->where('id', '!=', 1000))
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('NAME')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('duration_unit')->label('DURATION UNIT')->sortable(),
