@@ -57,6 +57,7 @@ class MembershipCheckout extends Component
             'start_date' => $start,
             'end_date' => $end,
             'status' => 'PENDING',
+            'upgrade' => true,
         ]);
 
         $paymentImage = $this->image ? $this->image->store('payment_receipts', 'public') : null;

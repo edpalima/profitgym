@@ -13,6 +13,7 @@ class UserMembership extends Model
         'user_id',
         'membership_id',
         'status',
+        'upgrade',
         'is_active',
         'payment_id',
         'start_date',

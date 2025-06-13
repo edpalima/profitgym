@@ -31,12 +31,16 @@ class ListUserMemberships extends ListRecords
         $statusCounts = UserMembership::select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
             ->pluck('total', 'status');
+
+        $upgradeCount = UserMembership::where('upgrade', true)->count();
+
         $paymentColors = [
             'all' => 'secondary',
             'pending' => 'primary',
             'approved' => 'success',
             'rejected' => 'danger',
         ];
+
         return [
             'all' => Tab::make('All')
                 ->label('ALL')
@@ -47,20 +51,25 @@ class ListUserMemberships extends ListRecords
             'pending' => Tab::make('Pending')
                 ->label('PENDING')
                 ->badge($statusCounts->get('PENDING', 0))
-                  ->badgeColor($paymentColors['pending'])
+                ->badgeColor($paymentColors['pending'])
                 ->query(fn(Builder $query) => $query->where('status', 'PENDING')),
-
             'approved' => Tab::make('Approved')
                 ->label('APPROVED')
                 ->badge($statusCounts->get('APPROVED', 0))
-                  ->badgeColor($paymentColors['approved'])
+                ->badgeColor($paymentColors['approved'])
                 ->query(fn(Builder $query) => $query->where('status', 'APPROVED')),
 
             'rejected' => Tab::make('Rejected')
                 ->label('REJECTED')
                 ->badge($statusCounts->get('REJECTED', 0))
-                  ->badgeColor($paymentColors['rejected'])
+                ->badgeColor($paymentColors['rejected'])
                 ->query(fn(Builder $query) => $query->where('status', 'REJECTED')),
+
+            'upgrade' => Tab::make('Upgrade')
+                ->label('UPGRADE')
+                ->badge($upgradeCount)
+                ->badgeColor($paymentColors['pending'])
+                ->query(fn(Builder $query) => $query->where('upgrade', true)),
         ];
     }
 }
