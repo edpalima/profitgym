@@ -180,6 +180,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             ->exists();
     }
 
+    public function hasInactiveMembership()
+    {
+        $today = Carbon::today();
+        return $this->memberships()
+            ->where('is_active', false)
+            ->where('status', 'APPROVED')
+            ->whereDate('end_date', '<', $today)
+            ->exists();
+    }
+
     public function hasUpcomingApprovedMembership()
     {
         $today = now()->toDateString();

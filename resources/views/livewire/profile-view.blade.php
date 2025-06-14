@@ -23,7 +23,7 @@
                             <div class="pl-2">
                                 <h5 class="mb-0 text-white">{{ $user->fullName }}</h5>
                                 <small class="text-muted">
-                                    {{ ucfirst($user->latestMembership()->membership->name ?? 'Member') }}
+                                    {{ ucfirst($user->latestMembership()->membership->name ?? '') }}
                                 </small>
                                 <div class="mt-1">
                                     @if ($user->hasActiveMembership())
@@ -34,8 +34,10 @@
                                         <span class="badge bg-warning text-dark">Pending</span>
                                     @elseif ($user->hasExpiredMembership())
                                         <span class="badge bg-secondary">Inactive</span>
-                                    @else
+                                    @elseif ($user->hasInactiveMembership())
                                         <span class="badge bg-secondary">Inactive</span>
+                                    @else
+                                        <span class="badge bg-secondary">Non-Member</span>
                                     @endif
                                 </div>
                             </div>
