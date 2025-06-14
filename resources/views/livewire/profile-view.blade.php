@@ -35,7 +35,7 @@
                                     @elseif ($user->hasExpiredMembership())
                                         <span class="badge bg-secondary">Inactive</span>
                                     @else
-                                        <span class="badge bg-secondary">None</span>
+                                        <span class="badge bg-secondary">Inactive</span>
                                     @endif
                                 </div>
                             </div>
