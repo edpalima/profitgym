@@ -33,7 +33,7 @@
                                     @elseif ($user->hasPendingMembership())
                                         <span class="badge bg-warning text-dark">Pending</span>
                                     @elseif ($user->hasExpiredMembership())
-                                        <span class="badge bg-secondary">Expired</span>
+                                        <span class="badge bg-secondary">Inactive</span>
                                     @else
                                         <span class="badge bg-secondary">None</span>
                                     @endif
@@ -141,7 +141,7 @@
                                                                                 class="badge bg-secondary text-dark">Rejected</span>
                                                                         @else
                                                                             <span
-                                                                                class="badge bg-secondary">Expired</span>
+                                                                                class="badge bg-secondary">Inactive</span>
                                                                         @endif
                                                                     </td>
                                                                 </tr>
@@ -187,7 +187,7 @@
                                         @elseif ($latestMembership->status === 'REJECTED')
                                             <span class="badge bg-secondary text-dark">Rejected</span>
                                         @else
-                                            <span class="badge bg-secondary text-dark">Expired</span>
+                                            <span class="badge bg-secondary text-dark">Inactive</span>
                                         @endif
                                     </span>
                                 </p>

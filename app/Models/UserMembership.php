@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class UserMembership extends Model
 {
@@ -41,5 +42,19 @@ class UserMembership extends Model
             ->where('status', 'APPROVED')
             ->whereDate('start_date', '<=', $date)
             ->whereDate('end_date', '>=', $date);
+    }
+
+    protected static function booted()
+    {
+        static::saved(function ($membership) {
+            if (
+                $membership->status === 'APPROVED' &&
+                $membership->is_active
+            ) {
+                static::where('user_id', $membership->user_id)
+                    ->where('id', '!=', $membership->id)
+                    ->update(['is_active' => false]);
+            }
+        });
     }
 }
